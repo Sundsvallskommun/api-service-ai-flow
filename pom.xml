@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>se.sundsvall.dept44</groupId>
+		<artifactId>dept44-service-parent</artifactId>
+		<version>5.0.1</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>se.sundsvall</groupId>
+	<artifactId>api-service-ai-flow</artifactId>
+	<version>0.1</version>
+
+	<properties>
+		<auth0.java-jwt.version>4.4.0</auth0.java-jwt.version>
+		<poi.version>5.2.5</poi.version>
+		<pdfbox.version>3.0.2</pdfbox.version>
+		
+		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<generated-sources-java-path>src/main/java</generated-sources-java-path>
+	</properties>
+
+	<dependencies>
+		<!-- Test -->
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Framework -->
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-starter-feign</artifactId>
+		</dependency>
+
+		<!-- Spring Boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- Other -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>${auth0.java-jwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>${pdfbox.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<configuration>
+					<output>${generated-sources-path}</output>
+					<generatorName>spring</generatorName>
+					<generateApis>false</generateApis>
+					<skipValidateSpec>true</skipValidateSpec>
+					<configOptions>
+						<sourceFolder>${generated-sources-java-path}</sourceFolder>
+						<generateSupportingFiles>false</generateSupportingFiles>
+						<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+						<generatePom>false</generatePom>
+						<library>spring-boot</library>
+						<dateLibrary>java8</dateLibrary>
+						<apiPackage>generated</apiPackage>
+						<openApiNullable>false</openApiNullable>
+						<useSwaggerUi>false</useSwaggerUi>
+						<useBeanValidation>true</useBeanValidation>
+						<useSwaggerAnnotations>true</useSwaggerAnnotations>
+						<hideGenerationTimestamp>true</hideGenerationTimestamp>
+						<interfaceOnly>true</interfaceOnly>
+						<useJakartaEe>true</useJakartaEe>
+						<useSpringBoot3>true</useSpringBoot3>
+					</configOptions>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>templating-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/integrations/api-docs.yaml</inputSpec>
+							<configOptions>
+								<modelPackage>generated.se.sundsvall.templating</modelPackage>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
