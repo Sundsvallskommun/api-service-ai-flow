@@ -80,7 +80,7 @@ public class SessionService {
                 // Make sure that the step input is set in the session
                 var sessionInput = session.getInput();
                 if (sessionInput != null && !sessionInput.containsKey(flowInputRef.getInput())) {
-                    //throw Problem.valueOf(Status.BAD_REQUEST, "Required input '%s' is unset for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), sessionId));
+                    throw Problem.valueOf(Status.BAD_REQUEST, "Required input '%s' is unset for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), sessionId));
                 }
             }
         }
