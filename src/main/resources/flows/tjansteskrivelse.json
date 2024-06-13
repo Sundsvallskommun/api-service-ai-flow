@@ -27,13 +27,13 @@
     {
       "id": "bakgrundsmaterial",
       "name": "Bakgrundsmaterial",
-      "type": "TEXT",
+      "type": "DOCUMENT",
       "cardinality": "MULTIPLE_VALUED"
     },
     {
       "id": "relaterade-styrdokument",
       "name": "Relaterade styrdokument",
-      "type": "TEXT",
+      "type": "DOCUMENT",
       "cardinality": "MULTIPLE_VALUED"
     }
   ],
