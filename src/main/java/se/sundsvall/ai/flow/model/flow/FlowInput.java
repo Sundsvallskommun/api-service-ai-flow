@@ -1,5 +1,7 @@
 package se.sundsvall.ai.flow.model.flow;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class FlowInput {
 
     public enum Cardinality {
@@ -66,6 +68,7 @@ public class FlowInput {
         this.type = type;
     }
 
+    @JsonIgnore
     public boolean isSingleValued() {
         return cardinality == Cardinality.SINGLE_VALUED;
     }
