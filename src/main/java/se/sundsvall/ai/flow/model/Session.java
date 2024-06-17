@@ -88,17 +88,21 @@ public class Session {
             .orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No input '%s' exists in flow '%s'".formatted(inputId, flow.getName())));
 
         // BASE64-decode the value
-        var decodedValue = new String(Base64.getDecoder().decode(value), UTF_8);
+        var valueBytes = Base64.getDecoder().decode(value);
+
+        String decodedValue;
         // Extract the document text if we're dealing with a document (PDF or DOCX)
         if (flowInput.getType() == InputType.DOCUMENT) {
-            var decodedValueBytes = decodedValue.getBytes(UTF_8);
-            if (isDocx(decodedValueBytes)) {
-                decodedValue = extractTextFromDocx(decodedValueBytes);
-            } else if (isPdf(decodedValueBytes)) {
-                decodedValue = extractTextFromPdf(decodedValueBytes);
+            //var decodedValueBytes = decodedValue.getBytes(UTF_8);
+            if (isDocx(valueBytes)) {
+                decodedValue = extractTextFromDocx(valueBytes);
+            } else if (isPdf(valueBytes)) {
+                decodedValue = extractTextFromPdf(valueBytes);
             } else {
                 throw Problem.valueOf(Status.BAD_REQUEST, "Document input '%s' does not appear to be either a PDF or Word document".formatted(inputId));
             }
+        } else {
+            decodedValue = new String(valueBytes, UTF_8);
         }
 
         // Lazy-init the input map, if required
