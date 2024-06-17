@@ -97,7 +97,7 @@ public class Session {
             } else if (isPdf(decodedValueBytes)) {
                 decodedValue = extractTextFromPdf(decodedValueBytes);
             } else {
-                throw Problem.valueOf(Status.BAD_REQUEST, "Unable to parse value for document input '%s'");
+                throw Problem.valueOf(Status.BAD_REQUEST, "Document input '%s' does not appear to be either a PDF or Word document".formatted(inputId));
             }
         }
 

@@ -1,7 +1,11 @@
 package se.sundsvall.ai.flow.util;
 
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.joining;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -28,7 +32,9 @@ public final class DocumentUtil {
 
     public static String extractTextFromPdf(final byte[] data) {
         try (var document = Loader.loadPDF(data)) {
-            return new PDFTextStripper().getText(document);
+            var text = new PDFTextStripper().getText(document);
+
+            return removeBlankLines(text);
         } catch (Exception e) {
             throw new FlowException("Unable to extract text from PDF document", e);
         }
@@ -47,9 +53,18 @@ public final class DocumentUtil {
     public static String extractTextFromDocx(final byte[] data) {
         try (var in = new ByteArrayInputStream(data);
              var file = new XWPFDocument(OPCPackage.open(in))) {
-            return new XWPFWordExtractor(file).getText();
+            var text = new XWPFWordExtractor(file).getText();
+
+            return removeBlankLines(text);
         } catch (IOException|InvalidFormatException e) {
             throw new FlowException("Unable to extract text from DOCX document", e);
         }
+    }
+
+    private static String removeBlankLines(final String s) {
+        return Arrays.stream(s.split("\n"))
+            .map(String::trim)
+            .filter(not(String::isBlank))
+            .collect(joining("\n"));
     }
 }
