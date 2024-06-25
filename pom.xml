@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>5.0.1</version>
+		<version>5.0.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>se.sundsvall</groupId>
@@ -15,6 +15,7 @@
 		<auth0.java-jwt.version>4.4.0</auth0.java-jwt.version>
 		<poi.version>5.2.5</poi.version>
 		<pdfbox.version>3.0.2</pdfbox.version>
+		<jtokkit.version>1.0.0</jtokkit.version>
 		
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>src/main/java</generated-sources-java-path>
@@ -55,6 +56,11 @@
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>${pdfbox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.knuddels</groupId>
+			<artifactId>jtokkit</artifactId>
+			<version>${jtokkit.version}</version>
 		</dependency>
 	</dependencies>
 

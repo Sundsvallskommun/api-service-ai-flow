@@ -1,5 +1,7 @@
 package se.sundsvall.ai.flow.model;
 
+import static com.knuddels.jtokkit.Encodings.newDefaultEncodingRegistry;
+import static com.knuddels.jtokkit.api.EncodingType.CL100K_BASE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -9,13 +11,16 @@ import static se.sundsvall.ai.flow.util.DocumentUtil.isDocx;
 import static se.sundsvall.ai.flow.util.DocumentUtil.isPdf;
 
 import java.util.Base64;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.knuddels.jtokkit.api.Encoding;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
@@ -24,6 +29,8 @@ import se.sundsvall.ai.flow.model.flow.InputType;
 import se.sundsvall.ai.flow.service.flow.StepExecution;
 
 public class Session {
+
+    private static final Encoding ENCODING = newDefaultEncodingRegistry().getEncoding(CL100K_BASE);
 
     public enum State {
         CREATED,
@@ -35,6 +42,7 @@ public class Session {
     @JsonIgnore
     private Flow flow;
     private State state;
+    private int tokenCount;
 
     private Map<String, List<String>> input;
     private Map<String, StepExecution> stepExecutions;
@@ -93,7 +101,6 @@ public class Session {
         String decodedValue;
         // Extract the document text if we're dealing with a document (PDF or DOCX)
         if (flowInput.getType() == InputType.DOCUMENT) {
-            //var decodedValueBytes = decodedValue.getBytes(UTF_8);
             if (isDocx(valueBytes)) {
                 decodedValue = extractTextFromDocx(valueBytes);
             } else if (isPdf(valueBytes)) {
@@ -122,6 +129,9 @@ public class Session {
             inputValue.clear();
         }
         inputValue.add(decodedValue);
+
+        // Update the token count
+        updateTokenCount();
     }
 
     public Map<String, List<String>> getInput() {
@@ -148,5 +158,20 @@ public class Session {
         return ofNullable(stepExecutions)
             .map(stepExecutions -> stepExecutions.get(stepId))
             .orElse(null);
+    }
+
+    public int getTokenCount() {
+        return tokenCount;
+    }
+
+    private void updateTokenCount() {
+        var actualInput = ofNullable(input)
+            .map(Map::values)
+            .stream()
+            .flatMap(Collection::stream)
+            .flatMap(Collection::stream)
+            .collect(Collectors.joining(" "));
+
+        tokenCount = ENCODING.countTokens(actualInput);
     }
 }
