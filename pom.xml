@@ -14,7 +14,7 @@
 	<properties>
 		<auth0.java-jwt.version>4.4.0</auth0.java-jwt.version>
 		<poi.version>5.2.5</poi.version>
-		<pdfbox.version>3.0.2</pdfbox.version>
+		<pdfbox.version>3.0.3</pdfbox.version>
 		<jtokkit.version>1.0.0</jtokkit.version>
 		
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
