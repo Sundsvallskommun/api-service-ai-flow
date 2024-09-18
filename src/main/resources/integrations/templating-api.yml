@@ -4,414 +4,648 @@ info:
   contact: {}
   license:
     name: MIT License
-    url: https://opensource.org/licenses/MIT
-  version: "1.2"
+    url: 'https://opensource.org/licenses/MIT'
+  version: '2.0'
 servers:
-- url: http://localhost:8081
-  description: Generated server url
+  - url: 'https://templating-af-templating.apps.ocp101.sundsvall.se'
+    description: Generated server url
 paths:
-  /templates:
+  '/{municipalityId}/templates':
     get:
       tags:
-      - Template resources
-      summary: "Get all available templates, content excluded"
+        - Template resources
+      summary: 'Get all available templates, content excluded'
       operationId: getAllTemplates
       parameters:
-      - name: filters
-        in: query
-        description: "Metadata filters (dictionary/map: <code>{ \"key\": \"value\"\
-          , ... }</code> ). Not required"
-        required: false
-        schema:
-          type: object
-          additionalProperties:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
             type: string
-          default: "{}"
+          example: 2281
+        - name: filters
+          in: query
+          description: >-
+            Metadata filters (dictionary/map: <code>{ "key": "value", ...
+            }</code> ). Not required
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+            default: {}
       responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TemplateResponse"
-    post:
-      tags:
-      - Template resources
-      summary: Store a template
-      operationId: saveTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TemplateRequest"
-        required: true
-      responses:
-        "500":
+                  $ref: '#/components/schemas/TemplateResponse'
+        '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+    post:
+      tags:
+        - Template resources
+      summary: Store a template
+      operationId: saveTemplate
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TemplateResponse"
-  /templates/search:
-    post:
-      tags:
-      - Template resources
-      summary: "Search available templates by metadata, content excluded"
-      operationId: searchTemplates
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Expression"
-        required: true
-      responses:
-        "500":
+                $ref: '#/components/schemas/Problem'
+        '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/templates/search':
+    post:
+      tags:
+        - Template resources
+      summary: 'Search available templates by metadata, content excluded'
+      operationId: searchTemplates
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expression'
+        required: true
+      responses:
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/TemplateResponse"
-  /render:
+                  $ref: '#/components/schemas/TemplateResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/render':
     post:
       tags:
-      - Rendering resources
-      summary: "Render a stored template, optionally with parameters"
-      description: Either 'identifier' or 'metadata' is required to identify the template
+        - Rendering resources
+      summary: 'Render a stored template, optionally with parameters'
+      description: >-
+        Either 'identifier' or 'metadata' is required to identify the template
         to render
       operationId: render
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RenderRequest"
+              $ref: '#/components/schemas/RenderRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RenderResponse"
-        "404":
+                $ref: '#/components/schemas/RenderResponse'
+        '404':
           description: Not Found - the template could not be found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RenderResponse"
-        "500":
+                $ref: '#/components/schemas/RenderResponse'
+        '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /render/pdf:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/render/pdf':
     post:
       tags:
-      - Rendering resources
-      summary: "Render a stored template as a PDF, optionally with parameters"
+        - Rendering resources
+      summary: 'Render a stored template as a PDF, optionally with parameters'
       operationId: renderPdf
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RenderRequest"
+              $ref: '#/components/schemas/RenderRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RenderResponse"
-        "404":
+                $ref: '#/components/schemas/RenderResponse'
+        '404':
           description: Not Found - the template could not be found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RenderResponse"
-        "500":
+                $ref: '#/components/schemas/RenderResponse'
+        '500':
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-  /render/direct:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/render/direct':
     post:
       tags:
-      - Rendering resources
-      summary: "Render provided template contents, optionally with parameters"
+        - Rendering resources
+      summary: 'Render provided template contents, optionally with parameters'
       operationId: renderDirect
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DirectRenderRequest"
+              $ref: '#/components/schemas/DirectRenderRequest'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DirectRenderResponse"
-  /render/direct/pdf:
+                $ref: '#/components/schemas/DirectRenderResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/render/direct/pdf':
     post:
       tags:
-      - Rendering resources
-      summary: "Render provided template contents as a PDF, optionally with parameters"
+        - Rendering resources
+      summary: 'Render provided template contents as a PDF, optionally with parameters'
       operationId: renderDirectPdf
+      parameters:
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DirectRenderRequest"
+              $ref: '#/components/schemas/DirectRenderRequest'
         required: true
       responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DirectRenderResponse"
-  /templates/{identifier}/{version}:
+                $ref: '#/components/schemas/DirectRenderResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/templates/{identifier}/{version}':
     get:
       tags:
-      - Template resources
-      summary: "Get a specific version of a template by identifier, including content"
+        - Template resources
+      summary: 'Get a specific version of a template by identifier, including content'
       operationId: getTemplate_1
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailedTemplateResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
+                $ref: '#/components/schemas/DetailedTemplateResponse'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
     delete:
       tags:
-      - Template resources
+        - Template resources
       summary: Delete a specific version of a template
       operationId: deleteTemplate_1
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateResponse"
+                $ref: '#/components/schemas/TemplateResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
     patch:
       tags:
-      - Template resources
+        - Template resources
       summary: Update (specific version of) a template
       operationId: updateTemplate
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: version
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json-patch+json:
             schema:
               type: string
-              example:
-              - op: add|remove|replace
-                path: /some/attribute/path
-                value: '...'
+              example: >-
+                [{"op":"add|remove|replace","path":"/some/attribute/path","value":"..."}]
         required: true
       responses:
-        "500":
-          description: Internal Server Error
+        '200':
+          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "400":
+                $ref: '#/components/schemas/TemplateResponse'
+        '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
+                $ref: '#/components/schemas/Problem'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
-          description: Successful operation
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateResponse"
-  /templates/{identifier}:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/{municipalityId}/templates/{identifier}':
     get:
       tags:
-      - Template resources
-      summary: "Get the latest version of a template by identifier, including content"
+        - Template resources
+      summary: 'Get the latest version of a template by identifier, including content'
       operationId: getTemplate
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailedTemplateResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
+                $ref: '#/components/schemas/DetailedTemplateResponse'
+        '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Problem"
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
     delete:
       tags:
-      - Template resources
-      summary: "Delete a template, including all its versions"
+        - Template resources
+      summary: 'Delete a template, including all its versions'
       operationId: deleteTemplate
       parameters:
-      - name: identifier
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: municipalityId
+          in: path
+          description: Municipality ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+          example: 2281
+        - name: identifier
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       responses:
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TemplateResponse"
+                $ref: '#/components/schemas/TemplateResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - default: []
+      x-throttling-tier: Unlimited
+      x-auth-type: Application & Application User
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
   /api-docs:
     get:
       tags:
-      - API
+        - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/yaml:
               schema:
                 type: string
+      security:
+        - default: []
       x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-mutual-ssl: Optional
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
 components:
   schemas:
     DefaultValue:
@@ -428,8 +662,8 @@ components:
       type: string
       description: Version increment mode
       enum:
-      - MAJOR
-      - MINOR
+        - MAJOR
+        - MINOR
     Metadata:
       type: object
       properties:
@@ -440,16 +674,16 @@ components:
       description: Metadata
     TemplateRequest:
       required:
-      - content
-      - identifier
-      - name
+        - content
+        - identifier
+        - name
       type: object
       properties:
         identifier:
           type: string
-          description: "Identifier. May contain letters, digits, dashes and dots"
+          description: 'Identifier. May contain letters, digits, dashes and dots'
         versionIncrement:
-          $ref: "#/components/schemas/IncrementMode"
+          $ref: '#/components/schemas/IncrementMode'
         name:
           type: string
           description: Name
@@ -459,15 +693,15 @@ components:
           nullable: true
         content:
           type: string
-          description: "Content, as a BASE64-encoded string"
+          description: 'Content, as a BASE64-encoded string'
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/Metadata"
+            $ref: '#/components/schemas/Metadata'
         defaultValues:
           type: array
           items:
-            $ref: "#/components/schemas/DefaultValue"
+            $ref: '#/components/schemas/DefaultValue'
         changeLog:
           type: string
           description: A changelog
@@ -486,7 +720,7 @@ components:
           additionalProperties:
             type: object
         status:
-          $ref: "#/components/schemas/StatusType"
+          $ref: '#/components/schemas/StatusType'
         title:
           type: string
         detail:
@@ -512,8 +746,8 @@ components:
           type: string
           description: Type
           enum:
-          - PEBBLE
-          - WORD
+            - PEBBLE
+            - WORD
         name:
           type: string
           description: Name
@@ -523,11 +757,11 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/Metadata"
+            $ref: '#/components/schemas/Metadata'
         defaultValues:
           type: array
           items:
-            $ref: "#/components/schemas/DefaultValue"
+            $ref: '#/components/schemas/DefaultValue'
         changeLog:
           type: string
           description: Changelog
@@ -541,14 +775,14 @@ components:
       description: Search filter expression
       example:
         or:
-        - eq:
-            process: PRH
-        - eq:
-            verksamhet: SBK
+          - eq:
+              process: PRH
+          - eq:
+              verksamhet: SBK
     KeyValue:
       required:
-      - key
-      - value
+        - key
+        - value
       type: object
       properties:
         key:
@@ -570,79 +804,81 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValue"
+            $ref: '#/components/schemas/KeyValue'
         parameters:
           type: object
           additionalProperties:
             type: object
-            description: "Parameters (string values may be BASE64-encoded, and in\
-              \ that case they should be on the form \"BASE64:<base64-encoded-value>\"\
-              )"
+            description: >-
+              Parameters (string values may be BASE64-encoded, and in that case
+              they should be on the form "BASE64:<base64-encoded-value>")
             nullable: true
             example:
               someKey: someValue
               otherKey:
-              - otherValue1
-              - otherValue2
+                - otherValue1
+                - otherValue2
               anotherKey:
-                someKey: BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU=
-          description: "Parameters (string values may be BASE64-encoded, and in that\
-            \ case they should be on the form \"BASE64:<base64-encoded-value>\")"
+                someKey: 'BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU='
+          description: >-
+            Parameters (string values may be BASE64-encoded, and in that case
+            they should be on the form "BASE64:<base64-encoded-value>")
           nullable: true
           example:
             someKey: someValue
             otherKey:
-            - otherValue1
-            - otherValue2
+              - otherValue1
+              - otherValue2
             anotherKey:
-              someKey: BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU=
+              someKey: 'BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU='
       description: Request to render a template
     RenderResponse:
       type: object
       properties:
         output:
           type: string
-          description: "Output, as a BASE64-encoded string"
+          description: 'Output, as a BASE64-encoded string'
     DirectRenderRequest:
       required:
-      - content
+        - content
       type: object
       properties:
         content:
           type: string
-          description: "The template content, as a BASE64-encoded string"
+          description: 'The template content, as a BASE64-encoded string'
         parameters:
           type: object
           additionalProperties:
             type: object
-            description: "Parameters (string values may be BASE64-encoded, and in\
-              \ that case they should be on the form \"BASE64:<base64-encoded-value>\"\
-              )"
+            description: >-
+              Parameters (string values may be BASE64-encoded, and in that case
+              they should be on the form "BASE64:<base64-encoded-value>")
             nullable: true
             example:
               someKey: someValue
               otherKey:
-              - otherValue1
-              - otherValue2
+                - otherValue1
+                - otherValue2
               anotherKey:
-                someKey: BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU=
-          description: "Parameters (string values may be BASE64-encoded, and in that\
-            \ case they should be on the form \"BASE64:<base64-encoded-value>\")"
+                someKey: 'BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU='
+          description: >-
+            Parameters (string values may be BASE64-encoded, and in that case
+            they should be on the form "BASE64:<base64-encoded-value>")
           nullable: true
           example:
             someKey: someValue
             otherKey:
-            - otherValue1
-            - otherValue2
+              - otherValue1
+              - otherValue2
             anotherKey:
-              someKey: BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU=
+              someKey: 'BASE64:c29tZUJhc2VFbmNvZGVkVmFsdWU='
       description: Request to render a template directly
     DirectRenderResponse:
       type: object
       properties:
         output:
           type: string
-          description: "Output, as a BASE64-encoded string"
+          description: 'Output, as a BASE64-encoded string'
     DetailedTemplateResponse:
       type: object
       properties:
@@ -656,8 +892,8 @@ components:
           type: string
           description: Type
           enum:
-          - PEBBLE
-          - WORD
+            - PEBBLE
+            - WORD
         name:
           type: string
           description: Name
@@ -667,11 +903,11 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/Metadata"
+            $ref: '#/components/schemas/Metadata'
         defaultValues:
           type: array
           items:
-            $ref: "#/components/schemas/DefaultValue"
+            $ref: '#/components/schemas/DefaultValue'
         changeLog:
           type: string
           description: Changelog
@@ -681,6 +917,41 @@ components:
           format: date-time
         content:
           type: string
-          description: "Content, as a BASE64-encoded string"
+          description: 'Content, as a BASE64-encoded string'
       description: Detailed template
-  securitySchemes: {}
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://test.com'
+          scopes: {}
+x-wso2-cors:
+  corsConfigurationEnabled: false
+  accessControlAllowOrigins:
+    - '*'
+  accessControlAllowCredentials: false
+  accessControlAllowHeaders:
+    - authorization
+    - Access-Control-Allow-Origin
+    - Content-Type
+    - SOAPAction
+    - apikey
+    - testKey
+  accessControlAllowMethods:
+    - GET
+    - PUT
+    - POST
+    - DELETE
+    - PATCH
+    - OPTIONS
+x-wso2-production-endpoints:
+  urls:
+    - 'https://templating-af-templating.apps.ocp101.sundsvall.se/'
+  type: http
+x-wso2-basePath: /templating/2.0
+x-wso2-transports:
+  - https
+x-wso2-response-cache:
+  enabled: false
+  cacheTimeoutInSeconds: 300

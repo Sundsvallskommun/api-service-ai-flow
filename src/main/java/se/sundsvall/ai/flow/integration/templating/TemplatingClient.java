@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static se.sundsvall.ai.flow.integration.templating.TemplatingIntegration.CLIENT_ID;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -17,6 +18,6 @@ import generated.se.sundsvall.templating.RenderResponse;
 )
 interface TemplatingClient {
 
-    @PostMapping(path = "/render", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    RenderResponse render(@RequestBody RenderRequest renderRequest);
+    @PostMapping(path = "/{municipalityId}/render", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    RenderResponse render(@PathVariable(name = "municipalityId") String municipalityId, @RequestBody RenderRequest renderRequest);
 }

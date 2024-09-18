@@ -29,174 +29,192 @@ import se.sundsvall.ai.flow.model.Session;
 import se.sundsvall.ai.flow.service.SessionService;
 import se.sundsvall.ai.flow.service.StepExecutor;
 import se.sundsvall.ai.flow.service.flow.StepExecution;
+import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping(value = "/session", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/{municipalityId}/session", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Sessions", description = "Session resources")
 @ApiResponse(
-    responseCode = "400",
-    description = "Bad Request",
-    content = @Content(schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
+	responseCode = "400",
+	description = "Bad Request",
+	content = @Content(schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
 @ApiResponse(
-    responseCode = "500",
-    description = "Internal Server Error",
-    content = @Content(schema = @Schema(implementation = Problem.class)))
+	responseCode = "500",
+	description = "Internal Server Error",
+	content = @Content(schema = @Schema(implementation = Problem.class)))
 class SessionResource {
 
-    private final SessionService sessionService;
-    private final StepExecutor stepExecutor;
+	private final SessionService sessionService;
 
-    SessionResource(final SessionService sessionService, final StepExecutor stepExecutor) {
-        this.sessionService = sessionService;
-        this.stepExecutor = stepExecutor;
-    }
+	private final StepExecutor stepExecutor;
 
-    @Operation(
-        summary = "Get a session",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @GetMapping("/{sessionId}")
-    ResponseEntity<Session> getSession(@PathVariable("sessionId") final UUID sessionId) {
-        return ok(sessionService.getSession(sessionId));
-    }
+	SessionResource(final SessionService sessionService, final StepExecutor stepExecutor) {
+		this.sessionService = sessionService;
+		this.stepExecutor = stepExecutor;
+	}
 
-    @Operation(
-        summary = "Create a session for a given flow",
-        responses = {
-            @ApiResponse(
-                responseCode = "201",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @PostMapping
-    ResponseEntity<Session> createSession(final String flowId) {
-        var session = sessionService.createSession(flowId);
+	@Operation(
+		summary = "Get a session",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@GetMapping("/{sessionId}")
+	ResponseEntity<Session> getSession(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId) {
+		return ok(sessionService.getSession(sessionId));
+	}
 
-        return created(fromPath("/session/{sessionId}").buildAndExpand(session.getId()).toUri())
-            .body(session);
-    }
+	@Operation(
+		summary = "Create a session for a given flow",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@PostMapping
+	ResponseEntity<Session> createSession(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		final String flowId) {
+		var session = sessionService.createSession(flowId);
 
-    @Operation(
-        summary = "Add session input",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @PostMapping("/{sessionId}")
-    ResponseEntity<Session> addInput(@PathVariable("sessionId") final UUID sessionId,
-            @RequestBody @Valid final Input input) {
-        return ok(sessionService.addInput(sessionId, input.inputId(), input.value()));
-    }
+		return created(fromPath("/session/{sessionId}").buildAndExpand(session.getId()).toUri())
+			.body(session);
+	}
 
-    @Operation(
-        summary = "Replace session input",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @PutMapping("/{sessionId}")
-    ResponseEntity<Session> replaceInput(@PathVariable("sessionId") final UUID sessionId,
-            @RequestBody @Valid final Input input) {
-        return ok(sessionService.replaceInput(sessionId, input.inputId(), input.value()));
-    }
+	@Operation(
+		summary = "Add session input",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@PostMapping("/{sessionId}")
+	ResponseEntity<Session> addInput(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId,
+		@RequestBody @Valid final Input input) {
+		return ok(sessionService.addInput(sessionId, input.inputId(), input.value()));
+	}
 
-    @Operation(
-        summary = "Get a step execution",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @GetMapping("/{sessionId}/{stepId}")
-    ResponseEntity<StepExecution> getStepExecution(@PathVariable("sessionId") final UUID sessionId,
-            @PathVariable("stepId") final String stepId) {
-        var session = sessionService.getSession(sessionId);
-        var flow = session.getFlow();
-        var stepExecution = session.getStepExecution(stepId);
-        if (stepExecution == null) {
-            throw Problem.valueOf(Status.NOT_FOUND, "No step execution exists for step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
-        }
+	@Operation(
+		summary = "Replace session input",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@PutMapping("/{sessionId}")
+	ResponseEntity<Session> replaceInput(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId,
+		@RequestBody @Valid final Input input) {
+		return ok(sessionService.replaceInput(sessionId, input.inputId(), input.value()));
+	}
 
-        return ok(stepExecution);
-    }
+	@Operation(
+		summary = "Get a step execution",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@GetMapping("/{sessionId}/{stepId}")
+	ResponseEntity<StepExecution> getStepExecution(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId,
+		@PathVariable("stepId") final String stepId) {
+		var session = sessionService.getSession(sessionId);
+		var flow = session.getFlow();
+		var stepExecution = session.getStepExecution(stepId);
+		if (stepExecution == null) {
+			throw Problem.valueOf(Status.NOT_FOUND, "No step execution exists for step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
+		}
 
-    @Operation(
-        summary = "Run a step in a session",
-        responses = {
-            @ApiResponse(
-                responseCode = "201",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        })
-    @PostMapping("/{sessionId}/{stepId}")
-    ResponseEntity<StepExecution> runStep(@PathVariable("sessionId") final UUID sessionId,
-            @PathVariable("stepId") final String stepId) {
-        var session = sessionService.getSession(sessionId);
-        var flow = session.getFlow();
+		return ok(stepExecution);
+	}
 
-        // Make sure the step isn't already running
-        var stepExecution = sessionService.getStepExecution(sessionId, stepId);
-        if (stepExecution != null && stepExecution.isRunning()) {
-            throw Problem.valueOf(Status.BAD_REQUEST, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
-        }
+	@Operation(
+		summary = "Run a step in a session",
+		responses = {
+			@ApiResponse(
+				responseCode = "201",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@PostMapping("/{sessionId}/{stepId}")
+	ResponseEntity<StepExecution> runStep(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId,
+		@PathVariable("stepId") final String stepId) {
+		var session = sessionService.getSession(sessionId);
+		var flow = session.getFlow();
 
-        stepExecution = sessionService.createStepExecution(sessionId, stepId);
+		// Make sure the step isn't already running
+		var stepExecution = sessionService.getStepExecution(sessionId, stepId);
+		if (stepExecution != null && stepExecution.isRunning()) {
+			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
+		}
 
-        stepExecutor.executeStep(stepExecution);
+		stepExecution = sessionService.createStepExecution(sessionId, stepId);
 
-        return created(fromPath("/session/{sessionId}/{stepId}/{excutionId}")
-                .buildAndExpand(sessionId, stepId, stepExecution.getId()).toUri())
-            .body(stepExecution);
-    }
+		stepExecutor.executeStep(stepExecution);
 
-    @PostMapping("/{sessionId}/generate")
-    ResponseEntity<Output> generateSessionOutput(@PathVariable("sessionId") final UUID sessionId,
-            @RequestBody(required = false) @Valid final RenderRequest renderRequest) {
-        var session = sessionService.getSession(sessionId);
-        var templateId = ofNullable(renderRequest)
-            .map(RenderRequest::templateId)
-            .orElseGet(() -> session.getFlow().getDefaultTemplateId());
-        var output = sessionService.renderSession(sessionId, templateId);
+		return created(fromPath("/session/{sessionId}/{stepId}/{excutionId}")
+			.buildAndExpand(sessionId, stepId, stepExecution.getId()).toUri())
+			.body(stepExecution);
+	}
 
-        return ok(new Output(output));
-    }
+	@PostMapping("/{sessionId}/generate")
+	ResponseEntity<Output> generateSessionOutput(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("sessionId") final UUID sessionId,
+		@RequestBody(required = false) @Valid final RenderRequest renderRequest) {
+		var session = sessionService.getSession(sessionId);
+		var templateId = ofNullable(renderRequest)
+			.map(RenderRequest::templateId)
+			.orElseGet(() -> session.getFlow().getDefaultTemplateId());
+		var output = sessionService.renderSession(sessionId, templateId, municipalityId);
+
+		return ok(new Output(output));
+	}
+
 }
