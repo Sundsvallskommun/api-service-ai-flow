@@ -34,6 +34,11 @@
 			<groupId>se.sundsvall.dept44</groupId>
 			<artifactId>dept44-starter-feign</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>se.sundsvall.dept44</groupId>
+			<artifactId>dept44-common-validators</artifactId>
+		</dependency>
+
 
 		<!-- Spring Boot -->
 		<dependency>
@@ -100,7 +105,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/integrations/api-docs.yaml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/integrations/templating-api.yml</inputSpec>
 							<configOptions>
 								<modelPackage>generated.se.sundsvall.templating</modelPackage>
 							</configOptions>

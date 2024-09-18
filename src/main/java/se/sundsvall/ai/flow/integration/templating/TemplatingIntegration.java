@@ -26,7 +26,7 @@ public class TemplatingIntegration {
         this.client = client;
     }
 
-    public String renderSession(final Session session, final String templateId) {
+    public String renderSession(final Session session, final String templateId, final String municipalityId) {
         var parameters = new HashMap<String, Object>();
 
         // Include any "passthrough" inputs. For now, only the first of the input values is passed
@@ -56,7 +56,7 @@ public class TemplatingIntegration {
             .identifier(templateId)
             .parameters(parameters);
 
-        var response = client.render(request);
+        var response = client.render(municipalityId, request);
         //session.setState(Session.State.FINISHED);
         return response.getOutput();
     }

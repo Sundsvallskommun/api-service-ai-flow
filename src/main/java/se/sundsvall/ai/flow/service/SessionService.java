@@ -110,10 +110,10 @@ public class SessionService {
         return stepExecution;
     }
 
-    public String renderSession(final UUID sessionId, final String templateId) {
+    public String renderSession(final UUID sessionId, final String templateId, final String municipalityId) {
         var session = getSession(sessionId);
 
-        return templatingIntegration.renderSession(session, templateId);
+        return templatingIntegration.renderSession(session, templateId,municipalityId);
     }
 
     Step getStep(final UUID sessionId, final String stepId) {
