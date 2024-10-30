@@ -21,64 +21,64 @@ import se.sundsvall.ai.flow.util.StreamUtil;
 @JsonDeserialize(using = Input.Deserializer.class)
 public abstract class Input {
 
-    static final String FLOW_INPUT_REF = "flow-input-ref";
-    static final String STEP_OUTPUT_REF = "step-output-ref";
-    static final String NAME = "name";
+	static final String FLOW_INPUT_REF = "flow-input-ref";
+	static final String STEP_OUTPUT_REF = "step-output-ref";
+	static final String NAME = "name";
 
-    public enum Type {
-        FLOW_INPUT,
-        STEP_OUTPUT
-    }
+	public enum Type {
+		FLOW_INPUT,
+		STEP_OUTPUT
+	}
 
-    @JsonIgnore
-    private final Type type;
+	@JsonIgnore
+	private final Type type;
 
-    protected Input(final Type type) {
-        this.type = type;
-    }
+	protected Input(final Type type) {
+		this.type = type;
+	}
 
-    public final Type getType() {
-        return type;
-    }
+	public final Type getType() {
+		return type;
+	}
 
-    static class Deserializer extends StdDeserializer<Input> {
+	static class Deserializer extends StdDeserializer<Input> {
 
-        Deserializer() {
-            super((Class<?>) null);
-        }
+		Deserializer() {
+			super((Class<?>) null);
+		}
 
-        @Override
-        public Input deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-            var root = (JsonNode) parser.getCodec().readTree(parser);
+		@Override
+		public Input deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
+			var root = (JsonNode) parser.getCodec().readTree(parser);
 
-            // Make sure we actually have an object node to work with
-            if (!root.isObject()) {
-                throw new JsonParseException("Object node expected");
-            }
+			// Make sure we actually have an object node to work with
+			if (!root.isObject()) {
+				throw new JsonParseException("Object node expected");
+			}
 
-            // Re-map the child nodes as a map from node name to the actual node, for easier access
-            var children = StreamUtil.fromIterator(root.fields())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+			// Re-map the child nodes as a map from node name to the actual node, for easier access
+			var children = StreamUtil.fromIterator(root.fields())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            // Attempt to extract the "flow-input-ref" field
-            var flowInputRef = ofNullable(children.get(FLOW_INPUT_REF))
-                .map(JsonNode::textValue)
-                .orElse(null);
-            // Attempt to extract the "step" and "name" fields
-            var step = ofNullable(children.get(STEP_OUTPUT_REF))
-                .map(JsonNode::textValue)
-                .orElse(null);
-            var name = ofNullable(children.get(NAME))
-                .map(JsonNode::textValue)
-                .orElse(null);
+			// Attempt to extract the "flow-input-ref" field
+			var flowInputRef = ofNullable(children.get(FLOW_INPUT_REF))
+				.map(JsonNode::textValue)
+				.orElse(null);
+			// Attempt to extract the "step" and "name" fields
+			var step = ofNullable(children.get(STEP_OUTPUT_REF))
+				.map(JsonNode::textValue)
+				.orElse(null);
+			var name = ofNullable(children.get(NAME))
+				.map(JsonNode::textValue)
+				.orElse(null);
 
-            if (isNotBlank(flowInputRef) && isBlank(step) && isBlank(name)) {
-                return new FlowInputRef().withInput(flowInputRef);
-            } else if (isBlank(flowInputRef) && isNotBlank(step) && isNotBlank(name)) {
-                return new RedirectedOutput().withStep(step).withName(name);
-            }
+			if (isNotBlank(flowInputRef) && isBlank(step) && isBlank(name)) {
+				return new FlowInputRef().withInput(flowInputRef);
+			} else if (isBlank(flowInputRef) && isNotBlank(step) && isNotBlank(name)) {
+				return new RedirectedOutput().withStep(step).withName(name);
+			}
 
-            throw new JsonParseException("Unable to parse step input. Either \"%s\" OR (\"%s\" AND \"%s\") should be set".formatted(FLOW_INPUT_REF, STEP_OUTPUT_REF, NAME));
-        }
-    }
+			throw new JsonParseException("Unable to parse step input. Either \"%s\" OR (\"%s\" AND \"%s\") should be set".formatted(FLOW_INPUT_REF, STEP_OUTPUT_REF, NAME));
+		}
+	}
 }

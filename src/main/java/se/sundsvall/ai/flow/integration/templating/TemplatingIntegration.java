@@ -16,52 +16,52 @@ import generated.se.sundsvall.templating.RenderRequest;
 @Component
 public class TemplatingIntegration {
 
-    static final String CLIENT_ID = "templating";
+	static final String CLIENT_ID = "templating";
 
-    private static final String BASE64_VALUE_PREFIX = "BASE64:";
+	private static final String BASE64_VALUE_PREFIX = "BASE64:";
 
-    private final TemplatingClient client;
+	private final TemplatingClient client;
 
-    TemplatingIntegration(final TemplatingClient client) {
-        this.client = client;
-    }
+	TemplatingIntegration(final TemplatingClient client) {
+		this.client = client;
+	}
 
-    public String renderSession(final Session session, final String templateId, final String municipalityId) {
-        var parameters = new HashMap<String, Object>();
+	public String renderSession(final Session session, final String templateId, final String municipalityId) {
+		var parameters = new HashMap<String, Object>();
 
-        // Include any "passthrough" inputs. For now, only the first of the input values is passed
-        // on. TODO: validate the flow, making sure that multiple input cardinality isn't allowed
-        // in conjunction with passthrough set
-        session.getFlow().getInputs().stream()
-            .filter(FlowInput::isPassthrough)
-            .forEach(passthroughInput -> {
-                var value = session.getInput().get(passthroughInput.getId());
-                if (value != null && !value.isEmpty()) {
-                    parameters.put(passthroughInput.getName(), value.getFirst());
-                }
-            });
+		// Include any "passthrough" inputs. For now, only the first of the input values is passed
+		// on. TODO: validate the flow, making sure that multiple input cardinality isn't allowed
+		// in conjunction with passthrough set
+		session.getFlow().getInputs().stream()
+			.filter(FlowInput::isPassthrough)
+			.forEach(passthroughInput -> {
+				var value = session.getInput().get(passthroughInput.getId());
+				if (value != null && !value.isEmpty()) {
+					parameters.put(passthroughInput.getName(), value.getFirst());
+				}
+			});
 
-        // "Re-write" the session step output to templating parameters, using the step name as the
-        // key (parameter name) and the step execution output as the value (parameter value). Also,
-        // BASE64-encode the parameter value
-        for (var step : session.getFlow().getSteps()) {
-            var stepName = step.getName();
-            var stepExecution = session.getStepExecution(step.getId());
-            if (stepExecution != null && isNotBlank(stepExecution.getOutput())) {
-                parameters.put(stepName, BASE64_VALUE_PREFIX + base64Encode(stepExecution.getOutput()));
-            }
-        }
+		// "Re-write" the session step output to templating parameters, using the step name as the
+		// key (parameter name) and the step execution output as the value (parameter value). Also,
+		// BASE64-encode the parameter value
+		for (var step : session.getFlow().getSteps()) {
+			var stepName = step.getName();
+			var stepExecution = session.getStepExecution(step.getId());
+			if (stepExecution != null && isNotBlank(stepExecution.getOutput())) {
+				parameters.put(stepName, BASE64_VALUE_PREFIX + base64Encode(stepExecution.getOutput()));
+			}
+		}
 
-        var request = new RenderRequest()
-            .identifier(templateId)
-            .parameters(parameters);
+		var request = new RenderRequest()
+			.identifier(templateId)
+			.parameters(parameters);
 
-        var response = client.render(municipalityId, request);
-        //session.setState(Session.State.FINISHED);
-        return response.getOutput();
-    }
+		var response = client.render(municipalityId, request);
+		// session.setState(Session.State.FINISHED);
+		return response.getOutput();
+	}
 
-    String base64Encode(final String s) {
-        return Base64.getEncoder().encodeToString(s.getBytes(UTF_8));
-    }
+	String base64Encode(final String s) {
+		return Base64.getEncoder().encodeToString(s.getBytes(UTF_8));
+	}
 }

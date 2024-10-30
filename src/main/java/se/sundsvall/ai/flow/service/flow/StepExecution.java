@@ -14,104 +14,104 @@ import se.sundsvall.ai.flow.model.flow.Step;
 
 public class StepExecution implements Comparable<StepExecution> {
 
-    @JsonIgnore
-    private final UUID id;
-    @JsonIgnore
-    private final UUID sessionId;
-    @JsonIgnore
-    private final Step step;
-    @JsonIgnore
-    private final List<StepExecution> requiredStepExecutions;
+	@JsonIgnore
+	private final UUID id;
+	@JsonIgnore
+	private final UUID sessionId;
+	@JsonIgnore
+	private final Step step;
+	@JsonIgnore
+	private final List<StepExecution> requiredStepExecutions;
 
-    private final LocalDateTime startedAt = LocalDateTime.now();
-    private LocalDateTime finishedAt;
-    private ExecutionState state;
-    private String output;
-    private String errorMessage;
+	private final LocalDateTime startedAt = LocalDateTime.now();
+	private LocalDateTime finishedAt;
+	private ExecutionState state;
+	private String output;
+	private String errorMessage;
 
-    public StepExecution(final UUID sessionId, final Step step, final List<StepExecution> requiredStepExecutions) {
-        id = UUID.randomUUID();
-        state = ExecutionState.PENDING;
+	public StepExecution(final UUID sessionId, final Step step, final List<StepExecution> requiredStepExecutions) {
+		id = UUID.randomUUID();
+		state = ExecutionState.PENDING;
 
-        this.sessionId = sessionId;
-        this.step = step;
-        this.requiredStepExecutions = requiredStepExecutions;
-    }
+		this.sessionId = sessionId;
+		this.step = step;
+		this.requiredStepExecutions = requiredStepExecutions;
+	}
 
-    public UUID getId() {
-        return id;
-    }
+	public UUID getId() {
+		return id;
+	}
 
-    public UUID getSessionId() {
-        return sessionId;
-    }
+	public UUID getSessionId() {
+		return sessionId;
+	}
 
-    public Step getStep() {
-        return step;
-    }
+	public Step getStep() {
+		return step;
+	}
 
-    public List<StepExecution> getRequiredStepExecutions() {
-        return requiredStepExecutions;
-    }
+	public List<StepExecution> getRequiredStepExecutions() {
+		return requiredStepExecutions;
+	}
 
-    public LocalDateTime getStartedAt() {
-        return startedAt;
-    }
+	public LocalDateTime getStartedAt() {
+		return startedAt;
+	}
 
-    public LocalDateTime getFinishedAt() {
-        return finishedAt;
-    }
+	public LocalDateTime getFinishedAt() {
+		return finishedAt;
+	}
 
-    public ExecutionState getState() {
-        return state;
-    }
+	public ExecutionState getState() {
+		return state;
+	}
 
-    public StepExecution withState(final ExecutionState state) {
-        this.state = state;
-        return this;
-    }
+	public StepExecution withState(final ExecutionState state) {
+		this.state = state;
+		return this;
+	}
 
-    public void setState(final ExecutionState state) {
-        this.state = state;
+	public void setState(final ExecutionState state) {
+		this.state = state;
 
-        if (state == DONE || state == ERROR) {
-            finishedAt = LocalDateTime.now();
-        }
-    }
+		if (state == DONE || state == ERROR) {
+			finishedAt = LocalDateTime.now();
+		}
+	}
 
-    @JsonIgnore
-    public boolean isRunning() {
-        return state == RUNNING;
-    }
+	@JsonIgnore
+	public boolean isRunning() {
+		return state == RUNNING;
+	}
 
-    public String getOutput() {
-        return output;
-    }
+	public String getOutput() {
+		return output;
+	}
 
-    public StepExecution withOutput(final String output) {
-        this.output = output;
-        return this;
-    }
+	public StepExecution withOutput(final String output) {
+		this.output = output;
+		return this;
+	}
 
-    public void setOutput(final String output) {
-        this.output = output;
-    }
+	public void setOutput(final String output) {
+		this.output = output;
+	}
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+	public String getErrorMessage() {
+		return errorMessage;
+	}
 
-    public StepExecution withErrorMessage(final String errorMessage) {
-        this.errorMessage = errorMessage;
-        return this;
-    }
+	public StepExecution withErrorMessage(final String errorMessage) {
+		this.errorMessage = errorMessage;
+		return this;
+	}
 
-    public void setErrorMessage(final String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+	public void setErrorMessage(final String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 
-    @Override
-    public int compareTo(final StepExecution other) {
-        return startedAt.compareTo(other.startedAt);
-    }
+	@Override
+	public int compareTo(final StepExecution other) {
+		return startedAt.compareTo(other.startedAt);
+	}
 }

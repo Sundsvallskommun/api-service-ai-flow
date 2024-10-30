@@ -4,29 +4,29 @@ import java.util.UUID;
 
 public class FlowExecution {
 
-    private final UUID id;
-    private ExecutionState state;
+	private final UUID id;
+	private ExecutionState state;
 
-    public FlowExecution() {
-        id = UUID.randomUUID();
+	public FlowExecution() {
+		id = UUID.randomUUID();
 
-        state = ExecutionState.PENDING;
-    }
+		state = ExecutionState.PENDING;
+	}
 
-    public UUID getId() {
-        return id;
-    }
+	public UUID getId() {
+		return id;
+	}
 
-    public ExecutionState getState() {
-        return state;
-    }
+	public ExecutionState getState() {
+		return state;
+	}
 
-    public FlowExecution withState(final ExecutionState state) {
-        this.state = state;
-        return this;
-    }
+	public FlowExecution withState(final ExecutionState state) {
+		this.state = state;
+		return this;
+	}
 
-    public void setState(final ExecutionState state) {
-        this.state = state;
-    }
+	public void setState(final ExecutionState state) {
+		this.state = state;
+	}
 }

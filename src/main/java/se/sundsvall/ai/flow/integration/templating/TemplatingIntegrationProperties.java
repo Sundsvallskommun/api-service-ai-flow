@@ -12,29 +12,20 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "integration.templating")
 record TemplatingIntegrationProperties(
 
-        @NotBlank
-        String baseUrl,
+	@NotBlank String baseUrl,
 
-        String apiKey,
+	String apiKey,
 
-        @Valid
-        @NotNull
-        Oauth2 oauth2,
+	@Valid @NotNull Oauth2 oauth2,
 
-        @DefaultValue("10")
-        int connectTimeoutInSeconds,
+	@DefaultValue("10") int connectTimeoutInSeconds,
 
-        @DefaultValue("30")
-        int readTimeoutInSeconds) {
+	@DefaultValue("30") int readTimeoutInSeconds) {
 
-    record Oauth2(
+	record Oauth2(
 
-        @NotBlank
-        String tokenUrl,
-        @NotBlank
-        String clientId,
-        @NotBlank
-        String clientSecret,
-        @DefaultValue("client_credentials")
-        String authorizationGrantType) { }
+		@NotBlank String tokenUrl,
+		@NotBlank String clientId,
+		@NotBlank String clientSecret,
+		@DefaultValue("client_credentials") String authorizationGrantType) {}
 }

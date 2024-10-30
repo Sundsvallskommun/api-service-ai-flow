@@ -4,23 +4,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class FlowInputRef extends Input {
 
-    @JsonProperty(FLOW_INPUT_REF)
-    private String input;
+	@JsonProperty(FLOW_INPUT_REF)
+	private String input;
 
-    public FlowInputRef() {
-        super(Type.FLOW_INPUT);
-    }
+	public FlowInputRef() {
+		super(Type.FLOW_INPUT);
+	}
 
-    public String getInput() {
-        return input;
-    }
+	public String getInput() {
+		return input;
+	}
 
-    public FlowInputRef withInput(final String input) {
-        this.input = input;
-        return this;
-    }
+	public FlowInputRef withInput(final String input) {
+		this.input = input;
+		return this;
+	}
 
-    public void setInput(final String input) {
-        this.input = input;
-    }
+	public void setInput(final String input) {
+		this.input = input;
+	}
 }
