@@ -12,12 +12,11 @@ import generated.se.sundsvall.templating.RenderRequest;
 import generated.se.sundsvall.templating.RenderResponse;
 
 @FeignClient(
-    name = CLIENT_ID,
-    configuration = TemplatingIntegrationConfiguration.class,
-    url = "${integration.templating.base-url}"
-)
+	name = CLIENT_ID,
+	configuration = TemplatingIntegrationConfiguration.class,
+	url = "${integration.templating.base-url}")
 interface TemplatingClient {
 
-    @PostMapping(path = "/{municipalityId}/render", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    RenderResponse render(@PathVariable(name = "municipalityId") String municipalityId, @RequestBody RenderRequest renderRequest);
+	@PostMapping(path = "/{municipalityId}/render", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	RenderResponse render(@PathVariable(name = "municipalityId") String municipalityId, @RequestBody RenderRequest renderRequest);
 }

@@ -17,18 +17,18 @@ import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 @EnableConfigurationProperties(TemplatingIntegrationProperties.class)
 class TemplatingIntegrationConfiguration {
 
-    @Bean
-    FeignBuilderCustomizer feignBuilderCustomizer(final TemplatingIntegrationProperties properties) {
-        return FeignMultiCustomizer.create()
-            .withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
-            .withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration
-                .withRegistrationId(CLIENT_ID)
-                .tokenUri(properties.oauth2().tokenUrl())
-                .clientId(properties.oauth2().clientId())
-                .clientSecret(properties.oauth2().clientSecret())
-                .authorizationGrantType(new AuthorizationGrantType(properties.oauth2().authorizationGrantType()))
-                .build())
-            .withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
-            .composeCustomizersToOne();
-    }
+	@Bean
+	FeignBuilderCustomizer feignBuilderCustomizer(final TemplatingIntegrationProperties properties) {
+		return FeignMultiCustomizer.create()
+			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
+			.withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration
+				.withRegistrationId(CLIENT_ID)
+				.tokenUri(properties.oauth2().tokenUrl())
+				.clientId(properties.oauth2().clientId())
+				.clientSecret(properties.oauth2().clientSecret())
+				.authorizationGrantType(new AuthorizationGrantType(properties.oauth2().authorizationGrantType()))
+				.build())
+			.withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
+			.composeCustomizersToOne();
+	}
 }

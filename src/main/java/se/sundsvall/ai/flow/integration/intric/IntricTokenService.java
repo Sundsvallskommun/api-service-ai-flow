@@ -23,52 +23,52 @@ import se.sundsvall.ai.flow.integration.intric.model.AccessToken;
 @Component
 class IntricTokenService {
 
-    private final MultiValueMap<String, String> accessTokenRequestData;
-    private final RestClient restClient;
+	private final MultiValueMap<String, String> accessTokenRequestData;
+	private final RestClient restClient;
 
-    private Instant tokenExpiration;
-    private String token;
+	private Instant tokenExpiration;
+	private String token;
 
-    IntricTokenService(final IntricIntegrationProperties properties) {
-        restClient = RestClient.builder()
-            .baseUrl(properties.oauth2().tokenUrl())
-            .defaultHeader(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_FORM_URLENCODED_VALUE)
-            .defaultStatusHandler(HttpStatusCode::isError, (request, response) -> {
-                throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to retrieve access token");
-            })
-            .build();
+	IntricTokenService(final IntricIntegrationProperties properties) {
+		restClient = RestClient.builder()
+			.baseUrl(properties.oauth2().tokenUrl())
+			.defaultHeader(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
+			.defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_FORM_URLENCODED_VALUE)
+			.defaultStatusHandler(HttpStatusCode::isError, (request, response) -> {
+				throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to retrieve access token");
+			})
+			.build();
 
-        accessTokenRequestData = new LinkedMultiValueMap<>();
-        accessTokenRequestData.add("grant_type", "");
-        accessTokenRequestData.add("username", properties.oauth2().username());
-        accessTokenRequestData.add("password", properties.oauth2().password());
-        accessTokenRequestData.add("scope", "");
-        accessTokenRequestData.add("client_id", "");
-        accessTokenRequestData.add("client_secret", "");
-    }
+		accessTokenRequestData = new LinkedMultiValueMap<>();
+		accessTokenRequestData.add("grant_type", "");
+		accessTokenRequestData.add("username", properties.oauth2().username());
+		accessTokenRequestData.add("password", properties.oauth2().password());
+		accessTokenRequestData.add("scope", "");
+		accessTokenRequestData.add("client_id", "");
+		accessTokenRequestData.add("client_secret", "");
+	}
 
-    String getToken() {
-        // If we don't have a token at all, or if it's expired - get a new one
-        if (token == null || (tokenExpiration != null && tokenExpiration.isBefore(now()))) {
-            var tokenResponse = retrieveToken();
+	String getToken() {
+		// If we don't have a token at all, or if it's expired - get a new one
+		if (token == null || (tokenExpiration != null && tokenExpiration.isBefore(now()))) {
+			var tokenResponse = retrieveToken();
 
-            token = ofNullable(tokenResponse.getBody())
-                .map(AccessToken::accessToken)
-                .orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to extract access token"));
+			token = ofNullable(tokenResponse.getBody())
+				.map(AccessToken::accessToken)
+				.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to extract access token"));
 
-            // Decode the token to extract the expiresAt instant
-            var jwt = JWT.decode(token);
-            tokenExpiration = jwt.getExpiresAtAsInstant();
-        }
+			// Decode the token to extract the expiresAt instant
+			var jwt = JWT.decode(token);
+			tokenExpiration = jwt.getExpiresAtAsInstant();
+		}
 
-        return token;
-    }
+		return token;
+	}
 
-    ResponseEntity<AccessToken> retrieveToken() {
-        return restClient.post()
-            .body(accessTokenRequestData)
-            .retrieve()
-            .toEntity(AccessToken.class);
-    }
+	ResponseEntity<AccessToken> retrieveToken() {
+		return restClient.post()
+			.body(accessTokenRequestData)
+			.retrieve()
+			.toEntity(AccessToken.class);
+	}
 }

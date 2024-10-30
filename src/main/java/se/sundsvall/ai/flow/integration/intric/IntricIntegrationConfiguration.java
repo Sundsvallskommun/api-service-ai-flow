@@ -14,12 +14,12 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 @EnableConfigurationProperties(IntricIntegrationProperties.class)
 class IntricIntegrationConfiguration {
 
-    @Bean
-    FeignBuilderCustomizer feignBuilderCustomizer(final IntricIntegrationProperties properties,
-            final IntricTokenService tokenService) {
-        return FeignMultiCustomizer.create()
-            .withRequestInterceptor(template -> template.header(AUTHORIZATION, "Bearer " + tokenService.getToken()))
-            .withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
-            .composeCustomizersToOne();
-    }
+	@Bean
+	FeignBuilderCustomizer feignBuilderCustomizer(final IntricIntegrationProperties properties,
+		final IntricTokenService tokenService) {
+		return FeignMultiCustomizer.create()
+			.withRequestInterceptor(template -> template.header(AUTHORIZATION, "Bearer " + tokenService.getToken()))
+			.withRequestTimeoutsInSeconds(properties.connectTimeoutInSeconds(), properties.readTimeoutInSeconds())
+			.composeCustomizersToOne();
+	}
 }

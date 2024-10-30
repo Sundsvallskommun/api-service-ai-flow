@@ -44,7 +44,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @ApiResponse(
 	responseCode = "400",
 	description = "Bad Request",
-	content = @Content(schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
+	content = @Content(schema = @Schema(oneOf = {
+		Problem.class, ConstraintViolationProblem.class
+	})))
 @ApiResponse(
 	responseCode = "500",
 	description = "Internal Server Error",

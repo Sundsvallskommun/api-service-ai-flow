@@ -21,29 +21,29 @@ import se.sundsvall.ai.flow.model.flow.Flow;
 @Component
 public class FlowRegistry {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FlowRegistry.class);
+	private static final Logger LOG = LoggerFactory.getLogger(FlowRegistry.class);
 
-    private final Map<String, Flow> flows = new HashMap<>();
+	private final Map<String, Flow> flows = new HashMap<>();
 
-    public FlowRegistry(final ObjectMapper objectMapper) throws IOException {
-        var resolver = new PathMatchingResourcePatternResolver();
+	public FlowRegistry(final ObjectMapper objectMapper) throws IOException {
+		var resolver = new PathMatchingResourcePatternResolver();
 
-        var flowResources = resolver.getResources("classpath:/flows/*.json");
-        for (var flowResource : flowResources) {
-            var flow = objectMapper.readValue(new String(flowResource.getContentAsByteArray(), UTF_8), Flow.class);
+		var flowResources = resolver.getResources("classpath:/flows/*.json");
+		for (var flowResource : flowResources) {
+			var flow = objectMapper.readValue(new String(flowResource.getContentAsByteArray(), UTF_8), Flow.class);
 
-            flows.put(flow.getId(), flow);
+			flows.put(flow.getId(), flow);
 
-            LOG.info("Loaded flow '{}' (id: '{}') from '{}'", flow.getName(), flow.getId(), flowResource.getFilename());
-        }
-    }
+			LOG.info("Loaded flow '{}' (id: '{}') from '{}'", flow.getName(), flow.getId(), flowResource.getFilename());
+		}
+	}
 
-    public List<Flow> getAllFlows() {
-        return List.copyOf(flows.values());
-    }
+	public List<Flow> getAllFlows() {
+		return List.copyOf(flows.values());
+	}
 
-    public Flow getFlow(final String flowId) {
-        return ofNullable(flows.get(flowId))
-            .orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No flow found with id " + flowId));
-    }
+	public Flow getFlow(final String flowId) {
+		return ofNullable(flows.get(flowId))
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No flow found with id " + flowId));
+	}
 }

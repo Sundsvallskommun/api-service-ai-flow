@@ -9,13 +9,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 class EventPublisherConfiguration {
 
-    @Bean
-    ThreadPoolTaskExecutor taskExecutor() {
-        var taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(5);
-        taskExecutor.setMaxPoolSize(10);
-        taskExecutor.setThreadNamePrefix("Async-");
-        taskExecutor.initialize();
-        return taskExecutor;
-    }
+	@Bean
+	ThreadPoolTaskExecutor taskExecutor() {
+		var taskExecutor = new ThreadPoolTaskExecutor();
+		taskExecutor.setCorePoolSize(5);
+		taskExecutor.setMaxPoolSize(10);
+		taskExecutor.setThreadNamePrefix("Async-");
+		taskExecutor.initialize();
+		return taskExecutor;
+	}
 }

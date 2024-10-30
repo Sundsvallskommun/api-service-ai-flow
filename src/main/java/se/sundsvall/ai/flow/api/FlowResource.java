@@ -29,57 +29,57 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(value = "/{municipalityId}/flow", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "Flows", description = "Flow resources")
 @ApiResponse(
-    responseCode = "400",
-    description = "Bad Request",
-    content = @Content(schema = @Schema(oneOf = {Problem.class, ConstraintViolationProblem.class})))
+	responseCode = "400",
+	description = "Bad Request",
+	content = @Content(schema = @Schema(oneOf = {
+		Problem.class, ConstraintViolationProblem.class
+	})))
 @ApiResponse(
-    responseCode = "500",
-    description = "Internal Server Error",
-    content = @Content(schema = @Schema(implementation = Problem.class)))
+	responseCode = "500",
+	description = "Internal Server Error",
+	content = @Content(schema = @Schema(implementation = Problem.class)))
 class FlowResource {
 
-    private final FlowRegistry flowRegistry;
+	private final FlowRegistry flowRegistry;
 
-    FlowResource(final FlowRegistry flowRegistry) {
-        this.flowRegistry = flowRegistry;
-    }
+	FlowResource(final FlowRegistry flowRegistry) {
+		this.flowRegistry = flowRegistry;
+	}
 
-    @Operation(
-        summary = "Get all available flows",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true)
-        }
-    )
-    @GetMapping
-    ResponseEntity<List<FlowInfo>> getAllFlows(
-      @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
-        var flows = flowRegistry.getAllFlows().stream()
-            .map(flow -> new FlowInfo(flow.getId(), flow.getName(), flow.getDescription(), flow.getDefaultTemplateId()))
-            .toList();
+	@Operation(
+		summary = "Get all available flows",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true)
+		})
+	@GetMapping
+	ResponseEntity<List<FlowInfo>> getAllFlows(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
+		var flows = flowRegistry.getAllFlows().stream()
+			.map(flow -> new FlowInfo(flow.getId(), flow.getName(), flow.getDescription(), flow.getDefaultTemplateId()))
+			.toList();
 
-        return ok(flows);
-    }
+		return ok(flows);
+	}
 
-    @Operation(
-        summary = "Get a flow",
-        responses = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Ok",
-                useReturnTypeSchema = true),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Not Found",
-                content = @Content(schema = @Schema(implementation = Problem.class)))
-        }
-    )
-    @GetMapping("/{flowId}")
-    ResponseEntity<Flow> getFlow(
-      @Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-      @PathVariable("flowId") final String flowId) {
-        return ok(flowRegistry.getFlow(flowId));
-    }
+	@Operation(
+		summary = "Get a flow",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "Ok",
+				useReturnTypeSchema = true),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Not Found",
+				content = @Content(schema = @Schema(implementation = Problem.class)))
+		})
+	@GetMapping("/{flowId}")
+	ResponseEntity<Flow> getFlow(
+		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
+		@PathVariable("flowId") final String flowId) {
+		return ok(flowRegistry.getFlow(flowId));
+	}
 }
