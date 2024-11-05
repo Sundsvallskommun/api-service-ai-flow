@@ -40,7 +40,7 @@ class IntricTokenService {
 			.build();
 
 		accessTokenRequestData = new LinkedMultiValueMap<>();
-		accessTokenRequestData.add("grant_type", "");
+		accessTokenRequestData.add("grant_type", "password");
 		accessTokenRequestData.add("username", properties.oauth2().username());
 		accessTokenRequestData.add("password", properties.oauth2().password());
 		accessTokenRequestData.add("scope", "");
