@@ -4,12 +4,10 @@ import static se.sundsvall.ai.flow.service.flow.ExecutionState.DONE;
 import static se.sundsvall.ai.flow.service.flow.ExecutionState.ERROR;
 import static se.sundsvall.ai.flow.service.flow.ExecutionState.RUNNING;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import se.sundsvall.ai.flow.model.flow.Step;
 
 public class StepExecution implements Comparable<StepExecution> {

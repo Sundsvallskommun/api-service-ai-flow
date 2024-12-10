@@ -1,8 +1,7 @@
 package se.sundsvall.ai.flow.model.flow;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 public class Step implements Comparable<Step> {

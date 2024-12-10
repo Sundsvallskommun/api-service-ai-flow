@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
 import se.sundsvall.ai.flow.integration.intric.IntricIntegration;
 import se.sundsvall.ai.flow.model.flow.FlowInputRef;
 import se.sundsvall.ai.flow.model.flow.RedirectedOutput;
