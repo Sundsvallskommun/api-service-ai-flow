@@ -3,15 +3,12 @@ package se.sundsvall.ai.flow.integration.templating;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import generated.se.sundsvall.templating.RenderRequest;
 import java.util.Base64;
 import java.util.HashMap;
-
 import org.springframework.stereotype.Component;
-
 import se.sundsvall.ai.flow.model.Session;
 import se.sundsvall.ai.flow.model.flow.FlowInput;
-
-import generated.se.sundsvall.templating.RenderRequest;
 
 @Component
 public class TemplatingIntegration {

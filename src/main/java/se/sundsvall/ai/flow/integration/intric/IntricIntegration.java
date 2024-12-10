@@ -1,7 +1,6 @@
 package se.sundsvall.ai.flow.integration.intric;
 
 import org.springframework.stereotype.Component;
-
 import se.sundsvall.ai.flow.integration.intric.model.RunService;
 
 @Component

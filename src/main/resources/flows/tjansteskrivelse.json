@@ -39,9 +39,15 @@
 	"steps": [
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Ärendet",
 			"id": "arendet",
@@ -50,9 +56,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Bakgrund",
 			"id": "bakgrund",
@@ -61,9 +73,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"},
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				},
 				{
 					"step-output-ref": "bakgrund",
 					"name": "Bakgrund"
@@ -76,10 +94,18 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"},
-				{"flow-input-ref": "relaterade-styrdokument"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				},
+				{
+					"flow-input-ref": "relaterade-styrdokument"
+				}
 			],
 			"name": "Styrdokument och juridik",
 			"id": "styrdokument-och-juridik",
@@ -88,9 +114,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Ekonomisk hållbarhet",
 			"id": "ekonomisk-hallbarhet",
@@ -99,9 +131,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Ekologisk hållbarhet",
 			"id": "ekologisk-hallbarhet",
@@ -110,9 +148,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Social hållbarhet",
 			"id": "social-hallbarhet",
@@ -121,9 +165,15 @@
 		},
 		{
 			"input": [
-				{"flow-input-ref": "uppdraget-till-tjansten"},
-				{"flow-input-ref": "forvaltningens-input"},
-				{"flow-input-ref": "bakgrundsmaterial"}
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
 			],
 			"name": "Landsbygdssäkring",
 			"id": "landsbygdssakring",

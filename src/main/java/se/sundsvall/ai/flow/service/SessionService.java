@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.Session;
 import se.sundsvall.ai.flow.model.flow.FlowInputRef;

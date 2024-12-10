@@ -10,6 +10,8 @@ import static se.sundsvall.ai.flow.util.DocumentUtil.extractTextFromPdf;
 import static se.sundsvall.ai.flow.util.DocumentUtil.isDocx;
 import static se.sundsvall.ai.flow.util.DocumentUtil.isPdf;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.knuddels.jtokkit.api.Encoding;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -18,12 +20,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.knuddels.jtokkit.api.Encoding;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-
 import se.sundsvall.ai.flow.model.flow.Flow;
 import se.sundsvall.ai.flow.model.flow.InputType;
 import se.sundsvall.ai.flow.service.flow.StepExecution;

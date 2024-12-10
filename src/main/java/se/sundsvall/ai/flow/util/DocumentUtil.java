@@ -6,14 +6,12 @@ import static java.util.stream.Collectors.joining;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
 import se.sundsvall.ai.flow.service.flow.exception.FlowException;
 
 public final class DocumentUtil {

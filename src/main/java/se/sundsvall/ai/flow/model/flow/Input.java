@@ -4,10 +4,6 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,7 +11,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
+import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Collectors;
 import se.sundsvall.ai.flow.util.StreamUtil;
 
 @JsonDeserialize(using = Input.Deserializer.class)
