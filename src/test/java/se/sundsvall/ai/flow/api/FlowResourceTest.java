@@ -59,8 +59,7 @@ class FlowResourceTest {
 			.returnResult()
 			.getResponseBody();
 
-		assertThat(result).isNotNull();
-		assertThat(result).satisfies(flowInfo -> {
+		assertThat(result).isNotNull().satisfies(flowInfo -> {
 			assertThat(flowInfo.id()).isEqualTo("tjansteskrivelse");
 			assertThat(flowInfo.name()).isEqualTo("Tjänsteskrivelse");
 			assertThat(flowInfo.description()).isEqualTo("Ett Intric AI-flöde för tjänsteskrivelser");

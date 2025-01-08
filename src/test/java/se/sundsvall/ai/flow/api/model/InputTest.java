@@ -15,7 +15,6 @@ class InputTest {
 
 		assertThat(input.inputId()).isEqualTo(inputId);
 		assertThat(input.value()).isEqualTo(value);
-		assertThat(input).hasNoNullFieldsOrProperties();
-		assertThat(input).hasOnlyFields("inputId", "value");
+		assertThat(input).hasNoNullFieldsOrProperties().hasOnlyFields("inputId", "value");
 	}
 }

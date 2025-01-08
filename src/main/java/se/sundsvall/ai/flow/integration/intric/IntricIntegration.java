@@ -16,14 +16,6 @@ public class IntricIntegration {
 		this.client = client;
 	}
 
-	/*
-	 * public String runService(final String serviceId, final String input) {
-	 * var response = client.runService(serviceId, new RunService(input));
-	 * 
-	 * return response.output();
-	 * }
-	 */
-
 	public void runService(final StepExecution stepExecution, final String input) {
 		try {
 			var response = client.runService(stepExecution.getStep().getIntricServiceId(), new RunService(input));

@@ -19,8 +19,7 @@ class FlowInfoTest {
 		assertThat(flowinfo.name()).isEqualTo(name);
 		assertThat(flowinfo.description()).isEqualTo(description);
 		assertThat(flowinfo.defaultTemplateId()).isEqualTo(defaultTemplateId);
-		assertThat(flowinfo).hasNoNullFieldsOrProperties();
-		assertThat(flowinfo).hasOnlyFields("id", "name", "description", "defaultTemplateId");
+		assertThat(flowinfo).hasNoNullFieldsOrProperties().hasOnlyFields("id", "name", "description", "defaultTemplateId");
 	}
 
 }

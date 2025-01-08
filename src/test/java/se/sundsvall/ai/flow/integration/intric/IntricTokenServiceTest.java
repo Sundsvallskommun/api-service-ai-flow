@@ -31,14 +31,13 @@ class IntricTokenServiceTest {
 
 		var accessTokenRequestData = (MultiValueMap<String, String>) ReflectionTestUtils.getField(result, "accessTokenRequestData");
 
-		assertThat(accessTokenRequestData.get("grant_type")).isEqualTo(List.of("password"));
-		assertThat(accessTokenRequestData.get("username")).isEqualTo(List.of("username"));
-		assertThat(accessTokenRequestData.get("password")).isEqualTo(List.of("password"));
-		assertThat(accessTokenRequestData.get("scope")).isEqualTo(List.of(""));
-		assertThat(accessTokenRequestData.get("client_id")).isEqualTo(List.of(""));
-		assertThat(accessTokenRequestData.get("client_secret")).isEqualTo(List.of(""));
+		assertThat(accessTokenRequestData).containsEntry("grant_type", List.of("password"));
+		assertThat(accessTokenRequestData).containsEntry("username", List.of("username"));
+		assertThat(accessTokenRequestData).containsEntry("password", List.of("password"));
+		assertThat(accessTokenRequestData).containsEntry("scope", List.of(""));
+		assertThat(accessTokenRequestData).containsEntry("client_id", List.of(""));
+		assertThat(accessTokenRequestData).containsEntry("client_secret", List.of(""));
 		assertThat(ReflectionTestUtils.getField(result, "restClient")).isNotNull();
-
 	}
 
 	/**
