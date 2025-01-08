@@ -28,9 +28,9 @@ public class StepExecution implements Comparable<StepExecution> {
 	private String errorMessage;
 
 	public StepExecution(final UUID sessionId, final Step step, final List<StepExecution> requiredStepExecutions) {
-		id = UUID.randomUUID();
 		state = ExecutionState.PENDING;
 
+		this.id = UUID.randomUUID();
 		this.sessionId = sessionId;
 		this.step = step;
 		this.requiredStepExecutions = requiredStepExecutions;
@@ -86,22 +86,12 @@ public class StepExecution implements Comparable<StepExecution> {
 		return output;
 	}
 
-	public StepExecution withOutput(final String output) {
-		this.output = output;
-		return this;
-	}
-
 	public void setOutput(final String output) {
 		this.output = output;
 	}
 
 	public String getErrorMessage() {
 		return errorMessage;
-	}
-
-	public StepExecution withErrorMessage(final String errorMessage) {
-		this.errorMessage = errorMessage;
-		return this;
 	}
 
 	public void setErrorMessage(final String errorMessage) {

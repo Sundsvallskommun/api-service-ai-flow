@@ -12,7 +12,7 @@ import se.sundsvall.ai.flow.integration.intric.model.RunService;
 
 @FeignClient(
 	name = CLIENT_ID,
-	configuration = IntricIntegrationConfiguration.class,
+	configuration = IntricConfiguration.class,
 	url = "${integration.intric.base-url}")
 @CircuitBreaker(name = CLIENT_ID)
 interface IntricClient {

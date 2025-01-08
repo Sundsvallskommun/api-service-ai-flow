@@ -13,11 +13,11 @@ import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
 
 @Import(FeignConfiguration.class)
-@EnableConfigurationProperties(TemplatingIntegrationProperties.class)
-class TemplatingIntegrationConfiguration {
+@EnableConfigurationProperties(TemplatingProperties.class)
+class TemplatingConfiguration {
 
 	@Bean
-	FeignBuilderCustomizer feignBuilderCustomizer(final TemplatingIntegrationProperties properties) {
+	FeignBuilderCustomizer feignBuilderCustomizer(final TemplatingProperties properties) {
 		return FeignMultiCustomizer.create()
 			.withErrorDecoder(new ProblemErrorDecoder(CLIENT_ID))
 			.withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration

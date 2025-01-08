@@ -54,17 +54,14 @@ public class StepExecutor {
 		for (var input : step.getInputs()) {
 			intricInput += switch (input) {
 				case FlowInputRef flowInputRef -> {
-					var flowInput = session.getFlow().getInputMap().get(flowInputRef.getInput());
-					// Make sure the input actually exists
-					if (flowInput == null) {
-						throw new FlowExecutionException("No referenced flow input '%s' for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), session.getId()));
-					}
+					var flowInput = session.getFlow().getInputs().stream()
+						.filter(flowInput1 -> flowInputRef.getInput().equals(flowInput1.getId()))
+						.findFirst()
+						.orElseThrow(() -> new FlowExecutionException("No referenced flow input '%s' for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), session.getId())));
 
 					// Get the session input for the given flow input
-					var sessionInput = ofNullable(session.getInput()).map(inputMap -> inputMap.get(flowInput.getId())).orElse(null);
-					if (sessionInput == null) {
-						throw new FlowExecutionException("Required input '%s' is missing for step '%s' in flow '%s' for session %s".formatted(flowInput.getId(), step.getName(), flow.getName(), session.getId()));
-					}
+					var sessionInput = ofNullable(session.getInput().get(flowInput.getId()))
+						.orElseThrow(() -> new FlowExecutionException("Required input '%s' is missing for step '%s' in flow '%s' for session %s".formatted(flowInput.getId(), step.getName(), flow.getName(), session.getId())));
 
 					// Append to the Intric input
 					yield INTRIC_INPUT_TEMPLATE.formatted(flow.getInputPrefix(), flowInput.getName(), String.join("\n", sessionInput));
@@ -79,19 +76,6 @@ public class StepExecutor {
 			};
 		}
 
-		// Invoke the Intric service
-		try {
-			var output = intricIntegration.runService(step.getIntricServiceId(), intricInput);
-
-			// Store the output
-			stepExecution.setOutput(output);
-			// Marke the step execution as done
-			stepExecution.setState(ExecutionState.DONE);
-		} catch (Exception e) {
-			// Store the exception
-			stepExecution.setErrorMessage(e.getMessage());
-			// Marke the step execution as done
-			stepExecution.setState(ExecutionState.ERROR);
-		}
+		intricIntegration.runService(stepExecution, intricInput);
 	}
 }

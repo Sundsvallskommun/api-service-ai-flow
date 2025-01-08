@@ -4,7 +4,6 @@ import static com.knuddels.jtokkit.Encodings.newDefaultEncodingRegistry;
 import static com.knuddels.jtokkit.api.EncodingType.CL100K_BASE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static se.sundsvall.ai.flow.util.DocumentUtil.extractTextFromDocx;
 import static se.sundsvall.ai.flow.util.DocumentUtil.extractTextFromPdf;
 import static se.sundsvall.ai.flow.util.DocumentUtil.isDocx;
@@ -12,8 +11,10 @@ import static se.sundsvall.ai.flow.util.DocumentUtil.isPdf;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.knuddels.jtokkit.api.Encoding;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +43,8 @@ public class Session {
 	private State state;
 	private int tokenCount;
 
-	private Map<String, List<String>> input;
-	private Map<String, StepExecution> stepExecutions;
+	private ConcurrentHashMap<String, List<String>> input = new ConcurrentHashMap<>();
+	private Map<String, StepExecution> stepExecutions = new HashMap<>();
 
 	public Session() {
 		id = UUID.randomUUID();
@@ -90,7 +91,9 @@ public class Session {
 
 	void addOrReplaceInput(final String inputId, final String value, final boolean replace) {
 		// Make sure the corresponding flow input exists
-		var flowInput = ofNullable(flow.getInputMap().get(inputId))
+		var flowInput = flow.getInputs().stream()
+			.filter(flowInput1 -> inputId.equals(flowInput1.getId()))
+			.findFirst()
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No input '%s' exists in flow '%s'".formatted(inputId, flow.getName())));
 
 		// BASE64-decode the value
@@ -119,14 +122,16 @@ public class Session {
 			input.put(inputId, new LinkedList<>());
 		}
 
-		var inputValue = input.get(inputId);
-
 		// If we're either replacing the input, or if the flow input is single-valued - replace the
 		// previous value by clearing any previous value(s)
 		if (replace || flowInput.isSingleValued()) {
-			inputValue.clear();
+			input.put(inputId, new LinkedList<>());
+
 		}
-		inputValue.add(decodedValue);
+		var newList = new ArrayList<>(input.get(inputId));
+		newList.add(decodedValue);
+
+		input.put(inputId, newList);
 
 		// Update the token count
 		updateTokenCount();
@@ -134,10 +139,6 @@ public class Session {
 
 	public Map<String, List<String>> getInput() {
 		return input;
-	}
-
-	public boolean hasStepOutput(final String stepId) {
-		return stepExecutions.containsKey(stepId) && isNotBlank(stepExecutions.get(stepId).getOutput());
 	}
 
 	public void addStepExecution(final String stepId, final StepExecution stepExecution) {

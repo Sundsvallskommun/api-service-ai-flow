@@ -27,7 +27,7 @@ class IntricTokenService {
 	private Instant tokenExpiration;
 	private String token;
 
-	IntricTokenService(final IntricIntegrationProperties properties) {
+	IntricTokenService(final IntricProperties properties) {
 		restClient = RestClient.builder()
 			.baseUrl(properties.oauth2().tokenUrl())
 			.defaultHeader(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
