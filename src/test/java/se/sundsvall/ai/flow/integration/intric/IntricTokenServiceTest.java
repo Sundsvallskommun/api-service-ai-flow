@@ -31,13 +31,15 @@ class IntricTokenServiceTest {
 
 		var accessTokenRequestData = (MultiValueMap<String, String>) ReflectionTestUtils.getField(result, "accessTokenRequestData");
 
-		assertThat(accessTokenRequestData).containsEntry("grant_type", List.of("password"));
-		assertThat(accessTokenRequestData).containsEntry("username", List.of("username"));
-		assertThat(accessTokenRequestData).containsEntry("password", List.of("password"));
-		assertThat(accessTokenRequestData).containsEntry("scope", List.of(""));
-		assertThat(accessTokenRequestData).containsEntry("client_id", List.of(""));
-		assertThat(accessTokenRequestData).containsEntry("client_secret", List.of(""));
+		assertThat(accessTokenRequestData)
+			.containsEntry("grant_type", List.of("password"))
+			.containsEntry("username", List.of("username"))
+			.containsEntry("password", List.of("password"))
+			.containsEntry("scope", List.of(""))
+			.containsEntry("client_id", List.of(""))
+			.containsEntry("client_secret", List.of(""));
 		assertThat(ReflectionTestUtils.getField(result, "restClient")).isNotNull();
+
 	}
 
 	/**
