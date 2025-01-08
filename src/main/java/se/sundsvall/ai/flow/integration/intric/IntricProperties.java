@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.templating;
+package se.sundsvall.ai.flow.integration.intric;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "integration.templating")
-record TemplatingIntegrationProperties(
+@ConfigurationProperties(prefix = "integration.intric")
+record IntricProperties(
 
 	@NotBlank String baseUrl,
 
@@ -17,14 +17,14 @@ record TemplatingIntegrationProperties(
 
 	@Valid @NotNull Oauth2 oauth2,
 
-	@DefaultValue("10") int connectTimeoutInSeconds,
+	@DefaultValue("120") int connectTimeoutInSeconds,
 
-	@DefaultValue("30") int readTimeoutInSeconds) {
+	@DefaultValue("120") int readTimeoutInSeconds) {
 
-	record Oauth2(
+	public record Oauth2(
 
 		@NotBlank String tokenUrl,
-		@NotBlank String clientId,
-		@NotBlank String clientSecret,
-		@DefaultValue("client_credentials") String authorizationGrantType) {}
+		@NotBlank String username,
+		@NotBlank String password) {
+	}
 }

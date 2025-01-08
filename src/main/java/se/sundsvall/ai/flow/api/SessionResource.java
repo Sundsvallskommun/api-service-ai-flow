@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
+import static org.zalando.problem.Status.NOT_FOUND;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -157,11 +159,8 @@ class SessionResource {
 		@PathVariable("sessionId") final UUID sessionId,
 		@PathVariable("stepId") final String stepId) {
 		var session = sessionService.getSession(sessionId);
-		var flow = session.getFlow();
-		var stepExecution = session.getStepExecution(stepId);
-		if (stepExecution == null) {
-			throw Problem.valueOf(Status.NOT_FOUND, "No step execution exists for step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
-		}
+		var stepExecution = Optional.ofNullable(session.getStepExecution(stepId))
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step execution exists for step '%s' in flow '%s' for session %s".formatted(stepId, session.getFlow().getName(), sessionId)));
 
 		return ok(stepExecution);
 	}
@@ -187,7 +186,7 @@ class SessionResource {
 		var flow = session.getFlow();
 
 		// Make sure the step isn't already running
-		var stepExecution = sessionService.getStepExecution(sessionId, stepId);
+		var stepExecution = session.getStepExecution(stepId);
 		if (stepExecution != null && stepExecution.isRunning()) {
 			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId));
 		}
@@ -196,7 +195,7 @@ class SessionResource {
 
 		stepExecutor.executeStep(stepExecution);
 
-		return created(fromPath("/session/{sessionId}/{stepId}/{excutionId}")
+		return created(fromPath("/session/{sessionId}/{stepId}/{executionId}")
 			.buildAndExpand(sessionId, stepId, stepExecution.getId()).toUri())
 			.body(stepExecution);
 	}

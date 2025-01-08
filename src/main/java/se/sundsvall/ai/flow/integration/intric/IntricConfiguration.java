@@ -10,11 +10,11 @@ import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 
 @Import(FeignConfiguration.class)
-@EnableConfigurationProperties(IntricIntegrationProperties.class)
-class IntricIntegrationConfiguration {
+@EnableConfigurationProperties(IntricProperties.class)
+class IntricConfiguration {
 
 	@Bean
-	FeignBuilderCustomizer feignBuilderCustomizer(final IntricIntegrationProperties properties,
+	FeignBuilderCustomizer feignBuilderCustomizer(final IntricProperties properties,
 		final IntricTokenService tokenService) {
 		return FeignMultiCustomizer.create()
 			.withRequestInterceptor(template -> template.header(AUTHORIZATION, "Bearer " + tokenService.getToken()))

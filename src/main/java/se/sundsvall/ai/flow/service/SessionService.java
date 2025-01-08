@@ -49,12 +49,6 @@ public class SessionService {
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No session exists with id " + sessionId));
 	}
 
-	public StepExecution getStepExecution(final UUID sessionId, final String stepId) {
-		var session = getSession(sessionId);
-
-		return session.getStepExecution(stepId);
-	}
-
 	public Session addInput(final UUID sessionId, final String inputId, final String value) {
 		var session = getSession(sessionId);
 		session.addInput(inputId, value);
@@ -114,11 +108,13 @@ public class SessionService {
 		return templatingIntegration.renderSession(session, templateId, municipalityId);
 	}
 
-	Step getStep(final UUID sessionId, final String stepId) {
+	public Step getStep(final UUID sessionId, final String stepId) {
 		var session = getSession(sessionId);
 		var flow = session.getFlow();
 
-		return ofNullable(flow.getStep(stepId))
+		return flow.getSteps().stream()
+			.filter(step -> stepId.equals(step.getId()))
+			.findFirst()
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId)));
 	}
 }

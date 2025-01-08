@@ -1,14 +1,8 @@
 package se.sundsvall.ai.flow.model.flow;
 
-import static java.util.stream.Collectors.toMap;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 public class Flow {
 
@@ -19,14 +13,16 @@ public class Flow {
 	private String defaultTemplateId;
 
 	@JsonProperty("input")
-	private final List<FlowInput> inputs = new LinkedList<>();
+	private List<FlowInput> inputs = new LinkedList<>();
 	@JsonProperty("steps")
-	private final List<Step> steps = new LinkedList<>();
-	@JsonIgnore
-	private final Map<String, Step> stepMap = new LinkedHashMap<>();
+	private List<Step> steps = new LinkedList<>();
 
 	public String getId() {
 		return id;
+	}
+
+	public void setId(final String id) {
+		this.id = id;
 	}
 
 	public Flow withId(final String id) {
@@ -34,12 +30,12 @@ public class Flow {
 		return this;
 	}
 
-	public void setId(final String id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public Flow withName(final String name) {
@@ -47,12 +43,12 @@ public class Flow {
 		return this;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
+	}
+
+	public void setDescription(final String description) {
+		this.description = description;
 	}
 
 	public Flow withDescription(final String description) {
@@ -60,12 +56,12 @@ public class Flow {
 		return this;
 	}
 
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
 	public String getInputPrefix() {
 		return inputPrefix;
+	}
+
+	public void setInputPrefix(final String inputPrefix) {
+		this.inputPrefix = inputPrefix;
 	}
 
 	public Flow withInputPrefix(final String inputPrefix) {
@@ -73,66 +69,42 @@ public class Flow {
 		return this;
 	}
 
-	public void setInputPrefix(final String inputPrefix) {
-		this.inputPrefix = inputPrefix;
-	}
-
 	public String getDefaultTemplateId() {
 		return defaultTemplateId;
-	}
-
-	public Flow withDefaultTemplatIde(final String defaultTemplateId) {
-		this.defaultTemplateId = defaultTemplateId;
-		return this;
 	}
 
 	public void setDefaultTemplateId(final String defaultTemplateId) {
 		this.defaultTemplateId = defaultTemplateId;
 	}
 
-	public Step getStep(final String stepId) {
-		return stepMap.get(stepId);
-	}
-
-	public List<Step> getSteps() {
-		return steps;
-	}
-
-	public Flow withSteps(final Step... stepsToSet) {
-		for (var step : stepsToSet) {
-			steps.add(step);
-			stepMap.put(step.getId(), step);
-		}
+	public Flow withDefaultTemplateId(final String defaultTemplateId) {
+		this.defaultTemplateId = defaultTemplateId;
 		return this;
-	}
-
-	public void setSteps(final List<Step> steps) {
-		this.steps.clear();
-		this.steps.addAll(steps);
-
-		stepMap.clear();
-		stepMap.putAll(steps.stream().collect(toMap(Step::getId, Function.identity())));
 	}
 
 	public List<FlowInput> getInputs() {
 		return inputs;
 	}
 
-	@JsonIgnore
-	public Map<String, FlowInput> getInputMap() {
-		return inputs.stream()
-			.collect(toMap(FlowInput::getId, Function.identity()));
+	public void setInputs(final List<FlowInput> inputs) {
+		this.inputs = inputs;
 	}
 
-	public Flow withInputs(final FlowInput... inputsToSet) {
-		for (var input : inputsToSet) {
-			inputs.add(input);
-		}
+	public Flow withInputs(final List<FlowInput> inputs) {
+		this.inputs = inputs;
 		return this;
 	}
 
-	public void setInputs(final List<FlowInput> inputs) {
-		this.inputs.clear();
-		this.inputs.addAll(inputs);
+	public List<Step> getSteps() {
+		return steps;
+	}
+
+	public void setSteps(final List<Step> steps) {
+		this.steps = steps;
+	}
+
+	public Flow withSteps(final List<Step> steps) {
+		this.steps = steps;
+		return this;
 	}
 }

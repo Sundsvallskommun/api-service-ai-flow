@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
 	name = CLIENT_ID,
-	configuration = TemplatingIntegrationConfiguration.class,
+	configuration = TemplatingConfiguration.class,
 	url = "${integration.templating.base-url}")
 @CircuitBreaker(name = CLIENT_ID)
 interface TemplatingClient {
