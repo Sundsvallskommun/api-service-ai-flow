@@ -92,7 +92,7 @@ public class Session {
 	void addOrReplaceInput(final String inputId, final String value, final boolean replace) {
 		// Make sure the corresponding flow input exists
 		var flowInput = flow.getInputs().stream()
-			.filter(flow -> inputId.equals(flow.getId()))
+			.filter(flowInput1 -> inputId.equals(flowInput1.getId()))
 			.findFirst()
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No input '%s' exists in flow '%s'".formatted(inputId, flow.getName())));
 

@@ -13,7 +13,6 @@ class RenderRequestTest {
 		var renderRequest = new RenderRequest(templateId);
 
 		assertThat(renderRequest.templateId()).isEqualTo(templateId);
-		assertThat(renderRequest).hasNoNullFieldsOrProperties();
-		assertThat(renderRequest).hasOnlyFields("templateId");
+		assertThat(renderRequest).hasNoNullFieldsOrProperties().hasOnlyFields("templateId");
 	}
 }

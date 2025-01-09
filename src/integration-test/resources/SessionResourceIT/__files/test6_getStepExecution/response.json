@@ -1,0 +1,6 @@
+{
+	"finishedAt": "${json-unit.any-string}",
+	"output": "This was successful!",
+	"startedAt": "${json-unit.any-string}",
+	"state": "DONE"
+}

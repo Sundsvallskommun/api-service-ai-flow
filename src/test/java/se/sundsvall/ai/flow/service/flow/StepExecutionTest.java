@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import se.sundsvall.ai.flow.model.flow.Step;
 
-public class StepExecutionTest {
+class StepExecutionTest {
 
 	@Test
 	void getterAndSetter() {

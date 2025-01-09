@@ -112,11 +112,6 @@ class SessionServiceTest {
 	}
 
 	@Test
-	void createStepExecution() {
-
-	}
-
-	@Test
 	void renderSession() {
 		var sessionId = UUID.randomUUID();
 		var templateId = "templateId";

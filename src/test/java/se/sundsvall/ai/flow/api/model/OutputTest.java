@@ -13,7 +13,6 @@ class OutputTest {
 		var output = new Output(data);
 
 		assertThat(output.data()).isEqualTo(data);
-		assertThat(output).hasNoNullFieldsOrProperties();
-		assertThat(output).hasOnlyFields("data");
+		assertThat(output).hasNoNullFieldsOrProperties().hasOnlyFields("data");
 	}
 }
