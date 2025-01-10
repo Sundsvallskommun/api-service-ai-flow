@@ -18,7 +18,12 @@ integration:
       token-url: http://localhost:${wiremock.server.port}/token
     read-timeout-in-seconds: 15
     connect-timeout-in-seconds: 5
-ai:
-  flow:
-    step-executor:
-      async: false
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mariadb:10.6.14:///
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
