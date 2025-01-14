@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class FlowSummaryTest {
+class FlowSummaryTest {
 
 	@Test
 	void constructorAndGetter() {

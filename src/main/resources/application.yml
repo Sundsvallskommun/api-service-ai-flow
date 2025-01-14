@@ -11,9 +11,6 @@ spring:
     name: ai-flow
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: override
-    password: override
-    username: override
   jpa:
     hibernate:
       ddl-auto: validate

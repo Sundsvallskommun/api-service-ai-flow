@@ -131,7 +131,7 @@ class FlowServiceTest {
 		var result = flowService.createFlow(flow);
 
 		assertThat(result).isNotNull();
-		assertThat(result.toString()).isEqualTo("/Tj%C3%A4nsteskrivelse/2");
+		assertThat(result).hasToString("/Tj%C3%A4nsteskrivelse/2");
 		verify(flowEntityRepositoryMock).findMaxVersionByName(flow.getName());
 		verify(objectMapperMock).writeValueAsString(flow);
 		verify(flowEntityRepositoryMock).save(any());
