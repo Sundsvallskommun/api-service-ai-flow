@@ -21,6 +21,23 @@ class FlowEntityTest {
 	}
 
 	@Test
+	void setterAndGetter() {
+		var name = "tjansteskrivelser";
+		var version = 1;
+		var content = "content";
+
+		var flowEntity = new FlowEntity();
+		flowEntity.setName(name);
+		flowEntity.setVersion(version);
+		flowEntity.setContent(content);
+
+		assertThat(flowEntity.getName()).isEqualTo(name);
+		assertThat(flowEntity.getVersion()).isEqualTo(version);
+		assertThat(flowEntity.getContent()).isEqualTo(content);
+		assertThat(flowEntity).hasNoNullFieldsOrProperties();
+	}
+
+	@Test
 	void builderPattern() {
 		var name = "tjansteskrivelser";
 		var version = 1;

@@ -2,7 +2,11 @@ package se.sundsvall.ai.flow.service;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static org.zalando.problem.Status.NOT_FOUND;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
@@ -12,8 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+import se.sundsvall.ai.flow.integration.db.FlowEntityId;
+import se.sundsvall.ai.flow.integration.db.FlowEntityRepository;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.Session;
+import se.sundsvall.ai.flow.model.flow.Flow;
 import se.sundsvall.ai.flow.model.flow.FlowInputRef;
 import se.sundsvall.ai.flow.model.flow.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flow.Step;
@@ -26,27 +33,40 @@ public class SessionService {
 
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
-	private final FlowRegistry flowRegistry;
+	private final FlowEntityRepository flowEntityRepository;
 	private final TemplatingIntegration templatingIntegration;
+	private final ObjectMapper objectMapper;
 
-	SessionService(final FlowRegistry flowRegistry, final TemplatingIntegration templatingIntegration) {
-		this.flowRegistry = flowRegistry;
+	SessionService(final FlowEntityRepository flowEntityRepository,
+		final TemplatingIntegration templatingIntegration,
+		final ObjectMapper objectMapper) {
+		this.flowEntityRepository = flowEntityRepository;
 		this.templatingIntegration = templatingIntegration;
+		this.objectMapper = objectMapper;
 	}
 
-	public Session createSession(final String flowId) {
-		var flow = flowRegistry.getFlow(flowId);
-		var session = new Session().withFlow(flow);
+	public Session createSession(final String name, final Integer version) {
+		var flowEntity = flowEntityRepository.findById(new FlowEntityId(name, version))
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No flow found with name " + name + " and version " + version));
 
-		// Store the session
-		sessions.put(session.getId(), session);
+		try {
+			var flow = objectMapper.readValue(flowEntity.getContent(), Flow.class);
+			var session = new Session().withFlow(flow);
 
-		return session;
+			// Store the session
+			sessions.put(session.getId(), session);
+
+			return session;
+		} catch (JsonProcessingException e) {
+			LOG.error("Failed to parse flow content for flow '{}'", flowEntity.getName(), e);
+			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Failed to parse flow content for flow " + flowEntity.getName());
+		}
+
 	}
 
 	public Session getSession(final UUID sessionId) {
 		return ofNullable(sessions.get(sessionId))
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No session exists with id " + sessionId));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No session exists with id " + sessionId));
 	}
 
 	public Session addInput(final UUID sessionId, final String inputId, final String value) {
@@ -115,6 +135,6 @@ public class SessionService {
 		return flow.getSteps().stream()
 			.filter(step -> stepId.equals(step.getId()))
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId)));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId)));
 	}
 }

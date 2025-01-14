@@ -4,10 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "flow")
+@Table(name = "flow", indexes = {
+	@Index(name = "idx_flow_name", columnList = "name"),
+	@Index(name = "idx_flow_name_version", columnList = "name, version")
+})
 @IdClass(FlowEntityId.class)
 public class FlowEntity {
 
@@ -28,8 +32,7 @@ public class FlowEntity {
 		this.content = content;
 	}
 
-	public FlowEntity() {
-	}
+	public FlowEntity() {}
 
 	public String getName() {
 		return name;

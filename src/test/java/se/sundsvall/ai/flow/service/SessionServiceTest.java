@@ -3,16 +3,21 @@ package se.sundsvall.ai.flow.service;
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.ai.flow.TestDataFactory.createFlow;
+import static se.sundsvall.ai.flow.TestDataFactory.createFlowEntity;
 import static se.sundsvall.ai.flow.TestDataFactory.createNewSession;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.Test;
@@ -23,34 +28,40 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+import se.sundsvall.ai.flow.integration.db.FlowEntityRepository;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.Session;
+import se.sundsvall.ai.flow.model.flow.Flow;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
 
 	@Mock
-	private FlowRegistry flowRegistryMock;
+	private TemplatingIntegration templatingIntegrationMock;
 
 	@Mock
-	private TemplatingIntegration templatingIntegrationMock;
+	private FlowEntityRepository flowEntityRepositoryMock;
+
+	@Mock
+	private ObjectMapper objectMapper;
 
 	@InjectMocks
 	private SessionService sessionService;
 
 	@Test
-	void createSession() {
-		var flowId = "flowId";
+	void createSession() throws JsonProcessingException {
+		var flowName = "flowName";
+		var flowVersion = 1;
 		var flow = createFlow();
 
-		when(flowRegistryMock.getFlow(flowId)).thenReturn(flow);
+		when(flowEntityRepositoryMock.findById(any())).thenReturn(Optional.of(createFlowEntity()));
+		when(objectMapper.readValue("content", Flow.class)).thenReturn(flow);
 
-		var session = sessionService.createSession(flowId);
+		var session = sessionService.createSession(flowName, flowVersion);
 
 		assertThat(session.getFlow()).isEqualTo(flow);
 
-		verify(flowRegistryMock).getFlow(flowId);
-		verifyNoMoreInteractions(flowRegistryMock);
+		verify(flowEntityRepositoryMock).findById(any());
 		verifyNoInteractions(templatingIntegrationMock);
 
 	}
@@ -68,7 +79,7 @@ class SessionServiceTest {
 
 		assertThat(result).isNotNull();
 		assertThat(result.getId()).isEqualTo(sessionId);
-		verifyNoInteractions(flowRegistryMock, templatingIntegrationMock);
+		verifyNoInteractions(templatingIntegrationMock);
 	}
 
 	/**
@@ -94,7 +105,7 @@ class SessionServiceTest {
 		var result = sessionService.addInput(sessionId, "arendenummer", value);
 		assertThat(result.getInput()).contains(entry("arendenummer", List.of("new value")));
 
-		verifyNoInteractions(flowRegistryMock, templatingIntegrationMock);
+		verifyNoInteractions(templatingIntegrationMock);
 	}
 
 	@Test
@@ -108,7 +119,7 @@ class SessionServiceTest {
 
 		assertThat(result.getInput()).contains(entry("arendenummer", List.of("new value")));
 		assertThat(result.getInput()).doesNotContain(entry("arendenummer", List.of("value")));
-		verifyNoInteractions(flowRegistryMock, templatingIntegrationMock);
+		verifyNoInteractions(templatingIntegrationMock);
 	}
 
 	@Test
@@ -125,7 +136,6 @@ class SessionServiceTest {
 		assertThat(result).isEqualTo("rendered");
 		verify(templatingIntegrationMock).renderSession(session, templateId, municipalityId);
 		verifyNoMoreInteractions(templatingIntegrationMock);
-		verifyNoInteractions(flowRegistryMock);
 	}
 
 	/**
@@ -142,7 +152,7 @@ class SessionServiceTest {
 
 		assertThat(result).isNotNull();
 		assertThat(result.getId()).isEqualTo(stepId);
-		verifyNoInteractions(flowRegistryMock, templatingIntegrationMock);
+		verifyNoInteractions(templatingIntegrationMock);
 	}
 
 	/**
