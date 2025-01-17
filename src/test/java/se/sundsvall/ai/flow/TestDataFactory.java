@@ -8,6 +8,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import se.sundsvall.ai.flow.api.model.RenderRequest;
+import se.sundsvall.ai.flow.integration.db.FlowEntity;
 import se.sundsvall.ai.flow.model.Session;
 import se.sundsvall.ai.flow.model.flow.Flow;
 import se.sundsvall.ai.flow.model.flow.FlowInput;
@@ -148,6 +149,13 @@ public final class TestDataFactory {
 
 	public static RenderRequest createRenderRequest() {
 		return new RenderRequest("templateId");
+	}
+
+	public static FlowEntity createFlowEntity() {
+		return new FlowEntity()
+			.withName("Tjänsteskrivelse")
+			.withVersion(1)
+			.withContent("content");
 	}
 
 }

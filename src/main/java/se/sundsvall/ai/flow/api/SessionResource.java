@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
@@ -91,11 +93,12 @@ class SessionResource {
 				description = "Not Found",
 				content = @Content(schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping
+	@PostMapping("/{flowName}/{version}")
 	ResponseEntity<Session> createSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		final String flowId) {
-		var session = sessionService.createSession(flowId);
+		@Parameter(name = "flowName", description = "Flow name", example = "Tjänsteskrivelse") @NotBlank @PathVariable final String flowName,
+		@Parameter(name = "version", description = "Flow version", example = "1") @NotNull @PathVariable final Integer version) {
+		var session = sessionService.createSession(flowName, version);
 
 		return created(fromPath("/session/{sessionId}").buildAndExpand(session.getId()).toUri())
 			.body(session);
@@ -177,7 +180,7 @@ class SessionResource {
 				description = "Not Found",
 				content = @Content(schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping("/{sessionId}/{stepId}")
+	@PostMapping("/run/{sessionId}/{stepId}")
 	ResponseEntity<StepExecution> runStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable("sessionId") final UUID sessionId,

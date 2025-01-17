@@ -7,10 +7,12 @@ import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.ai.flow.model.Session;
 import se.sundsvall.ai.flow.service.SessionService;
@@ -19,9 +21,11 @@ import se.sundsvall.ai.flow.service.flow.ExecutionState;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 
-import java.time.Duration;
-
 @WireMockAppTestSuite(files = "classpath:/SessionResourceIT/", classes = Application.class)
+@Sql(scripts = {
+	"/db/scripts/truncate.sql",
+	"/db/scripts/testdata.sql"
+})
 class SessionResourceIT extends AbstractAppTest {
 
 	private static final String MUNICIPALITY_ID = "2281";
@@ -39,7 +43,7 @@ class SessionResourceIT extends AbstractAppTest {
 
 	@BeforeEach
 	void setup() {
-		session = sessionService.createSession("tjansteskrivelse");
+		session = sessionService.createSession("Tjänsteskrivelse", 1);
 	}
 
 	@Test
@@ -55,8 +59,7 @@ class SessionResourceIT extends AbstractAppTest {
 	@Test
 	void test2_createSession() {
 		setupCall()
-			.withServicePath(uriBuilder -> uriBuilder.path(PATH)
-				.queryParam("flowId", "tjansteskrivelse").build())
+			.withServicePath(PATH + "/Tjänsteskrivelse/1")
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(CREATED)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -98,7 +101,7 @@ class SessionResourceIT extends AbstractAppTest {
 
 		// Runs the step.
 		setupCall()
-			.withServicePath(PATH + "/" + session.getId() + "/arendet")
+			.withServicePath(PATH + "/run/" + session.getId() + "/arendet")
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(CREATED)
 			.withExpectedResponse(RESPONSE_FILE)

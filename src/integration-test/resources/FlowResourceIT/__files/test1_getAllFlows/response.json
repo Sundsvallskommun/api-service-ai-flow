@@ -1,8 +1,8 @@
-[
-	{
-		"id": "tjansteskrivelse",
-		"name": "Tjänsteskrivelse",
-		"description": "Ett Intric AI-flöde för tjänsteskrivelser",
-		"defaultTemplateId": "ai-mvp.tjansteskrivelse"
-	}
-]
+{
+	"flows": [
+		{
+			"name": "Tjänsteskrivelse",
+			"version": 1
+		}
+	]
+}

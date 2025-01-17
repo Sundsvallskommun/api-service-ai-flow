@@ -1,8 +1,18 @@
 openapi:
-  name: ai-flow
-  title: AI Flow
+  name: ${spring.application.name}
+  title: ${spring.application.name}
   version: '@project.version@'
 
 logging:
   level:
     org.apache.pdfbox: off
+spring:
+  application:
+    name: ai-flow
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true

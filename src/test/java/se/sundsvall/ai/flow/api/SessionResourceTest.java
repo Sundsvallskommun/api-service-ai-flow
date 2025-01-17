@@ -114,13 +114,12 @@ class SessionResourceTest {
 	 */
 	@Test
 	void createSession_1() {
-		var flowId = "flowId";
+		var flowName = "flowId";
+		var version = 1;
 		var session = createNewSession();
-		when(sessionServiceMock.createSession(flowId)).thenReturn(session);
+		when(sessionServiceMock.createSession(flowName, version)).thenReturn(session);
 
-		var result = webTestClient.post().uri(uriBuilder -> uriBuilder.path(BASE_URL)
-			.queryParam("flowId", flowId)
-			.build())
+		var result = webTestClient.post().uri(BASE_URL + "/{flowName}/{version}", flowName, version)
 			.exchange()
 			.expectStatus().isCreated()
 			.expectHeader().location("/session/" + session.getId())
@@ -134,7 +133,7 @@ class SessionResourceTest {
 		assertThat(result.getTokenCount()).isEqualTo(session.getTokenCount());
 		assertThat(result.getInput()).isEqualTo(session.getInput());
 
-		verify(sessionServiceMock).createSession(flowId);
+		verify(sessionServiceMock).createSession(flowName, version);
 		verifyNoMoreInteractions(sessionServiceMock);
 	}
 
@@ -335,7 +334,7 @@ class SessionResourceTest {
 		when(sessionServiceMock.getStep(sessionId, stepId)).thenCallRealMethod();
 		when(sessionServiceMock.createStepExecution(sessionId, stepId)).thenCallRealMethod();
 
-		var result = webTestClient.post().uri(BASE_URL + "/{sessionId}/{stepId}", sessionId, stepId)
+		var result = webTestClient.post().uri(BASE_URL + "/run/{sessionId}/{stepId}", sessionId, stepId)
 			.exchange()
 			.expectStatus().isCreated()
 			.expectBody(StepExecution.class)
@@ -362,7 +361,7 @@ class SessionResourceTest {
 		session.addStepExecution(stepId, createStepExecution().withState(RUNNING));
 		when(sessionServiceMock.getSession(sessionId)).thenReturn(session);
 
-		var problem = webTestClient.post().uri(BASE_URL + "/{sessionId}/{stepId}", sessionId, stepId)
+		var problem = webTestClient.post().uri(BASE_URL + "/run/{sessionId}/{stepId}", sessionId, stepId)
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectBody(Problem.class)
@@ -394,7 +393,7 @@ class SessionResourceTest {
 		when(sessionServiceMock.getStep(sessionId, stepId)).thenCallRealMethod();
 		when(sessionServiceMock.createStepExecution(sessionId, stepId)).thenCallRealMethod();
 
-		var problem = webTestClient.post().uri(BASE_URL + "/{sessionId}/{stepId}", sessionId, stepId)
+		var problem = webTestClient.post().uri(BASE_URL + "/run/{sessionId}/{stepId}", sessionId, stepId)
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectBody(Problem.class)
