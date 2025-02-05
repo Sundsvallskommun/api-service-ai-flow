@@ -111,7 +111,7 @@
 				<executions>
 					<execution>
 						<!--
-							Note: if the OpenAPI spec is updated, any instances of the string "default: {}" that exists
+							Note: if the OpenAPI spec is updated, any instances of the string " " that exists
 							in a number of places must be removed, due to a bug in the OpenAPI generator that makes it
 							generate uncompilable code - https://github.com/OpenAPITools/openapi-generator/issues/19391
 
@@ -150,13 +150,30 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>se.sundsvall.dept44</groupId>
+				<artifactId>dept44-formatting-plugin</artifactId>
+				<configuration>
+					<jsonExcludes>
+						<exclude>**/flows/*.json</exclude>
+						<exclude>src/integration-test/resources/**/*.json</exclude>
+					</jsonExcludes>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
 						<exclude>**/se/sundsvall/ai/flow/util/**</exclude>
-						<exclude>**/se/sundsvall/ai/flow/service/flow/exception/**</exclude>
 						<exclude>**/generated/**</exclude>
+						<!-- Re-enable classes below when API is considered stable -->
+						<exclude>**/se/sundsvall/ai/flow/api/FlowResource**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/api/SessionResource**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/model/session/Session**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/service/SessionService**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/service/FlowService**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/service/Executor**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/service/FlowLoader$Configuration**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

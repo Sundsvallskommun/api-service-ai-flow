@@ -20,7 +20,6 @@ class IntricPropertiesTest {
 		assertThat(properties.connectTimeoutInSeconds()).isEqualTo(5);
 		assertThat(properties.readTimeoutInSeconds()).isEqualTo(15);
 		assertThat(properties.baseUrl()).isEqualTo("http://base-url.com");
-		assertThat(properties.apiKey()).isEqualTo("some-api-key");
 		assertThat(properties.oauth2()).satisfies(oauth -> {
 			assertThat(oauth.tokenUrl()).isEqualTo("http://token-url.com");
 			assertThat(oauth.username()).isEqualTo("override");

@@ -13,8 +13,6 @@ record TemplatingProperties(
 
 	@NotBlank String baseUrl,
 
-	String apiKey,
-
 	@Valid @NotNull Oauth2 oauth2,
 
 	@DefaultValue("10") int connectTimeoutInSeconds,

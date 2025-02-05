@@ -1,67 +1,45 @@
 package se.sundsvall.ai.flow.service;
 
 import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static org.zalando.problem.Status.NOT_FOUND;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.integration.db.FlowEntityId;
-import se.sundsvall.ai.flow.integration.db.FlowEntityRepository;
+import se.sundsvall.ai.flow.integration.intric.IntricIntegration;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
-import se.sundsvall.ai.flow.model.Session;
-import se.sundsvall.ai.flow.model.flow.Flow;
-import se.sundsvall.ai.flow.model.flow.FlowInputRef;
-import se.sundsvall.ai.flow.model.flow.RedirectedOutput;
-import se.sundsvall.ai.flow.model.flow.Step;
-import se.sundsvall.ai.flow.service.flow.StepExecution;
+import se.sundsvall.ai.flow.model.flowdefinition.Flow;
+import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
+import se.sundsvall.ai.flow.model.flowdefinition.Step;
+import se.sundsvall.ai.flow.model.session.Input;
+import se.sundsvall.ai.flow.model.session.Session;
 
 @Service
 public class SessionService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
-
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
-	private final FlowEntityRepository flowEntityRepository;
+	private final Executor executor;
+	private final IntricIntegration intricIntegration;
 	private final TemplatingIntegration templatingIntegration;
-	private final ObjectMapper objectMapper;
 
-	SessionService(final FlowEntityRepository flowEntityRepository,
-		final TemplatingIntegration templatingIntegration,
-		final ObjectMapper objectMapper) {
-		this.flowEntityRepository = flowEntityRepository;
+	SessionService(final Executor executor, final IntricIntegration intricIntegration, final TemplatingIntegration templatingIntegration) {
+		this.executor = executor;
+		this.intricIntegration = intricIntegration;
 		this.templatingIntegration = templatingIntegration;
-		this.objectMapper = objectMapper;
 	}
 
-	public Session createSession(final String name, final Integer version) {
-		var flowEntity = flowEntityRepository.findById(new FlowEntityId(name, version))
-			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No flow found with name " + name + " and version " + version));
-
-		try {
-			var flow = objectMapper.readValue(flowEntity.getContent(), Flow.class);
-			var session = new Session().withFlow(flow);
-
-			// Store the session
-			sessions.put(session.getId(), session);
-
-			return session;
-		} catch (JsonProcessingException e) {
-			LOG.error("Failed to parse flow content for flow '{}'", flowEntity.getName(), e);
-			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Failed to parse flow content for flow " + flowEntity.getName());
-		}
-
+	public Session createSession(final Flow flow) {
+		var session = new Session(flow);
+		sessions.put(session.getId(), session);
+		return session;
 	}
 
 	public Session getSession(final UUID sessionId) {
@@ -69,57 +47,61 @@ public class SessionService {
 			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No session exists with id " + sessionId));
 	}
 
-	public Session addInput(final UUID sessionId, final String inputId, final String value) {
-		var session = getSession(sessionId);
-		session.addInput(inputId, value);
-		return session;
-	}
-
-	public Session replaceInput(final UUID sessionId, final String inputId, final String value) {
-		var session = getSession(sessionId);
-		session.replaceInput(inputId, value);
-		return session;
-	}
-
-	public StepExecution createStepExecution(final UUID sessionId, final String stepId) {
+	public void executeSession(final UUID sessionId) {
 		var session = getSession(sessionId);
 		var flow = session.getFlow();
-		var step = getStep(sessionId, stepId);
 
-		// Validate the session input refs
-		for (var stepInput : step.getInputs()) {
-			if (stepInput instanceof FlowInputRef flowInputRef) {
-				// Make sure that the step input is set in the session
-				var sessionInput = session.getInput();
-				if (sessionInput != null && !sessionInput.containsKey(flowInputRef.getInput())) {
-					throw Problem.valueOf(Status.BAD_REQUEST, "Required input '%s' is unset for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), sessionId));
-				}
-			}
+		// Make sure that all required inputs have values
+		var unsetRequiredInputs = flow.getFlowInputs().stream()
+			.filter(FlowInput::isRequired)
+			.map(FlowInput::getId)
+			.filter(inputId -> session.getInput().getOrDefault(inputId, List.of()).isEmpty())
+			.toList();
+		if (!unsetRequiredInputs.isEmpty()) {
+			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to execute session %s as the following required inputs are unset or empty: %s".formatted(sessionId, unsetRequiredInputs));
 		}
 
-		// Validate redirected output inputs
-		var requiredStepExecutions = new ArrayList<StepExecution>();
-		for (var stepInput : step.getInputs()) {
-			if (stepInput instanceof RedirectedOutput redirectedOutput) {
-				// Make sure required step(s) have been executed before this one
-				var sourceStepId = redirectedOutput.getStep();
+		executor.executeSession(session);
+	}
 
-				if (session.getStepExecutions() == null || !session.getStepExecutions().containsKey(sourceStepId) || isBlank(session.getStepExecutions().get(sourceStepId).getOutput())) {
-					LOG.info("Missing redirected output from step '{}' for step '{}' in flow '{}' for session {}", sourceStepId, stepId, flow.getName(), sessionId);
+	public void executeStep(final UUID sessionId, final String stepId, final String input, final boolean runRequiredSteps) {
+		var session = getSession(sessionId);
+		var stepExecution = session.getStepExecution(stepId);
 
-					requiredStepExecutions.add(createStepExecution(sessionId, sourceStepId));
-				}
-			}
-		}
+		executor.executeStep(stepExecution, input, runRequiredSteps);
+	}
 
-		// Mark the session as running
-		session.setState(Session.State.RUNNING);
+	public void deleteSession(final UUID sessionId) {
+		var session = getSession(sessionId);
 
-		LOG.info("Created step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), session.getId());
+		// Extract the id:s of the files uploaded in the session
+		var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
+			.flatMap(Collection::stream)
+			.map(Input::getIntricFileId)
+			.flatMap(Stream::ofNullable)
+			.toList();
+		// Delete the files
+		intricIntegration.deleteFiles(uploadedFileIds);
+		// Remove the session
+		sessions.remove(sessionId);
+	}
 
-		var stepExecution = new StepExecution(sessionId, step, requiredStepExecutions);
-		session.addStepExecution(step.getId(), stepExecution);
-		return stepExecution;
+	public Session addInput(final UUID sessionId, final String inputId, final String value) {
+		var session = getSession(sessionId);
+		session.addSimpleInput(inputId, value);
+		return session;
+	}
+
+	public Session addInput(final UUID sessionId, final String inputId, final MultipartFile inputMultipartFile) {
+		var session = getSession(sessionId);
+		session.addFileInput(inputId, inputMultipartFile);
+		return session;
+	}
+
+	public Session clearInput(final UUID sessionId, final String inputId) {
+		var session = getSession(sessionId);
+		session.clearInput(inputId);
+		return session;
 	}
 
 	public String renderSession(final UUID sessionId, final String templateId, final String municipalityId) {
@@ -128,13 +110,12 @@ public class SessionService {
 		return templatingIntegration.renderSession(session, templateId, municipalityId);
 	}
 
-	public Step getStep(final UUID sessionId, final String stepId) {
-		var session = getSession(sessionId);
+	public Step getStep(final Session session, final String stepId) {
 		var flow = session.getFlow();
 
 		return flow.getSteps().stream()
 			.filter(step -> stepId.equals(step.getId()))
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), sessionId)));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), session.getId())));
 	}
 }
