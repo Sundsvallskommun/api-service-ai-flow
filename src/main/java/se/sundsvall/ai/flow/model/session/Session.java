@@ -53,6 +53,8 @@ public class Session {
 
 		// Create initial (empty) executions for all steps
 		flow.getSteps().forEach(this::createStepExecution);
+		// Create initial (empty) input lists
+		flow.getFlowInputs().forEach(flowInput -> input.put(flowInput.getId(), new LinkedList<>()));
 	}
 
 	public UUID getId() {
