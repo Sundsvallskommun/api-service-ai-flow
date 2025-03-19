@@ -4,6 +4,7 @@ import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.joining;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -197,6 +198,7 @@ public class Executor {
 			});
 
 		// Handle redirected output inputs by deleting old ones and uploading ones
+		var inputsToRemoveFromSession = new HashMap<String, Input>();
 		session.getRedirectedOutputInput().forEach((stepId, inputs) -> {
 			for (var input : inputs) {
 				if (input.isUploadedToIntric()) {
@@ -204,8 +206,8 @@ public class Executor {
 
 					// Delete the file from Intric
 					intricIntegration.deleteFile(input.getIntricFileId());
-					// Remove the input from the session
-					session.getRedirectedOutputInput().get(stepId).remove(input);
+					// Mark the input for removal from the session
+					inputsToRemoveFromSession.put(stepId, input);
 				} else {
 					// Upload the file to Intric
 					var intricFileId = intricIntegration.uploadFile(input.getFile());
@@ -216,5 +218,8 @@ public class Executor {
 				}
 			}
 		});
+
+		// Remove inputs from the session if needed
+		inputsToRemoveFromSession.forEach((sourceStepId, input) -> session.getRedirectedOutputInput().get(sourceStepId).remove(input));
 	}
 }
