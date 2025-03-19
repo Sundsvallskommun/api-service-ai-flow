@@ -169,7 +169,7 @@ class SessionResource {
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
 		@Parameter(name = "stepId", description = "Step id") @PathVariable("stepId") String stepId) {
-		return ResponseEntity.ok().build();
+		return ok(sessionService.getStepExecution(sessionId, stepId));
 	}
 
 	@Operation(

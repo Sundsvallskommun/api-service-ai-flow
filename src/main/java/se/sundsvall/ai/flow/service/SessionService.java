@@ -17,9 +17,9 @@ import se.sundsvall.ai.flow.integration.intric.IntricIntegration;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
-import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
+import se.sundsvall.ai.flow.model.session.StepExecution;
 
 @Service
 public class SessionService {
@@ -110,12 +110,9 @@ public class SessionService {
 		return templatingIntegration.renderSession(session, templateId, municipalityId);
 	}
 
-	public Step getStep(final Session session, final String stepId) {
-		var flow = session.getFlow();
+	public StepExecution getStepExecution(final UUID sessionId, final String stepId) {
+		var session = getSession(sessionId);
 
-		return flow.getSteps().stream()
-			.filter(step -> stepId.equals(step.getId()))
-			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step with '%s' exists in flow '%s' for session %s".formatted(stepId, flow.getName(), session.getId())));
+		return session.getStepExecution(stepId);
 	}
 }
