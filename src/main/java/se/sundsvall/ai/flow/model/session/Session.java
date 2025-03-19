@@ -122,10 +122,8 @@ public class Session {
 	}
 
 	public void addRedirectedOutputAsInput(final String stepId, final MultipartFile redirectedOutputMultipartFile) {
-		// Create an empty input value list, if required
-		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
 		// Add the input
-		redirectedOutputInput.put(stepId, List.of(new Input(redirectedOutputMultipartFile)));
+		redirectedOutputInput.put(stepId, new LinkedList<>(List.of(new Input(redirectedOutputMultipartFile))));
 	}
 
 	@JsonIgnore
