@@ -46,7 +46,7 @@ public class TemplatingIntegration {
 		// key (parameter name) and the step execution output as the value (parameter value). Also,
 		// BASE64-encode the parameter value
 		session.getStepExecutions().forEach((stepId, stepExecution) -> {
-			if (!isNotBlank(stepExecution.getOutput())) {
+			if (isNotBlank(stepExecution.getOutput())) {
 				parameters.put(stepExecution.getStep().getName(), BASE64_VALUE_PREFIX + base64Encode(stepExecution.getOutput()));
 			}
 		});

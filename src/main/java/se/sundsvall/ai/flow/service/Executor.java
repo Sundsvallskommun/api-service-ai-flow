@@ -105,6 +105,8 @@ public class Executor {
 		var flowInputRefStepInputs = step.getInputs().stream()
 			.filter(FlowInputRef.class::isInstance)
 			.map(FlowInputRef.class::cast)
+			// Skip inputs that are marked as passthrough
+			.filter(not(flowInputRef -> flow.getFlowInput(flowInputRef.getInput()).isPassthrough()))
 			.toList();
 
 		// Extract inputs that are redirected output from other steps

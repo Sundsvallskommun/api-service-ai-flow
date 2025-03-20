@@ -31,7 +31,11 @@ class TemplatingIntegrationTest {
 		var municipalityId = "2281";
 		var renderRequest = new RenderRequest()
 			.identifier(templateId)
-			.parameters(Map.of("Input 1 (passthrough)", "value"));
+			.parameters(Map.of(
+				"Input 1 (passthrough)", "value",
+				"Step 1", "BASE64:c29tZU91dHB1dF9zdGVwMQ==",
+				"Step 2", "BASE64:c29tZU91dHB1dF9zdGVwMg==",
+				"Step 3", "BASE64:c29tZU91dHB1dF9zdGVwMw=="));
 
 		// Set some fake output for each step execution
 		session.getStepExecutions().forEach((stepId, stepExecution) -> {
