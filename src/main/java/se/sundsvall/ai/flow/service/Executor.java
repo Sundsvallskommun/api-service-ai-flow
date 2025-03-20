@@ -155,7 +155,7 @@ public class Executor {
 					LOG.info("Running {} using SERVICE {}", step.getName(), intricEndpointId);
 
 					// Run the service
-					var response = intricIntegration.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo);
+					var response = intricIntegration.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo + "\n\n" + input);
 					// Store the answer in the step execution
 					stepExecution.setOutput(response.answer());
 				}
