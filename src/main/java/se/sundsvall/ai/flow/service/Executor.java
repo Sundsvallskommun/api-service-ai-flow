@@ -47,10 +47,6 @@ public class Executor {
 			.forEach(step -> executeStepInternal(step, null, true));
 		// Mark the session as finished
 		session.setState(Session.State.FINISHED);
-
-		// TODO: setup a scheduled reaper job that checks all available sessions for any where
-		// no step execution has been updated in 1 hour or whatever interval and terminate each one,
-		// thus deleting all uploaded files related to it
 	}
 
 	@Async

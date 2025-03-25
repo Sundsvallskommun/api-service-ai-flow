@@ -41,7 +41,8 @@ public class StepExecution implements Comparable<StepExecution> {
 
 	public StepExecution(final Session session, final Step step, final List<StepExecution> requiredStepExecutions) {
 		id = UUID.randomUUID();
-		state = State.CREATED;
+
+		setState(State.CREATED);
 
 		this.session = session;
 		this.step = step;

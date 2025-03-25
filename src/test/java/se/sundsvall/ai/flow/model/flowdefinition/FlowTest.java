@@ -48,6 +48,7 @@ class FlowTest {
 		var version = 123;
 		var description = "description";
 		var inputPrefix = "inputPrefix";
+		var ttlInMinutes = 456;
 		var defaultTemplateId = "defaultTemplateId";
 		var inputs = List.of(new FlowInput());
 		var steps = List.of(new Step());
@@ -58,6 +59,7 @@ class FlowTest {
 			.withVersion(version)
 			.withDescription(description)
 			.withInputPrefix(inputPrefix)
+			.withTtlInMinutes(ttlInMinutes)
 			.withDefaultTemplateId(defaultTemplateId)
 			.withFlowInputs(inputs)
 			.withSteps(steps);
@@ -67,6 +69,7 @@ class FlowTest {
 		assertThat(flow.getVersion()).isEqualTo(version);
 		assertThat(flow.getDescription()).isEqualTo(description);
 		assertThat(flow.getInputPrefix()).isEqualTo(inputPrefix);
+		assertThat(flow.getTtlInMinutes()).isEqualTo(ttlInMinutes);
 		assertThat(flow.getDefaultTemplateId()).isEqualTo(defaultTemplateId);
 		assertThat(flow.getFlowInputs()).isEqualTo(inputs);
 		assertThat(flow.getSteps()).isEqualTo(steps);

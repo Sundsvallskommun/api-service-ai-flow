@@ -47,6 +47,10 @@ public class SessionService {
 			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No session exists with id " + sessionId));
 	}
 
+	Collection<Session> getAllSessions() {
+		return sessions.values();
+	}
+
 	public void executeSession(final UUID sessionId) {
 		var session = getSession(sessionId);
 		var flow = session.getFlow();

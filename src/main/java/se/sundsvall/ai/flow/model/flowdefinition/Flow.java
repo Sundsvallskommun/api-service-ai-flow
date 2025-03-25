@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
@@ -16,6 +17,7 @@ public class Flow {
 	private String description;
 	private String inputPrefix = "#####";
 	private String defaultTemplateId;
+	private int ttlInMinutes = 180;
 
 	@JsonProperty("input")
 	private List<FlowInput> flowInputs = new LinkedList<>();
@@ -100,6 +102,19 @@ public class Flow {
 		return this;
 	}
 
+	public int getTtlInMinutes() {
+		return ttlInMinutes;
+	}
+
+	public Flow withTtlInMinutes(final int ttlInMinutes) {
+		this.ttlInMinutes = ttlInMinutes;
+		return this;
+	}
+
+	public void setTtlInMinutes(final int ttlInMinutes) {
+		this.ttlInMinutes = ttlInMinutes;
+	}
+
 	public FlowInput getFlowInput(final String inputId) {
 		return flowInputs.stream()
 			.filter(currentFlowInput -> inputId.equals(currentFlowInput.getId()))
@@ -138,5 +153,18 @@ public class Flow {
 	public Flow withSteps(final List<Step> steps) {
 		this.steps = steps;
 		return this;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (!(o instanceof Flow other)) {
+			return false;
+		}
+		return Objects.equals(id, other.id) && Objects.equals(version, other.version);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, version);
 	}
 }

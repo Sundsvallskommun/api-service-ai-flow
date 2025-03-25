@@ -4,6 +4,7 @@
 	"name": "Tjänsteskrivelse",
 	"description": "Ett Intric AI-flöde för tjänsteskrivelser",
 	"inputPrefix": "#####",
+	"ttlInMinutes": 180,
 	"defaultTemplateId": "ai-mvp.tjansteskrivelse",
 	"input": [
 		{

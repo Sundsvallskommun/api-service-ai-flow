@@ -47,7 +47,7 @@ class StepExecutionTest {
 
 		assertThat(stepExecution.getStartedAt()).isNull();
 		assertThat(stepExecution.getFinishedAt()).isNull();
-		assertThat(stepExecution.getLastUpdatedAt()).isNull();
+		assertThat(stepExecution.getLastUpdatedAt()).isNotNull();
 
 		stepExecution.setState(StepExecution.State.RUNNING);
 

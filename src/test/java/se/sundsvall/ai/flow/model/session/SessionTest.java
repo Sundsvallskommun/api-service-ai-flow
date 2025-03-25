@@ -56,7 +56,7 @@ class SessionTest {
 	}
 
 	@Test
-	void getLastUpdatedAtWhenNoStepsHaveBeenUpdated() {
+	void getLastUpdatedAtAlthoughNoStepsHaveBeenUpdated() {
 		var flow = new Flow()
 			.withSteps(List.of(
 				new Step().withId("step1"),
@@ -67,7 +67,7 @@ class SessionTest {
 
 		var result = session.getLastUpdatedAt();
 
-		assertThat(result).isNull();
+		assertThat(result).isNotNull();
 	}
 
 	@Test
