@@ -2,7 +2,6 @@ package se.sundsvall.ai.flow.model.session;
 
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
@@ -29,6 +28,8 @@ import se.sundsvall.ai.flow.model.support.UploadedMultipartFile;
 public class Session {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Session.class);
+
+	static final String FIlE_INFO_TEMPLATE = "Du hittar %s i filen/filerna %s. ";
 
 	public enum State {
 		CREATED,
@@ -132,6 +133,12 @@ public class Session {
 	}
 
 	@JsonIgnore
+	public Map<String, List<Input>> getAllInput() {
+		return Stream.concat(input.entrySet().stream(), redirectedOutputInput.entrySet().stream())
+			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	@JsonIgnore
 	public Map<String, String> getInputInfo() {
 		// Extract/create info on regular inputs
 		var regularInputInfo = input.entrySet().stream()
@@ -163,12 +170,14 @@ public class Session {
 		// Extract the Intric uploaded file ids
 		var intricFileIds = inputs.stream().map(Input::getIntricFileId).map(UUID::toString).toList();
 		// Format the info
-		var info = String.format("Du hittar %s i filen/filerna %s.", name.toLowerCase(), String.join(",", intricFileIds));
+		var info = String.format(FIlE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds));
 
 		return new AbstractMap.SimpleEntry<>(key, info);
 	}
 
 	StepExecution createStepExecution(final Step step) {
+		LOG.info("Creating step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), id);
+
 		// Validate redirected output inputs
 		var requiredStepExecutions = new ArrayList<StepExecution>();
 		for (var stepInput : step.getInputs()) {
@@ -177,8 +186,8 @@ public class Session {
 				var sourceStepId = redirectedOutput.getStep();
 				var sourceStep = flow.getStep(sourceStepId);
 
-				if (!stepExecutions.containsKey(sourceStepId) || isBlank(stepExecutions.get(sourceStepId).getOutput())) {
-					LOG.info("Missing redirected output from step '{}' for step '{}' in flow '{}' for session {}", sourceStepId, step.getId(), flow.getName(), id);
+				if (!stepExecutions.containsKey(sourceStepId)/* || isBlank(stepExecutions.get(sourceStepId).getOutput()) */) {
+					LOG.info("Creating step execution for missing redirected output from step '{}' for step '{}' in flow '{}' for session {}", sourceStepId, step.getId(), flow.getName(), id);
 
 					requiredStepExecutions.add(createStepExecution(sourceStep));
 				}

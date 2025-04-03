@@ -130,7 +130,7 @@ public class Executor {
 			redirectedOutputStepInputs.stream().map(RedirectedOutput::getStep)).toList();
 
 		// Extract the input files (ie Intric file id:s) for the inputs actually in use for the current step execution
-		var inputFilesInUse = session.getInput().entrySet().stream()
+		var inputFilesInUse = session.getAllInput().entrySet().stream()
 			.filter(entry -> inputsInUse.contains(entry.getKey()))
 			.flatMap(entry -> entry.getValue().stream())
 			.map(Input::getIntricFileId)
@@ -189,6 +189,8 @@ public class Executor {
 			.flatMap(Collection::stream)
 			.filter(not(Input::isUploadedToIntric))
 			.forEach(input -> {
+				LOG.info("Uploading file for input {}", input.getFile().getName());
+
 				// Upload the file to Intric
 				var intricFileId = intricIntegration.uploadFile(input.getFile());
 				// Keep a reference to it for later

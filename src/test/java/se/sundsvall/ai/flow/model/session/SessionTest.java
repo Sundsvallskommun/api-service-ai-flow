@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.model.session.Session.FIlE_INFO_TEMPLATE;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -75,7 +76,7 @@ class SessionTest {
 		var key = "someKey";
 		var name = "someName";
 		var intricFileIds = List.of(UUID.randomUUID(), UUID.randomUUID());
-		var info = String.format("Du hittar %s i filen/filerna %s.", name.toLowerCase(), String.join(",", intricFileIds.stream().map(UUID::toString).toList()));
+		var info = String.format(FIlE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds.stream().map(UUID::toString).toList()));
 		var inputs = intricFileIds.stream().map(intricFileId -> new Input(null).withIntricFileId(intricFileId)).toList();
 
 		var session = new Session(new Flow());
