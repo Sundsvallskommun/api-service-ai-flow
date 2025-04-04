@@ -29,7 +29,7 @@ public class Session {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Session.class);
 
-	static final String FIlE_INFO_TEMPLATE = "Du hittar %s i filen/filerna %s. ";
+	static final String FILE_INFO_TEMPLATE = "Du hittar %s i filen/filerna %s. ";
 
 	public enum State {
 		CREATED,
@@ -123,8 +123,11 @@ public class Session {
 	}
 
 	public void addRedirectedOutputAsInput(final String stepId, final MultipartFile redirectedOutputMultipartFile) {
+		// Create an empty input value list, if required
+		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
+
 		// Add the input
-		redirectedOutputInput.put(stepId, new LinkedList<>(List.of(new Input(redirectedOutputMultipartFile))));
+		redirectedOutputInput.get(stepId).add(new Input(redirectedOutputMultipartFile));
 	}
 
 	@JsonIgnore
@@ -170,7 +173,7 @@ public class Session {
 		// Extract the Intric uploaded file ids
 		var intricFileIds = inputs.stream().map(Input::getIntricFileId).map(UUID::toString).toList();
 		// Format the info
-		var info = String.format(FIlE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds));
+		var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds));
 
 		return new AbstractMap.SimpleEntry<>(key, info);
 	}
