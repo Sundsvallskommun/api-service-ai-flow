@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.integration.intric.IntricIntegration.INPUT_DELIMITER;
 
 import generated.intric.ai.AskAssistant;
 import generated.intric.ai.AskResponse;
@@ -36,15 +37,16 @@ class IntricIntegrationTest {
 	@Test
 	void runService() {
 		var intricEndpointId = UUID.randomUUID();
+		var uploadedFilesInfo = "someInfo";
 		var input = "input";
 
 		when(intricClientMock.runService(eq(intricEndpointId), any(RunService.class))).thenReturn(new ServiceOutput().output("someOutput"));
 
-		var response = intricIntegration.runService(intricEndpointId, List.of(), input);
+		var response = intricIntegration.runService(intricEndpointId, List.of(), uploadedFilesInfo, input);
 
 		assertThat(response.answer()).isEqualTo("someOutput");
 
-		verify(intricClientMock).runService(intricEndpointId, new RunService().input(input));
+		verify(intricClientMock).runService(intricEndpointId, new RunService().input(uploadedFilesInfo + INPUT_DELIMITER + input));
 		verifyNoMoreInteractions(intricClientMock);
 	}
 
@@ -74,13 +76,14 @@ class IntricIntegrationTest {
 	void askAssistantFollowup() {
 		var intricEndpointId = UUID.randomUUID();
 		var intricSessionId = UUID.randomUUID();
+		var uploadedFilesInfo = "someInfo";
 		var question = "someQuestion";
-		var askAssistantRequest = new AskAssistant().question(question);
+		var askAssistantRequest = new AskAssistant().question(uploadedFilesInfo + INPUT_DELIMITER + question);
 		var answer = "someAnswer";
 
 		when(intricClientMock.askAssistantFollowup(eq(intricEndpointId), eq(intricSessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
 
-		var response = intricIntegration.askAssistantFollowup(intricEndpointId, intricSessionId, question);
+		var response = intricIntegration.askAssistantFollowup(intricEndpointId, intricSessionId, List.of(), uploadedFilesInfo, question);
 
 		assertThat(response.answer()).isEqualTo(answer);
 		assertThat(response.sessionId()).isEqualTo(intricSessionId);

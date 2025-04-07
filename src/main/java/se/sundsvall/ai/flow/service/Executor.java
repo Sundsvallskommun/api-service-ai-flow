@@ -49,7 +49,7 @@ public class Executor {
 		session.setState(Session.State.FINISHED);
 	}
 
-	@Async
+	// @Async
 	public void executeStep(final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
 		var session = stepExecution.getSession();
 
@@ -148,17 +148,17 @@ public class Executor {
 		try {
 			switch (step.getIntricEndpoint().type()) {
 				case SERVICE -> {
-					LOG.info("Running {} using SERVICE {}", step.getName(), intricEndpointId);
+					LOG.info("Running step {} using SERVICE {}", step.getName(), intricEndpointId);
 
 					// Run the service
-					var response = intricIntegration.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo + "\n\n" + input);
+					var response = intricIntegration.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo, input);
 					// Store the answer in the step execution
 					stepExecution.setOutput(response.answer());
 				}
 				case ASSISTANT -> {
 					// Are we asking the initial question or a follow-up?
 					if (stepExecution.getIntricSessionId() == null) {
-						LOG.info("Running {} using ASSISTANT {}", step.getName(), intricEndpointId);
+						LOG.info("Running step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant
 						var response = intricIntegration.askAssistant(intricEndpointId, inputFilesInUse, inputsInUseInfo);
@@ -167,10 +167,10 @@ public class Executor {
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					} else {
-						LOG.info("Running {} using ASSISTANT {} (FOLLOW-UP)", step.getName(), intricEndpointId);
+						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant a follow-up
-						var response = intricIntegration.askAssistantFollowup(intricEndpointId, stepExecution.getIntricSessionId(), input);
+						var response = intricIntegration.askAssistantFollowup(intricEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					}
@@ -199,22 +199,24 @@ public class Executor {
 
 		// Handle redirected output inputs by deleting old ones and uploading ones
 		var inputsToRemoveFromSession = new HashMap<String, Input>();
-		session.getRedirectedOutputInput().forEach((stepId, inputs) -> {
+		session.getRedirectedOutputInput().forEach((sourceStepId, inputs) -> {
 			for (var input : inputs) {
 				if (input.isUploadedToIntric()) {
-					LOG.info("Deleting previous redirected output input for step {} with id {}", stepId, input.getIntricFileId());
+					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
 
 					// Delete the file from Intric
 					intricIntegration.deleteFile(input.getIntricFileId());
 					// Mark the input for removal from the session
-					inputsToRemoveFromSession.put(stepId, input);
+					inputsToRemoveFromSession.put(sourceStepId, input);
 				} else {
+					LOG.info("Uploading redirected output file from step {}", sourceStepId);
+
 					// Upload the file to Intric
 					var intricFileId = intricIntegration.uploadFile(input.getFile());
 					// Keep a reference to it for later
 					input.setIntricFileId(intricFileId);
 
-					LOG.info("Uploaded redirected output input for step {} with id {}", stepId, intricFileId);
+					LOG.info("Uploaded redirected output file for step {} with id {}", sourceStepId, intricFileId);
 				}
 			}
 		});

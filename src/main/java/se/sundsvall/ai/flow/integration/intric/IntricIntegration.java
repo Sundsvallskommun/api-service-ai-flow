@@ -19,6 +19,8 @@ public class IntricIntegration {
 
 	public static final String CLIENT_ID = "intric";
 
+	static final String INPUT_DELIMITER = "\n\n";
+
 	private final IntricClient client;
 	private final IntricClient intricClient;
 
@@ -27,9 +29,9 @@ public class IntricIntegration {
 		this.intricClient = intricClient;
 	}
 
-	public Response runService(final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
+	public Response runService(final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
 		var request = new RunService()
-			.input(uploadedInputFilesInUseInfo)
+			.input(uploadedInputFilesInUseInfo + INPUT_DELIMITER + question)
 			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
 		var response = client.runService(serviceId, request);
 
@@ -45,8 +47,10 @@ public class IntricIntegration {
 		return new Response(response.getSessionId(), response.getAnswer());
 	}
 
-	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final String question) {
-		var request = new AskAssistant().question(question);
+	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
+		var request = new AskAssistant()
+			.question(uploadedInputFilesInUseInfo + INPUT_DELIMITER + question)
+			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
 		var response = intricClient.askAssistantFollowup(assistantId, sessionId, request);
 
 		return new Response(response.getSessionId(), response.getAnswer());
