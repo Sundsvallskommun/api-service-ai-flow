@@ -71,15 +71,6 @@ public class Executor {
 		var flow = session.getFlow();
 		var step = stepExecution.getStep();
 
-		// Validate the step inputs
-		for (var stepInput : step.getInputs()) {
-			// Make sure that the step input has some value set in the session
-			if (stepInput instanceof FlowInputRef flowInputRef && session.getInput().get(flowInputRef.getInput()).isEmpty()) {
-				throw Problem.valueOf(Status.BAD_REQUEST,
-					"Input '%s' is unset for step '%s' in flow '%s' for session %s".formatted(flowInputRef.getInput(), step.getName(), flow.getName(), session.getId()));
-			}
-		}
-
 		LOG.info("Executing step '{}' in flow '{}' for session {}", step.getName(), flow.getName(), session.getId());
 
 		// Recursively execute required steps, if "enabled" and if there are any
