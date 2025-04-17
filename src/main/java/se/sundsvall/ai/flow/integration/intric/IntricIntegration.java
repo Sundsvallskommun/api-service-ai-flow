@@ -1,6 +1,7 @@
 package se.sundsvall.ai.flow.integration.intric;
 
 import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import generated.intric.ai.AskAssistant;
 import generated.intric.ai.FilePublic;
@@ -30,8 +31,14 @@ public class IntricIntegration {
 	}
 
 	public Response runService(final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
+		// Construct the actual input - no need to include the provided question if it's null or blank
+		var actualInput = uploadedInputFilesInUseInfo;
+		if (isNotBlank(question)) {
+			actualInput += INPUT_DELIMITER + question;
+		}
+
 		var request = new RunService()
-			.input(uploadedInputFilesInUseInfo + INPUT_DELIMITER + question)
+			.input(actualInput)
 			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
 		var response = client.runService(serviceId, request);
 
@@ -48,8 +55,14 @@ public class IntricIntegration {
 	}
 
 	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
+		// Construct the actual question - no need to include the provided question if it's null or blank
+		var actualQuestion = uploadedInputFilesInUseInfo;
+		if (isNotBlank(question)) {
+			actualQuestion += INPUT_DELIMITER + question;
+		}
+
 		var request = new AskAssistant()
-			.question(uploadedInputFilesInUseInfo + INPUT_DELIMITER + question)
+			.question(actualQuestion)
 			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
 		var response = intricClient.askAssistantFollowup(assistantId, sessionId, request);
 

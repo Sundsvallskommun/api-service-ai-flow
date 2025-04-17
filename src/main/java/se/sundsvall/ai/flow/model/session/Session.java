@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.model.session;
 
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -150,8 +152,14 @@ public class Session {
 				// Get the flow input corresponding to this input
 				var flowInput = flow.getFlowInput(inputId);
 
+				// "Skip" optional inputs if they are unset
+				if (flowInput.isOptional() && isEmpty(entry.getValue())) {
+					return null;
+				}
+
 				return createInputInfo(inputId, flowInput.getName(), entry.getValue());
 			})
+			.filter(Objects::nonNull)
 			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		// Extract/create info on redirected output inputs
