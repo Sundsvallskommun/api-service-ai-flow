@@ -37,17 +37,17 @@ public class TemplatingIntegration {
 				if (value != null && !value.isEmpty()) {
 					var actualInput = value.getFirst();
 					if (actualInput.getFile() instanceof StringMultipartFile multipartFile) {
-						parameters.put(passthroughInput.getName(), multipartFile.getValue());
+						parameters.put(passthroughInput.getId(), multipartFile.getValue());
 					}
 				}
 			});
 
-		// "Re-write" the session step output to templating parameters, using the step name as the
+		// "Re-write" the session step output to templating parameters, using the step id as the
 		// key (parameter name) and the step execution output as the value (parameter value). Also,
 		// BASE64-encode the parameter value
 		session.getStepExecutions().forEach((stepId, stepExecution) -> {
 			if (isNotBlank(stepExecution.getOutput())) {
-				parameters.put(stepExecution.getStep().getName(), BASE64_VALUE_PREFIX + base64Encode(stepExecution.getOutput()));
+				parameters.put(stepExecution.getStep().getId(), BASE64_VALUE_PREFIX + base64Encode(stepExecution.getOutput()));
 			}
 		});
 

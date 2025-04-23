@@ -32,10 +32,10 @@ class TemplatingIntegrationTest {
 		var renderRequest = new RenderRequest()
 			.identifier(templateId)
 			.parameters(Map.of(
-				"Input 1 (passthrough)", "value",
-				"Step 1", "BASE64:c29tZU91dHB1dF9zdGVwMQ==",
-				"Step 2", "BASE64:c29tZU91dHB1dF9zdGVwMg==",
-				"Step 3", "BASE64:c29tZU91dHB1dF9zdGVwMw=="));
+				"input1", "value",
+				"step1", "BASE64:c29tZU91dHB1dF9zdGVwMQ==",
+				"step2", "BASE64:c29tZU91dHB1dF9zdGVwMg==",
+				"step3", "BASE64:c29tZU91dHB1dF9zdGVwMw=="));
 
 		// Set some fake output for each step execution
 		session.getStepExecutions().forEach((stepId, stepExecution) -> {
