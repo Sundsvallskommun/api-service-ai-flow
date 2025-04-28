@@ -1,0 +1,213 @@
+{
+	"id": "tjansteskrivelse.assistants",
+	"version": 1,
+	"name": "Tjänsteskrivelse (assistenter)",
+	"description": "Ett Intric AI-flöde för tjänsteskrivelser",
+	"inputPrefix": "#####",
+	"ttlInMinutes": 180,
+	"defaultTemplateId": "ai-mvp.tjansteskrivelse",
+	"input": [
+		{
+			"id": "arendenummer",
+			"type": "STRING",
+			"name": "Ärendenummer",
+			"description": "",
+			"passthrough": true
+		},
+		{
+			"id": "uppdraget-till-tjansten",
+			"type": "TEXT",
+			"name": "Uppdrag",
+			"description": ""
+		},
+		{
+			"id": "forvaltningens-input",
+			"type": "TEXT",
+			"name": "Förvaltningens input",
+			"description": ""
+		},
+		{
+			"id": "bakgrundsmaterial",
+			"type": "FILE",
+			"name": "Bakgrundsmaterial",
+			"description": "",
+			"multipleValued": true
+		},
+		{
+			"id": "relaterade-styrdokument",
+			"type": "FILE",
+			"name": "Relaterade styrdokument",
+			"description": "",
+			"multipleValued": true
+		}
+	],
+	"steps": [
+		{
+			"id": "arendet",
+			"name": "Ärendet",
+			"order": 1,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "d23e4141-4a30-4652-8fce-12cc5febf676"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		},
+		{
+			"id": "bakgrund",
+			"name": "Bakgrund",
+			"order": 2,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "0c98433d-a600-4f96-bda4-350d7cd44cca"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		},
+		{
+			"id": "forvaltningens-overvaganden",
+			"name": "Förvaltningens överväganden",
+			"order": 3,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "00f9705c-e1f4-4115-946f-fbd5cca70701"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				},
+				{
+					"step-output-ref": "bakgrund",
+					"name": "Bakgrund"
+				}
+			]
+		},
+		{
+			"id": "styrdokument-och-juridik",
+			"name": "Styrdokument och juridik",
+			"order": 4,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "db1d10a8-79a0-4520-8a8f-4a8903247d56"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				},
+				{
+					"flow-input-ref": "relaterade-styrdokument"
+				}
+			]
+		},
+		{
+			"id": "ekonomisk-hallbarhet",
+			"name": "Ekonomisk hållbarhet",
+			"order": 5,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "4d44fc9c-dc21-4c77-afec-c7f72538978d"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		},
+		{
+			"id": "ekologisk-hallbarhet",
+			"name": "Ekologisk hållbarhet",
+			"order": 6,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "ecd38735-ca21-4849-86cf-65c1051253a8"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		},
+		{
+			"id": "social-hallbarhet",
+			"name": "Social hållbarhet",
+			"order": 7,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "d79e6cfb-9a47-4679-a1c2-5e7393005726"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		},
+		{
+			"id": "landsbygdssakring",
+			"name": "Landsbygdssäkring",
+			"order": 8,
+			"intricEndpoint": {
+				"type": "ASSISTANT",
+				"id": "d5ac8806-1b72-41bd-9deb-f28f556e0e02"
+			},
+			"input": [
+				{
+					"flow-input-ref": "uppdraget-till-tjansten"
+				},
+				{
+					"flow-input-ref": "forvaltningens-input"
+				},
+				{
+					"flow-input-ref": "bakgrundsmaterial"
+				}
+			]
+		}
+	]
+}

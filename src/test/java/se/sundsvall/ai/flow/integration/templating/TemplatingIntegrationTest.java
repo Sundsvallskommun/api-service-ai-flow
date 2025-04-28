@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.TestDataFactory.createNewSession;
+import static se.sundsvall.ai.flow.TestDataFactory.createSession;
 
 import generated.se.sundsvall.templating.RenderRequest;
 import generated.se.sundsvall.templating.RenderResponse;
@@ -26,11 +26,21 @@ class TemplatingIntegrationTest {
 
 	@Test
 	void renderSession() {
-		var session = createNewSession();
+		var session = createSession();
 		var templateId = "templateId";
 		var municipalityId = "2281";
-		// "Ärendenummer" and "value" are taken from the session created in this test and are the expected values.
-		var renderRequest = new RenderRequest().identifier(templateId).parameters(Map.of("Ärendenummer", "value"));
+		var renderRequest = new RenderRequest()
+			.identifier(templateId)
+			.parameters(Map.of(
+				"input1", "value",
+				"step1", "BASE64:c29tZU91dHB1dF9zdGVwMQ==",
+				"step2", "BASE64:c29tZU91dHB1dF9zdGVwMg==",
+				"step3", "BASE64:c29tZU91dHB1dF9zdGVwMw=="));
+
+		// Set some fake output for each step execution
+		session.getStepExecutions().forEach((stepId, stepExecution) -> {
+			stepExecution.setOutput("someOutput_" + stepId);
+		});
 
 		when(templatingClientMock.render(municipalityId, renderRequest)).thenReturn(new RenderResponse().output("output"));
 
@@ -40,5 +50,4 @@ class TemplatingIntegrationTest {
 		verify(templatingClientMock).render(municipalityId, renderRequest);
 		verifyNoMoreInteractions(templatingClientMock);
 	}
-
 }

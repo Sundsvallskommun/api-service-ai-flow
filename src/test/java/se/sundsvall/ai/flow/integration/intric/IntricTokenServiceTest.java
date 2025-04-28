@@ -2,30 +2,29 @@ package se.sundsvall.ai.flow.integration.intric;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import generated.intric.ai.AccessToken;
 import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-import se.sundsvall.ai.flow.integration.intric.model.AccessToken;
 
 @ExtendWith(MockitoExtension.class)
 class IntricTokenServiceTest {
 
 	@Test
 	void constructor() {
-		var properties = new IntricProperties("baseUrl", "apiKey",
-			new IntricProperties.Oauth2("tokenUrl", "username", "password"), 5, 15);
+		var properties = new IntricProperties("baseUrl", new IntricProperties.Oauth2("tokenUrl", "username", "password"), 5, 15);
 
 		var result = new IntricTokenService(properties);
 
@@ -39,38 +38,38 @@ class IntricTokenServiceTest {
 			.containsEntry("client_id", List.of(""))
 			.containsEntry("client_secret", List.of(""));
 		assertThat(ReflectionTestUtils.getField(result, "restClient")).isNotNull();
-
 	}
 
 	/**
-	 * Test scenario where the token is null, empty och expired.
+	 * Test scenario where the token is null, empty and expired.
 	 */
 	@Test
 	void getToken_1() {
-		var properties = new IntricProperties("baseUrl", "apiKey",
-			new IntricProperties.Oauth2("tokenUrl", "username", "password"), 5, 15);
+		var properties = new IntricProperties("baseUrl", new IntricProperties.Oauth2("tokenUrl", "username", "password"), 5, 15);
 
 		var service = new IntricTokenService(properties);
 
-		var mockClient = Mockito.mock(RestClient.class);
+		var mockClient = mock(RestClient.class);
 		ReflectionTestUtils.setField(service, "restClient", mockClient, RestClient.class);
 
-		var requestBodyUriSpecMock = Mockito.mock(RestClient.RequestBodyUriSpec.class);
-		var requestBodySpecMock = Mockito.mock(RestClient.RequestBodySpec.class);
-		var responseSpecMock = Mockito.mock(RestClient.ResponseSpec.class);
+		var requestBodyUriSpecMock = mock(RestClient.RequestBodyUriSpec.class);
+		var requestBodySpecMock = mock(RestClient.RequestBodySpec.class);
+		var responseSpecMock = mock(RestClient.ResponseSpec.class);
+
 		when(mockClient.post()).thenReturn(requestBodyUriSpecMock);
 		when(requestBodyUriSpecMock.body(any(MultiValueMap.class))).thenReturn(requestBodySpecMock);
 		when(requestBodySpecMock.retrieve()).thenReturn(responseSpecMock);
-		when(responseSpecMock.toEntity(AccessToken.class)).thenReturn(ResponseEntity.ok(new AccessToken("token", "type")));
+		when(responseSpecMock.toEntity(AccessToken.class)).thenReturn(ResponseEntity.ok(new AccessToken().tokenType("type").accessToken("token")));
 
-		var jwtMock = mockStatic(JWT.class);
-		var decodedJwt = Mockito.mock(DecodedJWT.class);
-		when(decodedJwt.getExpiresAtAsInstant()).thenReturn(Instant.MAX);
-		jwtMock.when(() -> JWT.decode("token")).thenReturn(decodedJwt);
+		try (var jwtMock = mockStatic(JWT.class)) {
+			var decodedJwt = mock(DecodedJWT.class);
+			when(decodedJwt.getExpiresAtAsInstant()).thenReturn(Instant.MAX);
+			jwtMock.when(() -> JWT.decode("token")).thenReturn(decodedJwt);
 
-		var result = service.getToken();
+			var result = service.getToken();
 
-		assertThat(result).isEqualTo("token");
+			assertThat(result).isEqualTo("token");
+		}
 	}
 
 	/**
@@ -78,7 +77,7 @@ class IntricTokenServiceTest {
 	 */
 	@Test
 	void getToken_2() {
-		var properties = new IntricProperties("baseUrl", "apiKey",
+		var properties = new IntricProperties("baseUrl",
 			new IntricProperties.Oauth2("tokenUrl", "username", "password"), 5, 15);
 
 		var service = new IntricTokenService(properties);
@@ -88,5 +87,4 @@ class IntricTokenServiceTest {
 
 		assertThat(result).isEqualTo("token");
 	}
-
 }

@@ -13,8 +13,6 @@ record IntricProperties(
 
 	@NotBlank String baseUrl,
 
-	String apiKey,
-
 	@Valid @NotNull Oauth2 oauth2,
 
 	@DefaultValue("120") int connectTimeoutInSeconds,
