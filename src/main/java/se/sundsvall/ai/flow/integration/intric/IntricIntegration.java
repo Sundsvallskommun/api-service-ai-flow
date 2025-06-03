@@ -30,9 +30,13 @@ public class IntricIntegration {
 
 	public ServiceOutput runService(final UUID serviceId, final RunService request) {
 		try {
-			LOG.debug("Running service with ID: {} and request: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Running service with ID: {} and request: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			}
 			var result = intricClient.runService(serviceId, request);
-			LOG.debug("Intric service with ID: {} returned output: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Intric service with ID: {} returned output: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error("Error running service with ID: {}", serviceId, e);
@@ -42,9 +46,13 @@ public class IntricIntegration {
 
 	public AskResponse askAssistant(final UUID assistantId, final AskAssistant request) {
 		try {
-			LOG.debug("Asking assistant with ID: {} and request: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Asking assistant with ID: {} and request: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			}
 			var result = intricClient.askAssistant(assistantId, request);
-			LOG.debug("Intric assistant with ID: {} returned response: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Intric assistant with ID: {} returned response: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error("Error asking assistant with ID: {}", assistantId, e);
@@ -54,9 +62,13 @@ public class IntricIntegration {
 
 	public AskResponse askAssistantFollowup(final UUID assistantId, final UUID sessionId, final AskAssistant request) {
 		try {
-			LOG.debug("Asking assistant followup with ID: {} and session ID: {} and request: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Asking assistant followup with ID: {} and session ID: {} and request: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+			}
 			var result = intricClient.askAssistantFollowup(assistantId, sessionId, request);
-			LOG.debug("Intric assistant followup with ID: {} and session ID: {} returned response: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Intric assistant followup with ID: {} and session ID: {} returned response: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+			}
 			return result;
 		} catch (Exception e) {
 			LOG.error("Error asking assistant with ID: {} and session ID: {}", assistantId, sessionId, e);
