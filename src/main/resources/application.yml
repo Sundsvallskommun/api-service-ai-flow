@@ -2,6 +2,13 @@ openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}
   version: '@project.version@'
+scheduler:
+  stale-session-reaper:
+    name: stale-session-reaper
+    cron:
+      expression: '-' # Expression set in the config server or defaulted to '-'
+    shedlock-lock-at-most-for: PT2M # Defaulted to 2 minutes
+    maximum-execution-time: PT2M # Defaulted to 2 minutes
 
 logging:
   level:

@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import se.sundsvall.dept44.scheduling.Dept44Scheduled;
 
 @Component
 @ConditionalOnProperty(value = "stale-session-reaper.enabled", havingValue = "true", matchIfMissing = true)
@@ -19,7 +19,10 @@ class StaleSessionReaper {
 		this.sessionService = sessionService;
 	}
 
-	@Scheduled(initialDelayString = "${stale-session-reaper.check-interval:PT3H}", fixedRateString = "${stale-session-reaper.check-interval:PT3H}")
+	@Dept44Scheduled(cron = "${scheduler.stale-session-reaper.cron.expression}",
+		name = "${scheduler.stale-session-reaper.name}",
+		lockAtMostFor = "${scheduler.stale-session-reaper.shedlock-lock-at-most-for}",
+		maximumExecutionTime = "${scheduler.stale-session-reaper.maximum-execution-time}")
 	public void run() {
 		var sessions = sessionService.getAllSessions();
 		if (sessions.isEmpty()) {
