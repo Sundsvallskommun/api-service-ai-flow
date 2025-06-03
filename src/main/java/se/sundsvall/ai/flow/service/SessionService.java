@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.integration.intric.IntricIntegration;
+import se.sundsvall.ai.flow.integration.intric.IntricService;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
+import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
 public class SessionService {
@@ -27,12 +28,12 @@ public class SessionService {
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
 	private final Executor executor;
-	private final IntricIntegration intricIntegration;
+	private final IntricService intricService;
 	private final TemplatingIntegration templatingIntegration;
 
-	SessionService(final Executor executor, final IntricIntegration intricIntegration, final TemplatingIntegration templatingIntegration) {
+	SessionService(final Executor executor, final IntricService intricService, final TemplatingIntegration templatingIntegration) {
 		this.executor = executor;
-		this.intricIntegration = intricIntegration;
+		this.intricService = intricService;
 		this.templatingIntegration = templatingIntegration;
 	}
 
@@ -65,7 +66,7 @@ public class SessionService {
 			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to execute session %s as the following required inputs are unset or empty: %s".formatted(sessionId, unsetRequiredInputs));
 		}
 
-		executor.executeSession(session);
+		executor.executeSession(session, RequestId.get());
 	}
 
 	public void executeStep(final UUID sessionId, final String stepId, final String input, final boolean runRequiredSteps) {
@@ -85,7 +86,7 @@ public class SessionService {
 			.flatMap(Stream::ofNullable)
 			.toList();
 		// Delete the files
-		intricIntegration.deleteFiles(uploadedFileIds);
+		intricService.deleteFiles(uploadedFileIds);
 		// Remove the session
 		sessions.remove(sessionId);
 	}

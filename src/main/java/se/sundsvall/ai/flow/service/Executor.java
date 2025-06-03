@@ -13,27 +13,29 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.integration.intric.IntricIntegration;
+import se.sundsvall.ai.flow.integration.intric.IntricService;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInputRef;
 import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
 public class Executor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Executor.class);
 
-	private final IntricIntegration intricIntegration;
+	private final IntricService intricService;
 
-	public Executor(final IntricIntegration intricIntegration) {
-		this.intricIntegration = intricIntegration;
+	public Executor(final IntricService intricService) {
+		this.intricService = intricService;
 	}
 
 	@Async
-	public void executeSession(final Session session) {
+	public void executeSession(final Session session, final String requestId) {
+		RequestId.init(requestId);
 		var flow = session.getFlow();
 
 		// Upload all inputs (files) in the local session that haven't been uploaded before
@@ -142,7 +144,7 @@ public class Executor {
 					LOG.info("Running step {} using SERVICE {}", step.getName(), intricEndpointId);
 
 					// Run the service
-					var response = intricIntegration.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo, input);
+					var response = intricService.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo, input);
 					// Store the answer in the step execution
 					stepExecution.setOutput(response.answer());
 				}
@@ -152,7 +154,7 @@ public class Executor {
 						LOG.info("Running step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant
-						var response = intricIntegration.askAssistant(intricEndpointId, inputFilesInUse, inputsInUseInfo);
+						var response = intricService.askAssistant(intricEndpointId, inputFilesInUse, inputsInUseInfo);
 						// Store the Intric session id in the step execution to be able to ask follow-ups
 						stepExecution.setIntricSessionId(response.sessionId());
 						// Store the (current) answer in the step execution
@@ -161,7 +163,7 @@ public class Executor {
 						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant a follow-up
-						var response = intricIntegration.askAssistantFollowup(intricEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
+						var response = intricService.askAssistantFollowup(intricEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					}
@@ -183,7 +185,7 @@ public class Executor {
 				LOG.info("Uploading file for input {}", input.getFile().getName());
 
 				// Upload the file to Intric
-				var intricFileId = intricIntegration.uploadFile(input.getFile());
+				var intricFileId = intricService.uploadFile(input.getFile());
 				// Keep a reference to it for later
 				input.setIntricFileId(intricFileId);
 			});
@@ -196,14 +198,14 @@ public class Executor {
 					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
 
 					// Delete the file from Intric
-					intricIntegration.deleteFile(input.getIntricFileId());
+					intricService.deleteFile(input.getIntricFileId());
 					// Mark the input for removal from the session
 					inputsToRemoveFromSession.put(sourceStepId, input);
 				} else {
 					LOG.info("Uploading redirected output file from step {}", sourceStepId);
 
 					// Upload the file to Intric
-					var intricFileId = intricIntegration.uploadFile(input.getFile());
+					var intricFileId = intricService.uploadFile(input.getFile());
 					// Keep a reference to it for later
 					input.setIntricFileId(intricFileId);
 

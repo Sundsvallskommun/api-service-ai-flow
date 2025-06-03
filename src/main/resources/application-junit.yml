@@ -8,6 +8,14 @@ spring:
 stale-session-reaper:
   enabled: false
 
+scheduler:
+  stale-session-reaper:
+    name: stale-session-reaper
+    cron:
+      expression: '-' # Expression set in the config server or defaulted to '-'
+    shedlock-lock-at-most-for: PT2M # Defaulted to 2 minutes
+    maximum-execution-time: PT2M # Defaulted to 2 minutes
+
 integration:
   intric:
     base-url: http://base-url.com
@@ -17,7 +25,6 @@ integration:
       token-url: http://token-url.com
     read-timeout-in-seconds: 15
     connect-timeout-in-seconds: 5
-
   templating:
     base-url: http://base-url.com
     oauth2:
