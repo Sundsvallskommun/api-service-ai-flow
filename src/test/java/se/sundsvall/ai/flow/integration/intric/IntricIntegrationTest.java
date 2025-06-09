@@ -1,135 +1,185 @@
 package se.sundsvall.ai.flow.integration.intric;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.integration.intric.IntricIntegration.INPUT_DELIMITER;
 
 import generated.intric.ai.AskAssistant;
 import generated.intric.ai.AskResponse;
 import generated.intric.ai.FilePublic;
-import generated.intric.ai.ModelId;
 import generated.intric.ai.RunService;
 import generated.intric.ai.ServiceOutput;
-import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import org.zalando.problem.Problem;
 
 @ExtendWith(MockitoExtension.class)
 class IntricIntegrationTest {
 
 	@Mock
-	private IntricClient intricClientMock;
+	private IntricClient intricClient;
 
 	@InjectMocks
 	private IntricIntegration intricIntegration;
 
+	@AfterEach
+	void afterAll() {
+		verifyNoMoreInteractions(intricClient);
+	}
+
 	@Test
 	void runService() {
-		var intricEndpointId = UUID.randomUUID();
-		var uploadedFilesInfo = "someInfo";
-		var input = "input";
+		var serviceId = UUID.randomUUID();
+		var request = new RunService();
+		var serviceOutput = new ServiceOutput().output("someOutput");
 
-		when(intricClientMock.runService(eq(intricEndpointId), any(RunService.class))).thenReturn(new ServiceOutput().output("someOutput"));
+		when(intricClient.runService(serviceId, request)).thenReturn(serviceOutput);
 
-		var response = intricIntegration.runService(intricEndpointId, List.of(), uploadedFilesInfo, input);
+		var result = intricIntegration.runService(serviceId, request);
 
-		assertThat(response.answer()).isEqualTo("someOutput");
+		assertThat(result).isNotNull().isEqualTo(serviceOutput);
+		verify(intricClient).runService(serviceId, request);
+	}
 
-		verify(intricClientMock).runService(intricEndpointId, new RunService().input(uploadedFilesInfo + INPUT_DELIMITER + input));
-		verifyNoMoreInteractions(intricClientMock);
+	@Test
+	void runService_exception() {
+		var serviceId = UUID.randomUUID();
+		var request = new RunService();
+
+		when(intricClient.runService(serviceId, request)).thenThrow(RuntimeException.class);
+
+		assertThatThrownBy(() -> intricIntegration.runService(serviceId, request))
+			.isInstanceOf(Problem.class)
+			.hasMessageContaining("Bad Gateway")
+			.hasMessageContaining("Error running service with ID: %s".formatted(serviceId));
+
+		verify(intricClient).runService(serviceId, request);
 	}
 
 	@Test
 	void askAssistant() {
-		var intricEndpointId = UUID.randomUUID();
-		var uploadedInputFilesInUse = List.of(UUID.randomUUID(), UUID.randomUUID());
-		var uploadedInputFilesInUseInfo = "someInfo";
-		var askAssistantRequest = new AskAssistant()
-			.question(uploadedInputFilesInUseInfo)
-			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
-		var intricSessionId = UUID.randomUUID();
-		var answer = "someAnswer";
+		var assistantId = UUID.randomUUID();
+		var request = new AskAssistant();
+		var askResponse = new AskResponse()
+			.sessionId(UUID.randomUUID())
+			.answer("someAnswer");
 
-		when(intricClientMock.askAssistant(eq(intricEndpointId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(intricClient.askAssistant(assistantId, request)).thenReturn(askResponse);
 
-		var response = intricIntegration.askAssistant(intricEndpointId, uploadedInputFilesInUse, uploadedInputFilesInUseInfo);
+		var result = intricIntegration.askAssistant(assistantId, request);
 
-		assertThat(response.answer()).isEqualTo(answer);
-		assertThat(response.sessionId()).isEqualTo(intricSessionId);
+		assertThat(result).isNotNull().isEqualTo(askResponse);
+		verify(intricClient).askAssistant(assistantId, request);
+	}
 
-		verify(intricClientMock).askAssistant(intricEndpointId, askAssistantRequest);
-		verifyNoMoreInteractions(intricClientMock);
+	@Test
+	void askAssistant_exception() {
+		var assistantId = UUID.randomUUID();
+		var request = new AskAssistant();
+
+		when(intricClient.askAssistant(assistantId, request)).thenThrow(RuntimeException.class);
+
+		assertThatThrownBy(() -> intricIntegration.askAssistant(assistantId, request))
+			.isInstanceOf(Problem.class)
+			.hasMessageContaining("Bad Gateway")
+			.hasMessageContaining("Error asking assistant with ID: %s".formatted(assistantId));
+
+		verify(intricClient).askAssistant(assistantId, request);
 	}
 
 	@Test
 	void askAssistantFollowup() {
-		var intricEndpointId = UUID.randomUUID();
-		var intricSessionId = UUID.randomUUID();
-		var uploadedFilesInfo = "someInfo";
-		var question = "someQuestion";
-		var askAssistantRequest = new AskAssistant().question(uploadedFilesInfo + INPUT_DELIMITER + question);
-		var answer = "someAnswer";
+		var assistantId = UUID.randomUUID();
+		var sessionId = UUID.randomUUID();
+		var request = new AskAssistant();
+		var askResponse = new AskResponse()
+			.sessionId(sessionId)
+			.answer("someAnswer");
 
-		when(intricClientMock.askAssistantFollowup(eq(intricEndpointId), eq(intricSessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(intricClient.askAssistantFollowup(assistantId, sessionId, request)).thenReturn(askResponse);
 
-		var response = intricIntegration.askAssistantFollowup(intricEndpointId, intricSessionId, List.of(), uploadedFilesInfo, question);
+		var result = intricIntegration.askAssistantFollowup(assistantId, sessionId, request);
 
-		assertThat(response.answer()).isEqualTo(answer);
-		assertThat(response.sessionId()).isEqualTo(intricSessionId);
+		assertThat(result).isNotNull().isEqualTo(askResponse);
+		verify(intricClient).askAssistantFollowup(assistantId, sessionId, request);
+	}
 
-		verify(intricClientMock).askAssistantFollowup(intricEndpointId, intricSessionId, askAssistantRequest);
-		verifyNoMoreInteractions(intricClientMock);
+	@Test
+	void askAssistantFollowup_exception() {
+		var assistantId = UUID.randomUUID();
+		var sessionId = UUID.randomUUID();
+		var request = new AskAssistant();
+
+		when(intricClient.askAssistantFollowup(assistantId, sessionId, request)).thenThrow(RuntimeException.class);
+
+		assertThatThrownBy(() -> intricIntegration.askAssistantFollowup(assistantId, sessionId, request))
+			.isInstanceOf(Problem.class)
+			.hasMessageContaining("Bad Gateway")
+			.hasMessageContaining("Error asking assistant with ID: %s and session ID: %s".formatted(assistantId, sessionId));
+
+		verify(intricClient).askAssistantFollowup(assistantId, sessionId, request);
 	}
 
 	@Test
 	void uploadFile() {
-		var file = mock(MultipartFile.class);
-		var intricFileId = UUID.randomUUID();
-		var filePublicResponse = new FilePublic().id(intricFileId);
+		var multipartFile = Mockito.mock(MultipartFile.class);
+		var filePublic = new FilePublic().id(UUID.randomUUID());
 
-		when(intricClientMock.uploadFile(file)).thenReturn(ResponseEntity.ok(filePublicResponse));
+		when(intricClient.uploadFile(multipartFile)).thenReturn(ResponseEntity.ok(filePublic));
 
-		var uploadedFileId = intricIntegration.uploadFile(file);
+		var result = intricIntegration.uploadFile(multipartFile);
 
-		assertThat(uploadedFileId).isEqualTo(intricFileId);
-
-		verify(intricClientMock).uploadFile(file);
-		verifyNoMoreInteractions(intricClientMock);
+		assertThat(result).isNotNull().isEqualTo(filePublic);
+		verify(intricClient).uploadFile(multipartFile);
 	}
 
 	@Test
-	void deleteFiles() {
-		var fileIds = List.of(UUID.randomUUID(), UUID.randomUUID());
+	void uploadFile_exception() {
+		var multipartFile = Mockito.mock(MultipartFile.class);
 
-		when(intricClientMock.deleteFile(any(UUID.class))).thenReturn(ResponseEntity.noContent().build());
+		when(multipartFile.getOriginalFilename()).thenReturn("testFile.txt");
+		when(intricClient.uploadFile(multipartFile)).thenThrow(RuntimeException.class);
 
-		intricIntegration.deleteFiles(fileIds);
+		assertThatThrownBy(() -> intricIntegration.uploadFile(multipartFile))
+			.isInstanceOf(Problem.class)
+			.hasMessageContaining("Bad Gateway")
+			.hasMessageContaining("Error uploading file: %s".formatted(multipartFile.getOriginalFilename()));
 
-		verify(intricClientMock).deleteFile(fileIds.getFirst());
-		verify(intricClientMock).deleteFile(fileIds.getLast());
-		verifyNoMoreInteractions(intricClientMock);
+		verify(intricClient).uploadFile(multipartFile);
 	}
 
 	@Test
 	void deleteFile() {
 		var fileId = UUID.randomUUID();
 
-		when(intricClientMock.deleteFile(fileId)).thenReturn(ResponseEntity.noContent().build());
+		when(intricClient.deleteFile(fileId)).thenReturn(ResponseEntity.noContent().build());
 
 		intricIntegration.deleteFile(fileId);
 
-		verify(intricClientMock).deleteFile(fileId);
-		verifyNoMoreInteractions(intricClientMock);
+		verify(intricClient).deleteFile(fileId);
+	}
+
+	@Test
+	void deleteFile_exception() {
+		var fileId = UUID.randomUUID();
+
+		when(intricClient.deleteFile(fileId)).thenThrow(RuntimeException.class);
+
+		assertThatThrownBy(() -> intricIntegration.deleteFile(fileId))
+			.isInstanceOf(Problem.class)
+			.hasMessageContaining("Bad Gateway")
+			.hasMessageContaining("Error deleting file with ID: %s".formatted(fileId));
+
+		verify(intricClient).deleteFile(fileId);
 	}
 }

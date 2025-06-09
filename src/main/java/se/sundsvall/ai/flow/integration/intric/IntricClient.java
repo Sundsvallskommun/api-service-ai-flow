@@ -2,7 +2,7 @@ package se.sundsvall.ai.flow.integration.intric;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
-import static se.sundsvall.ai.flow.integration.intric.IntricIntegration.CLIENT_ID;
+import static se.sundsvall.ai.flow.integration.intric.IntricConfiguration.CLIENT_ID;
 
 import generated.intric.ai.AskAssistant;
 import generated.intric.ai.AskResponse;
