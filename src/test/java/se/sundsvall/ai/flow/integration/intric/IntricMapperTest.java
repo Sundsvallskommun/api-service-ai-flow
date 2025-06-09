@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 class IntricMapperTest {
 
 	@Test
-	void mapToRunServiceTest() {
+	void toRunServiceTest() {
 		var input = "Test input";
 		var uploadedInputFile = UUID.randomUUID();
 		var uploadedInputFilesInUse = List.of(uploadedInputFile);
 
-		var runService = IntricMapper.mapToRunService(input, uploadedInputFilesInUse);
+		var runService = IntricMapper.toRunService(input, uploadedInputFilesInUse);
 
 		assertThat(runService).isNotNull().satisfies(service -> {
 			assertThat(service.getInput()).isEqualTo(input);
@@ -37,12 +37,12 @@ class IntricMapperTest {
 	}
 
 	@Test
-	void mapToAskAssistantTest() {
+	void toAskAssistantTest() {
 		var question = "What is the meaning of life?";
 		var uploadedInputFile = UUID.randomUUID();
 		var uploadedInputFilesInUse = List.of(uploadedInputFile);
 
-		var askAssistant = IntricMapper.mapToAskAssistant(question, uploadedInputFilesInUse);
+		var askAssistant = IntricMapper.toAskAssistant(question, uploadedInputFilesInUse);
 
 		assertThat(askAssistant).isNotNull().satisfies(assistant -> {
 			assertThat(assistant.getQuestion()).isEqualTo(question);
@@ -52,12 +52,12 @@ class IntricMapperTest {
 	}
 
 	@Test
-	void mapToResponseFromAskResponseTest() {
+	void toResponseFromAskResponseTest() {
 		var sessionId = UUID.randomUUID();
 		var answer = "42";
 		var askResponse = new generated.intric.ai.AskResponse().sessionId(sessionId).answer(answer);
 
-		var response = IntricMapper.mapToResponse(askResponse);
+		var response = IntricMapper.toResponse(askResponse);
 
 		assertThat(response).isNotNull().satisfies(res -> {
 			assertThat(res.sessionId()).isEqualTo(sessionId);
@@ -66,11 +66,11 @@ class IntricMapperTest {
 	}
 
 	@Test
-	void mapToResponseFromServiceOutputTest() {
+	void toResponseFromServiceOutputTest() {
 		var output = "Service output";
 		var serviceOutput = new generated.intric.ai.ServiceOutput().output(output);
 
-		var response = IntricMapper.mapToResponse(serviceOutput);
+		var response = IntricMapper.toResponse(serviceOutput);
 
 		assertThat(response).isNotNull().satisfies(res -> {
 			assertThat(res.sessionId()).isNull();

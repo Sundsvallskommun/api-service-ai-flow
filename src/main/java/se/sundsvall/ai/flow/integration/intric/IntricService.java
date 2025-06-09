@@ -2,9 +2,9 @@ package se.sundsvall.ai.flow.integration.intric;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToAskAssistant;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToResponse;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToRunService;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toAskAssistant;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toResponse;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toRunService;
 
 import generated.intric.ai.FilePublic;
 import java.util.List;
@@ -33,17 +33,17 @@ public class IntricService {
 			actualInput += INPUT_DELIMITER + question;
 		}
 
-		var runServiceRequest = mapToRunService(actualInput, uploadedInputFilesInUse);
+		var runServiceRequest = toRunService(actualInput, uploadedInputFilesInUse);
 		var response = intricIntegration.runService(serviceId, runServiceRequest);
 
-		return mapToResponse(response);
+		return toResponse(response);
 	}
 
 	public Response askAssistant(final UUID assistantId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
-		var askAssistantRequest = mapToAskAssistant(uploadedInputFilesInUseInfo, uploadedInputFilesInUse);
+		var askAssistantRequest = toAskAssistant(uploadedInputFilesInUseInfo, uploadedInputFilesInUse);
 		var response = intricIntegration.askAssistant(assistantId, askAssistantRequest);
 
-		return mapToResponse(response);
+		return IntricMapper.toResponse(response);
 	}
 
 	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
@@ -53,10 +53,10 @@ public class IntricService {
 			actualQuestion += INPUT_DELIMITER + question;
 		}
 
-		var request = mapToAskAssistant(actualQuestion, uploadedInputFilesInUse);
+		var request = toAskAssistant(actualQuestion, uploadedInputFilesInUse);
 		var response = intricIntegration.askAssistantFollowup(assistantId, sessionId, request);
 
-		return mapToResponse(response);
+		return IntricMapper.toResponse(response);
 	}
 
 	public UUID uploadFile(final MultipartFile inputMultipartFile) {

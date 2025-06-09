@@ -13,7 +13,7 @@ public final class IntricMapper {
 		// Prevent instantiation
 	}
 
-	public static RunService mapToRunService(final String input, final List<UUID> uploadedInputFilesInUse) {
+	public static RunService toRunService(final String input, final List<UUID> uploadedInputFilesInUse) {
 		return new RunService()
 			.input(input)
 			.files(toModelIds(uploadedInputFilesInUse));
@@ -25,17 +25,17 @@ public final class IntricMapper {
 			.toList();
 	}
 
-	public static AskAssistant mapToAskAssistant(final String question, final List<UUID> uploadedInputFilesInUse) {
+	public static AskAssistant toAskAssistant(final String question, final List<UUID> uploadedInputFilesInUse) {
 		return new AskAssistant()
 			.question(question)
 			.files(toModelIds(uploadedInputFilesInUse));
 	}
 
-	public static Response mapToResponse(final generated.intric.ai.AskResponse askResponse) {
+	public static Response toResponse(final generated.intric.ai.AskResponse askResponse) {
 		return new Response(askResponse.getSessionId(), askResponse.getAnswer());
 	}
 
-	public static Response mapToResponse(final generated.intric.ai.ServiceOutput serviceOutput) {
+	public static Response toResponse(final generated.intric.ai.ServiceOutput serviceOutput) {
 		return new Response(serviceOutput.getOutput());
 	}
 
