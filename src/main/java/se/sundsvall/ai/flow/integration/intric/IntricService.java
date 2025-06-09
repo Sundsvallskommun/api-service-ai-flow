@@ -2,11 +2,11 @@ package se.sundsvall.ai.flow.integration.intric;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToAskAssistant;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToResponse;
+import static se.sundsvall.ai.flow.integration.intric.IntricMapper.mapToRunService;
 
-import generated.intric.ai.AskAssistant;
 import generated.intric.ai.FilePublic;
-import generated.intric.ai.ModelId;
-import generated.intric.ai.RunService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -33,21 +33,17 @@ public class IntricService {
 			actualInput += INPUT_DELIMITER + question;
 		}
 
-		var request = new RunService()
-			.input(actualInput)
-			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
-		var response = intricIntegration.runService(serviceId, request);
+		var runServiceRequest = mapToRunService(actualInput, uploadedInputFilesInUse);
+		var response = intricIntegration.runService(serviceId, runServiceRequest);
 
-		return new Response(response.getOutput());
+		return mapToResponse(response);
 	}
 
 	public Response askAssistant(final UUID assistantId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
-		var request = new AskAssistant()
-			.question(uploadedInputFilesInUseInfo)
-			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
-		var response = intricIntegration.askAssistant(assistantId, request);
+		var askAssistantRequest = mapToAskAssistant(uploadedInputFilesInUseInfo, uploadedInputFilesInUse);
+		var response = intricIntegration.askAssistant(assistantId, askAssistantRequest);
 
-		return new Response(response.getSessionId(), response.getAnswer());
+		return mapToResponse(response);
 	}
 
 	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
@@ -57,12 +53,10 @@ public class IntricService {
 			actualQuestion += INPUT_DELIMITER + question;
 		}
 
-		var request = new AskAssistant()
-			.question(actualQuestion)
-			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
+		var request = mapToAskAssistant(actualQuestion, uploadedInputFilesInUse);
 		var response = intricIntegration.askAssistantFollowup(assistantId, sessionId, request);
 
-		return new Response(response.getSessionId(), response.getAnswer());
+		return mapToResponse(response);
 	}
 
 	public UUID uploadFile(final MultipartFile inputMultipartFile) {

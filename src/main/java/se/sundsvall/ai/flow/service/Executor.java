@@ -35,20 +35,24 @@ public class Executor {
 
 	@Async
 	public void executeSession(final Session session, final String requestId) {
-		RequestId.init(requestId);
-		var flow = session.getFlow();
+		try {
+			RequestId.init(requestId);
+			var flow = session.getFlow();
 
-		// Upload all inputs (files) in the local session that haven't been uploaded before
-		uploadMissingInputFilesInSessionToIntric(session);
+			// Upload all inputs (files) in the local session that haven't been uploaded before
+			uploadMissingInputFilesInSessionToIntric(session);
 
-		// Mark the session as running
-		session.setState(Session.State.RUNNING);
-		// Execute the steps in the order defined in the flow, running required steps if they exist
-		flow.getSteps().stream()
-			.map(step -> session.getStepExecution(step.getId()))
-			.forEach(step -> executeStepInternal(step, null, true));
-		// Mark the session as finished
-		session.setState(Session.State.FINISHED);
+			// Mark the session as running
+			session.setState(Session.State.RUNNING);
+			// Execute the steps in the order defined in the flow, running required steps if they exist
+			flow.getSteps().stream()
+				.map(step -> session.getStepExecution(step.getId()))
+				.forEach(step -> executeStepInternal(step, null, true));
+			// Mark the session as finished
+			session.setState(Session.State.FINISHED);
+		} finally {
+			RequestId.reset();
+		}
 	}
 
 	// @Async
