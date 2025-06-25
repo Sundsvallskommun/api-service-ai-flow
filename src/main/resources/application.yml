@@ -23,6 +23,7 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: true
-#springdoc:
-#  swagger-ui:
-#    operationsSorter: method
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: -1
