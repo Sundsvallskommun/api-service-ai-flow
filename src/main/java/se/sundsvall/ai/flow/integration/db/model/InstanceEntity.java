@@ -11,7 +11,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "instance", indexes = {
-	@Index(name = "idx_instance_id", columnList = "id"),
 	@Index(name = "idx_municipality_id", columnList = "municipality_id")
 })
 public class InstanceEntity {

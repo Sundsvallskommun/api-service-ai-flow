@@ -43,6 +43,7 @@ class InstanceEntityTest {
 		instanceEntity.setConnectTimeout(CONNECT_TIMEOUT);
 		instanceEntity.setReadTimeout(READ_TIMEOUT);
 
+		assertThat(instanceEntity).hasNoNullFieldsOrProperties();
 		assertThat(instanceEntity.getId()).isEqualTo(ID);
 		assertThat(instanceEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(instanceEntity.getBaseUrl()).isEqualTo(BASE_URL);
@@ -63,6 +64,7 @@ class InstanceEntityTest {
 			.withConnectTimeout(CONNECT_TIMEOUT)
 			.withReadTimeout(READ_TIMEOUT);
 
+		assertThat(instanceEntity).hasNoNullFieldsOrProperties();
 		assertThat(instanceEntity.getId()).isEqualTo(ID);
 		assertThat(instanceEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(instanceEntity.getBaseUrl()).isEqualTo(BASE_URL);
@@ -76,8 +78,12 @@ class InstanceEntityTest {
 	void noDirtOnNewlyCreatedObject() {
 		final var constructorEntity = new InstanceEntity();
 		assertThat(constructorEntity).hasAllNullFieldsOrPropertiesExcept("connectTimeout", "readTimeout");
+		assertThat(constructorEntity.getReadTimeout()).isZero();
+		assertThat(constructorEntity.getConnectTimeout()).isZero();
 
 		final var builderEntity = InstanceEntity.create();
+		assertThat(builderEntity.getReadTimeout()).isZero();
+		assertThat(builderEntity.getConnectTimeout()).isZero();
 		assertThat(builderEntity).hasAllNullFieldsOrPropertiesExcept("connectTimeout", "readTimeout");
 	}
 }
