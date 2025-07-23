@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "flow", indexes = {
@@ -97,5 +98,30 @@ public class FlowEntity {
 		this.content = content;
 	}
 
-	public record IdAndVersion(String id, Integer version) {}
+	public record IdAndVersion(String id, Integer version) {
+	}
+
+	@Override
+	public String toString() {
+		return "FlowEntity{" +
+			"id='" + id + '\'' +
+			", version=" + version +
+			", name='" + name + '\'' +
+			", description='" + description + '\'' +
+			", content='" + content + '\'' +
+			'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+		FlowEntity that = (FlowEntity) o;
+		return Objects.equals(id, that.id) && Objects.equals(version, that.version) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(content, that.content);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, version, name, description, content);
+	}
 }
