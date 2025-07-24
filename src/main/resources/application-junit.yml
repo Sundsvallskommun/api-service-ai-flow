@@ -2,6 +2,8 @@ spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:mariadb:10.6.14:///
+    username: root
+    password: root
   flyway:
     enabled: true
 

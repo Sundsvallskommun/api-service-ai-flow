@@ -19,6 +19,8 @@ import se.sundsvall.ai.flow.model.session.Session;
 @ExtendWith(MockitoExtension.class)
 class StaleSessionReaperTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+
 	@Mock
 	private SessionService mockSessionService;
 
@@ -46,6 +48,7 @@ class StaleSessionReaperTest {
 		var sessionId2 = UUID.randomUUID();
 
 		when(mockSession1.getId()).thenReturn(sessionId1);
+		when(mockSession1.getMunicipalityId()).thenReturn(MUNICIPALITY_ID);
 		when(mockSession1.getFlow().getTtlInMinutes()).thenReturn(30);
 		when(mockSession1.getLastUpdatedAt()).thenReturn(LocalDateTime.now().minusMinutes(45));
 
@@ -58,7 +61,7 @@ class StaleSessionReaperTest {
 		staleSessionReaper.run();
 
 		verify(mockSessionService).getAllSessions();
-		verify(mockSessionService).deleteSession(sessionId1);
+		verify(mockSessionService).deleteSession(MUNICIPALITY_ID, sessionId1);
 		verifyNoMoreInteractions(mockSessionService);
 	}
 }

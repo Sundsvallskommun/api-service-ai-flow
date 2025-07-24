@@ -11,8 +11,11 @@ import generated.intric.ai.AskResponse;
 import generated.intric.ai.FilePublic;
 import generated.intric.ai.RunService;
 import generated.intric.ai.ServiceOutput;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,21 +23,52 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
+import se.sundsvall.ai.flow.integration.db.InstanceRepository;
+import se.sundsvall.ai.flow.integration.db.model.InstanceEntity;
+import se.sundsvall.ai.flow.integration.intric.configuration.IntricClientFactory;
 
 @ExtendWith(MockitoExtension.class)
 class IntricIntegrationTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+
 	@Mock
 	private IntricClient intricClient;
+
+	@Mock
+	private IntricClientFactory intricClientFactory;
+
+	@Mock
+	private InstanceRepository instanceRepository;
 
 	@InjectMocks
 	private IntricIntegration intricIntegration;
 
+	@BeforeEach
+	public void setup() {
+		var intricClients = new HashMap<String, IntricClient>();
+		intricClients.put(MUNICIPALITY_ID, intricClient);
+		ReflectionTestUtils.setField(intricIntegration, "intricClients", intricClients);
+	}
+
 	@AfterEach
 	void afterAll() {
 		verifyNoMoreInteractions(intricClient);
+	}
+
+	@Test
+	void init() {
+		var instanceEntity = new InstanceEntity()
+			.withMunicipalityId(MUNICIPALITY_ID);
+		when(instanceRepository.findAll()).thenReturn(List.of(instanceEntity));
+
+		intricIntegration.init();
+
+		verify(intricClientFactory).createIntricClient(instanceEntity);
+		assertThat(intricIntegration.intricClients).isNotEmpty();
 	}
 
 	@Test
@@ -45,7 +79,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.runService(serviceId, request)).thenReturn(serviceOutput);
 
-		var result = intricIntegration.runService(serviceId, request);
+		var result = intricIntegration.runService(MUNICIPALITY_ID, serviceId, request);
 
 		assertThat(result).isNotNull().isEqualTo(serviceOutput);
 		verify(intricClient).runService(serviceId, request);
@@ -58,7 +92,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.runService(serviceId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> intricIntegration.runService(serviceId, request))
+		assertThatThrownBy(() -> intricIntegration.runService(MUNICIPALITY_ID, serviceId, request))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("Bad Gateway")
 			.hasMessageContaining("Error running service with ID: %s".formatted(serviceId));
@@ -76,7 +110,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.askAssistant(assistantId, request)).thenReturn(askResponse);
 
-		var result = intricIntegration.askAssistant(assistantId, request);
+		var result = intricIntegration.askAssistant(MUNICIPALITY_ID, assistantId, request);
 
 		assertThat(result).isNotNull().isEqualTo(askResponse);
 		verify(intricClient).askAssistant(assistantId, request);
@@ -89,7 +123,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.askAssistant(assistantId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> intricIntegration.askAssistant(assistantId, request))
+		assertThatThrownBy(() -> intricIntegration.askAssistant(MUNICIPALITY_ID, assistantId, request))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("Bad Gateway")
 			.hasMessageContaining("Error asking assistant with ID: %s".formatted(assistantId));
@@ -108,7 +142,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.askAssistantFollowup(assistantId, sessionId, request)).thenReturn(askResponse);
 
-		var result = intricIntegration.askAssistantFollowup(assistantId, sessionId, request);
+		var result = intricIntegration.askAssistantFollowup(MUNICIPALITY_ID, assistantId, sessionId, request);
 
 		assertThat(result).isNotNull().isEqualTo(askResponse);
 		verify(intricClient).askAssistantFollowup(assistantId, sessionId, request);
@@ -122,7 +156,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.askAssistantFollowup(assistantId, sessionId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> intricIntegration.askAssistantFollowup(assistantId, sessionId, request))
+		assertThatThrownBy(() -> intricIntegration.askAssistantFollowup(MUNICIPALITY_ID, assistantId, sessionId, request))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("Bad Gateway")
 			.hasMessageContaining("Error asking assistant with ID: %s and session ID: %s".formatted(assistantId, sessionId));
@@ -137,7 +171,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.uploadFile(multipartFile)).thenReturn(ResponseEntity.ok(filePublic));
 
-		var result = intricIntegration.uploadFile(multipartFile);
+		var result = intricIntegration.uploadFile(MUNICIPALITY_ID, multipartFile);
 
 		assertThat(result).isNotNull().isEqualTo(filePublic);
 		verify(intricClient).uploadFile(multipartFile);
@@ -150,7 +184,7 @@ class IntricIntegrationTest {
 		when(multipartFile.getOriginalFilename()).thenReturn("testFile.txt");
 		when(intricClient.uploadFile(multipartFile)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> intricIntegration.uploadFile(multipartFile))
+		assertThatThrownBy(() -> intricIntegration.uploadFile(MUNICIPALITY_ID, multipartFile))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("Bad Gateway")
 			.hasMessageContaining("Error uploading file: %s".formatted(multipartFile.getOriginalFilename()));
@@ -164,7 +198,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.deleteFile(fileId)).thenReturn(ResponseEntity.noContent().build());
 
-		intricIntegration.deleteFile(fileId);
+		intricIntegration.deleteFile(MUNICIPALITY_ID, fileId);
 
 		verify(intricClient).deleteFile(fileId);
 	}
@@ -175,7 +209,7 @@ class IntricIntegrationTest {
 
 		when(intricClient.deleteFile(fileId)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> intricIntegration.deleteFile(fileId))
+		assertThatThrownBy(() -> intricIntegration.deleteFile(MUNICIPALITY_ID, fileId))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("Bad Gateway")
 			.hasMessageContaining("Error deleting file with ID: %s".formatted(fileId));

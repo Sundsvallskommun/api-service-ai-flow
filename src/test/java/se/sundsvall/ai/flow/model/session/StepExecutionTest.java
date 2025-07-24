@@ -10,9 +10,11 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 
 class StepExecutionTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+
 	@Test
 	void getterAndSetter() {
-		var session = new Session(new Flow());
+		var session = new Session(MUNICIPALITY_ID, new Flow());
 		var step = new Step();
 		var requiredStepExecutions = List.<StepExecution>of();
 

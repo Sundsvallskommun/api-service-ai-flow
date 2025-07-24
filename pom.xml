@@ -177,6 +177,7 @@
 						<exclude>**/se/sundsvall/ai/flow/service/FlowService**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/Executor**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/FlowLoader$Configuration**</exclude>
+						<exclude>**/se/sundsvall/ai/flow/integration/intric/configuration/IntricClientFactory**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

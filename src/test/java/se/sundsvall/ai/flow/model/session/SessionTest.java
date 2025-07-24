@@ -25,12 +25,14 @@ import se.sundsvall.ai.flow.model.support.UploadedMultipartFile;
 @ExtendWith(MockitoExtension.class)
 class SessionTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+
 	@Test
 	void getAndSetState() {
 		var state = Session.State.FINISHED;
 		var flow = new Flow();
 
-		var session = new Session(flow);
+		var session = new Session(MUNICIPALITY_ID, flow);
 		assertThat(session.getState()).isEqualTo(Session.State.CREATED);
 
 		session.setState(state);
@@ -47,7 +49,7 @@ class SessionTest {
 				new Step().withId("step2"),
 				new Step().withId("step3")));
 
-		var session = new Session(flow);
+		var session = new Session(MUNICIPALITY_ID, flow);
 		ReflectionTestUtils.setField(session.getStepExecution("step1"), "lastUpdatedAt", LocalDateTime.now());
 		ReflectionTestUtils.setField(session.getStepExecution("step2"), "lastUpdatedAt", LocalDateTime.now().plusHours(1));
 
@@ -64,7 +66,7 @@ class SessionTest {
 				new Step().withId("step2"),
 				new Step().withId("step3")));
 
-		var session = new Session(flow);
+		var session = new Session(MUNICIPALITY_ID, flow);
 
 		var result = session.getLastUpdatedAt();
 
@@ -79,7 +81,7 @@ class SessionTest {
 		var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds.stream().map(UUID::toString).toList()));
 		var inputs = intricFileIds.stream().map(intricFileId -> new Input(null).withIntricFileId(intricFileId)).toList();
 
-		var session = new Session(new Flow());
+		var session = new Session(MUNICIPALITY_ID, new Flow());
 		var inputInfo = session.createInputInfo(key, name, inputs);
 
 		assertThat(inputInfo.getKey()).isEqualTo(key);
@@ -97,7 +99,7 @@ class SessionTest {
 			.withFlowInputs(List.of(
 				new FlowInput().withId(inputId).withName(inputName).withMultipleValued(true)));
 
-		var session = new Session(flow);
+		var session = new Session(MUNICIPALITY_ID, flow);
 		session.addSimpleInput(inputId, inputValue1);
 		session.addSimpleInput(inputId, inputValue2);
 
@@ -127,7 +129,7 @@ class SessionTest {
 			.withFlowInputs(List.of(
 				new FlowInput().withId(inputId).withName(inputName).withMultipleValued(true)));
 
-		var session = new Session(flow);
+		var session = new Session(MUNICIPALITY_ID, flow);
 		session.addFileInput(inputId, inputFile1);
 		session.addFileInput(inputId, inputFile2);
 
