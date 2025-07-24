@@ -48,7 +48,7 @@ class IntricIntegrationTest {
 	private IntricIntegration intricIntegration;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		var intricClients = new HashMap<String, IntricClient>();
 		intricClients.put(MUNICIPALITY_ID, intricClient);
 		ReflectionTestUtils.setField(intricIntegration, "intricClients", intricClients);

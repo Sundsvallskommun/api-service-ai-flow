@@ -41,6 +41,9 @@ class IntricTokenConfigurationTest {
 		when(instanceRepositoryMock.findAll()).thenReturn(List.of(instanceEntity));
 
 		intricTokenConfiguration = new IntricTokenConfiguration(instanceRepositoryMock, encryptionUtilityMock);
+
+		assertThat(intricTokenConfiguration.getTokenBody(MUNICIPALITY_ID)).isNotEmpty();
+		assertThat(intricTokenConfiguration.getTokenClient(MUNICIPALITY_ID)).isNotNull();
 	}
 
 	@Test

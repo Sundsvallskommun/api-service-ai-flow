@@ -32,7 +32,7 @@ public class IntricIntegration {
 	/**
 	 * The key is the municipality ID, and the value is the municipality specific configured IntricClient.
 	 */
-	public Map<String, IntricClient> intricClients = new HashMap<>();
+	public final Map<String, IntricClient> intricClients = new HashMap<>();
 
 	IntricIntegration(final IntricClientFactory intricClientFactory,
 		final InstanceRepository instanceRepository) {
