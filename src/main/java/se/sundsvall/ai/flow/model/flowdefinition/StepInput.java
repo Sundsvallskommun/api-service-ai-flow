@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Map;
 import se.sundsvall.ai.flow.util.StreamUtil;
 
@@ -40,6 +41,9 @@ public abstract class StepInput {
 	}
 
 	static class Deserializer extends StdDeserializer<StepInput> {
+
+		@Serial
+		static final long serialVersionUID = -703432197878787L;
 
 		Deserializer() {
 			super((Class<?>) null);

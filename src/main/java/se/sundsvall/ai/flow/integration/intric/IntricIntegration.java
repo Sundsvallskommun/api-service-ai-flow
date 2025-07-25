@@ -9,31 +9,53 @@ import generated.intric.ai.AskResponse;
 import generated.intric.ai.FilePublic;
 import generated.intric.ai.RunService;
 import generated.intric.ai.ServiceOutput;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
+import se.sundsvall.ai.flow.integration.db.InstanceRepository;
+import se.sundsvall.ai.flow.integration.intric.configuration.IntricClientFactory;
 
 @Component
 public class IntricIntegration {
 
 	private static final Logger LOG = LoggerFactory.getLogger(IntricIntegration.class);
 
-	private final IntricClient intricClient;
+	private final IntricClientFactory intricClientFactory;
+	private final InstanceRepository instanceRepository;
 	private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-	IntricIntegration(final IntricClient intricClient) {
-		this.intricClient = intricClient;
+	/**
+	 * The key is the municipality ID, and the value is the municipality specific configured IntricClient.
+	 */
+	public final Map<String, IntricClient> intricClients = new HashMap<>();
+
+	IntricIntegration(final IntricClientFactory intricClientFactory,
+		final InstanceRepository instanceRepository) {
+		this.intricClientFactory = intricClientFactory;
+		this.instanceRepository = instanceRepository;
+
+		init();
 	}
 
-	public ServiceOutput runService(final UUID serviceId, final RunService request) {
+	void init() {
+		instanceRepository.findAll().forEach(instanceEntity -> {
+			var intricClient = intricClientFactory.createIntricClient(instanceEntity);
+			intricClients.put(instanceEntity.getMunicipalityId(), intricClient);
+		});
+	}
+
+	public ServiceOutput runService(final String municipalityId, final UUID serviceId, final RunService request) {
 		try {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Running service with ID: {} and request: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
 			}
-			var result = intricClient.runService(serviceId, request);
+
+			var result = intricClients.get(municipalityId).runService(serviceId, request);
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Intric service with ID: {} returned output: \n\n {}", serviceId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
 			}
@@ -44,12 +66,12 @@ public class IntricIntegration {
 		}
 	}
 
-	public AskResponse askAssistant(final UUID assistantId, final AskAssistant request) {
+	public AskResponse askAssistant(final String municipalityId, final UUID assistantId, final AskAssistant request) {
 		try {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Asking assistant with ID: {} and request: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
 			}
-			var result = intricClient.askAssistant(assistantId, request);
+			var result = intricClients.get(municipalityId).askAssistant(assistantId, request);
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Intric assistant with ID: {} returned response: \n\n {}", assistantId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
 			}
@@ -60,12 +82,12 @@ public class IntricIntegration {
 		}
 	}
 
-	public AskResponse askAssistantFollowup(final UUID assistantId, final UUID sessionId, final AskAssistant request) {
+	public AskResponse askAssistantFollowup(final String municipalityId, final UUID assistantId, final UUID sessionId, final AskAssistant request) {
 		try {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Asking assistant followup with ID: {} and session ID: {} and request: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
 			}
-			var result = intricClient.askAssistantFollowup(assistantId, sessionId, request);
+			var result = intricClients.get(municipalityId).askAssistantFollowup(assistantId, sessionId, request);
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Intric assistant followup with ID: {} and session ID: {} returned response: \n\n {}", assistantId, sessionId, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
 			}
@@ -76,10 +98,10 @@ public class IntricIntegration {
 		}
 	}
 
-	public FilePublic uploadFile(final MultipartFile file) {
+	public FilePublic uploadFile(final String municipalityId, final MultipartFile file) {
 		try {
 			LOG.debug("Uploading file: {}", file.getOriginalFilename());
-			var result = intricClient.uploadFile(file);
+			var result = intricClients.get(municipalityId).uploadFile(file);
 			LOG.debug("File '{}' uploaded successfully", file.getOriginalFilename());
 			return result.getBody();
 		} catch (Exception e) {
@@ -88,10 +110,10 @@ public class IntricIntegration {
 		}
 	}
 
-	public void deleteFile(final UUID fileId) {
+	public void deleteFile(final String municipalityId, final UUID fileId) {
 		try {
 			LOG.debug("Deleting file with ID: {}", fileId);
-			intricClient.deleteFile(fileId);
+			intricClients.get(municipalityId).deleteFile(fileId);
 			LOG.debug("File with ID: {} deleted successfully", fileId);
 		} catch (Exception e) {
 			LOG.error("Error deleting file with ID: {}", fileId, e);

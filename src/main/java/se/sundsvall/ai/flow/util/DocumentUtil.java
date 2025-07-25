@@ -28,11 +28,11 @@ public final class DocumentUtil {
 		}
 	}
 
-	public static String extractTextFromPdf(final byte[] data) {
+	public static void extractTextFromPdf(final byte[] data) {
 		try (var document = Loader.loadPDF(data)) {
 			var text = new PDFTextStripper().getText(document);
 
-			return removeBlankLines(text);
+			removeBlankLines(text);
 		} catch (Exception e) {
 			throw new FlowException("Unable to extract text from PDF document", e);
 		}
@@ -48,12 +48,12 @@ public final class DocumentUtil {
 		}
 	}
 
-	public static String extractTextFromDocx(final byte[] data) {
+	public static void extractTextFromDocx(final byte[] data) {
 		try (var in = new ByteArrayInputStream(data);
 			var file = new XWPFDocument(OPCPackage.open(in))) {
-			var text = new XWPFWordExtractor(file).getText();
-
-			return removeBlankLines(text);
+			try (var extractor = new XWPFWordExtractor(file)) {
+				extractor.getText();
+			}
 		} catch (IOException | InvalidFormatException e) {
 			throw new FlowException("Unable to extract text from DOCX document", e);
 		}

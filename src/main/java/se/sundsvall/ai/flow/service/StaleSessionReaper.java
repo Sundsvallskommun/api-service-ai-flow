@@ -35,7 +35,7 @@ class StaleSessionReaper {
 			var ttlInMinutes = session.getFlow().getTtlInMinutes();
 
 			if (lastUpdatedAt.plusMinutes(ttlInMinutes).isBefore(now)) {
-				sessionService.deleteSession(session.getId());
+				sessionService.deleteSession(session.getMunicipalityId(), session.getId());
 
 				LOG.info("Deleted stale session {}", session.getId());
 			}

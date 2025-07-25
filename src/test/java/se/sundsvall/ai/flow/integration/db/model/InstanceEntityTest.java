@@ -16,6 +16,7 @@ class InstanceEntityTest {
 	private static final String ID = "664ff969-bb5f-42a6-8889-eb3af0e01e74";
 	private static final String MUNICIPALITY_ID = "2281";
 	private static final String BASE_URL = "https://api.example.com";
+	private static final String TOKEN_URL = "https://api.example.com/token";
 	private static final String USERNAME = "testUser";
 	private static final String PASSWORD = "testPassword";
 	private static final Integer CONNECT_TIMEOUT = 5;
@@ -38,6 +39,7 @@ class InstanceEntityTest {
 		instanceEntity.setId(ID);
 		instanceEntity.setMunicipalityId(MUNICIPALITY_ID);
 		instanceEntity.setBaseUrl(BASE_URL);
+		instanceEntity.setTokenUrl(TOKEN_URL);
 		instanceEntity.setUsername(USERNAME);
 		instanceEntity.setPassword(PASSWORD);
 		instanceEntity.setConnectTimeout(CONNECT_TIMEOUT);
@@ -47,6 +49,7 @@ class InstanceEntityTest {
 		assertThat(instanceEntity.getId()).isEqualTo(ID);
 		assertThat(instanceEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(instanceEntity.getBaseUrl()).isEqualTo(BASE_URL);
+		assertThat(instanceEntity.getTokenUrl()).isEqualTo(TOKEN_URL);
 		assertThat(instanceEntity.getUsername()).isEqualTo(USERNAME);
 		assertThat(instanceEntity.getPassword()).isEqualTo(PASSWORD);
 		assertThat(instanceEntity.getConnectTimeout()).isEqualTo(CONNECT_TIMEOUT);
@@ -59,6 +62,7 @@ class InstanceEntityTest {
 			.withId(ID)
 			.withMunicipalityId(MUNICIPALITY_ID)
 			.withBaseUrl(BASE_URL)
+			.withTokenUrl(TOKEN_URL)
 			.withUsername(USERNAME)
 			.withPassword(PASSWORD)
 			.withConnectTimeout(CONNECT_TIMEOUT)
@@ -68,6 +72,7 @@ class InstanceEntityTest {
 		assertThat(instanceEntity.getId()).isEqualTo(ID);
 		assertThat(instanceEntity.getMunicipalityId()).isEqualTo(MUNICIPALITY_ID);
 		assertThat(instanceEntity.getBaseUrl()).isEqualTo(BASE_URL);
+		assertThat(instanceEntity.getTokenUrl()).isEqualTo(TOKEN_URL);
 		assertThat(instanceEntity.getUsername()).isEqualTo(USERNAME);
 		assertThat(instanceEntity.getPassword()).isEqualTo(PASSWORD);
 		assertThat(instanceEntity.getConnectTimeout()).isEqualTo(CONNECT_TIMEOUT);
