@@ -10,4 +10,6 @@ public interface InstanceRepository extends JpaRepository<InstanceEntity, String
 
 	Optional<InstanceEntity> findByMunicipalityId(final String municipalityId);
 
+	Optional<InstanceEntity> findByMunicipalityIdAndId(final String municipalityId, final String id);
+
 }
