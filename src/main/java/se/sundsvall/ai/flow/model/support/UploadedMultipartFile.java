@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
 
@@ -70,6 +71,9 @@ public class UploadedMultipartFile implements MultipartFile {
 	}
 
 	static class Serializer extends StdSerializer<UploadedMultipartFile> {
+
+		@Serial
+		static final long serialVersionUID = -555432197878555L;
 
 		protected Serializer() {
 			super(UploadedMultipartFile.class);

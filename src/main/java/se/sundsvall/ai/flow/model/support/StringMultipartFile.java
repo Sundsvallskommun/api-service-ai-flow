@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import org.springframework.web.multipart.MultipartFile;
 
 @JsonSerialize(using = StringMultipartFile.Serializer.class)
@@ -71,6 +72,9 @@ public class StringMultipartFile implements MultipartFile {
 	}
 
 	static class Serializer extends StdSerializer<StringMultipartFile> {
+
+		@Serial
+		static final long serialVersionUID = -666632197878666L;
 
 		protected Serializer() {
 			super(StringMultipartFile.class);
