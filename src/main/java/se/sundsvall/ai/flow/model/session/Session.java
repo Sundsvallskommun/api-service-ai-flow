@@ -40,6 +40,7 @@ public class Session {
 	}
 
 	private final UUID id;
+	private final String municipalityId;
 	@JsonIgnore
 	private final Flow flow;
 	private final Map<String, List<Input>> input = new TreeMap<>();
@@ -48,7 +49,8 @@ public class Session {
 	private final Map<String, StepExecution> stepExecutions = new TreeMap<>();
 	private State state;
 
-	public Session(final Flow flow) {
+	public Session(final String municipalityId, final Flow flow) {
+		this.municipalityId = municipalityId;
 		id = UUID.randomUUID();
 		state = State.CREATED;
 
@@ -58,6 +60,10 @@ public class Session {
 		flow.getSteps().forEach(this::createStepExecution);
 		// Create initial (empty) input lists
 		flow.getFlowInputs().forEach(flowInput -> input.put(flowInput.getId(), new LinkedList<>()));
+	}
+
+	public String getMunicipalityId() {
+		return municipalityId;
 	}
 
 	public UUID getId() {

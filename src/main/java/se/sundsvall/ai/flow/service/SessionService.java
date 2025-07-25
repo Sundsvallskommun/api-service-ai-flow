@@ -37,8 +37,8 @@ public class SessionService {
 		this.templatingIntegration = templatingIntegration;
 	}
 
-	public Session createSession(final Flow flow) {
-		var session = new Session(flow);
+	public Session createSession(final String municipalityId, final Flow flow) {
+		var session = new Session(municipalityId, flow);
 		sessions.put(session.getId(), session);
 		return session;
 	}
@@ -52,7 +52,7 @@ public class SessionService {
 		return sessions.values();
 	}
 
-	public void executeSession(final UUID sessionId) {
+	public void executeSession(final String municipalityId, final UUID sessionId) {
 		var session = getSession(sessionId);
 		var flow = session.getFlow();
 
@@ -66,17 +66,17 @@ public class SessionService {
 			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to execute session %s as the following required inputs are unset or empty: %s".formatted(sessionId, unsetRequiredInputs));
 		}
 
-		executor.executeSession(session, RequestId.get());
+		executor.executeSession(municipalityId, session, RequestId.get());
 	}
 
-	public void executeStep(final UUID sessionId, final String stepId, final String input, final boolean runRequiredSteps) {
+	public void executeStep(final String municipalityId, final UUID sessionId, final String stepId, final String input, final boolean runRequiredSteps) {
 		var session = getSession(sessionId);
 		var stepExecution = session.getStepExecution(stepId);
 
-		executor.executeStep(stepExecution, input, runRequiredSteps);
+		executor.executeStep(municipalityId, stepExecution, input, runRequiredSteps);
 	}
 
-	public void deleteSession(final UUID sessionId) {
+	public void deleteSession(final String municipalityId, final UUID sessionId) {
 		var session = getSession(sessionId);
 
 		// Extract the id:s of the files uploaded in the session
@@ -86,7 +86,7 @@ public class SessionService {
 			.flatMap(Stream::ofNullable)
 			.toList();
 		// Delete the files
-		intricService.deleteFiles(uploadedFileIds);
+		intricService.deleteFiles(municipalityId, uploadedFileIds);
 		// Remove the session
 		sessions.remove(sessionId);
 	}

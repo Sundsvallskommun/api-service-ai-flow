@@ -101,7 +101,7 @@ class SessionResource {
 		var flow = ofNullable(request.version())
 			.map(version -> flowService.getFlowVersion(request.flowId(), version))
 			.orElseGet(() -> flowService.getLatestFlowVersion(request.flowId()));
-		var session = sessionService.createSession(flow);
+		var session = sessionService.createSession(municipalityId, flow);
 
 		return created(fromPath("/session/{sessionId}").buildAndExpand(session.getId()).toUri())
 			.body(session);
@@ -125,7 +125,7 @@ class SessionResource {
 	ResponseEntity<Void> runSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
-		sessionService.executeSession(sessionId);
+		sessionService.executeSession(municipalityId, sessionId);
 
 		return ResponseEntity.ok().build();
 	}
@@ -146,7 +146,7 @@ class SessionResource {
 	ResponseEntity<Void> deleteSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
-		sessionService.deleteSession(sessionId);
+		sessionService.deleteSession(municipalityId, sessionId);
 		return ok().build();
 	}
 
@@ -192,7 +192,7 @@ class SessionResource {
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
 		@Parameter(name = "stepId", description = "Step id") @PathVariable("stepId") String stepId,
 		@Valid @RequestBody final ChatRequest request) {
-		sessionService.executeStep(sessionId, stepId, request.input(), request.runRequiredSteps());
+		sessionService.executeStep(municipalityId, sessionId, stepId, request.input(), request.runRequiredSteps());
 
 		return created(fromPath("/{municipalityId}/session/{sessionId}/step/{stepId}")
 			.buildAndExpand(municipalityId, sessionId, stepId).toUri())

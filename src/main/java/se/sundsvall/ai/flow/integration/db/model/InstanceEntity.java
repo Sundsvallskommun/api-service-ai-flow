@@ -7,11 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.util.Objects;
 
 @Entity
 @Table(name = "instance", indexes = {
 	@Index(name = "idx_municipality_id", columnList = "municipality_id")
+}, uniqueConstraints = {
+	@UniqueConstraint(name = "uk_instance_municipality_id", columnNames = "municipality_id")
 })
 public class InstanceEntity {
 
@@ -24,6 +27,9 @@ public class InstanceEntity {
 
 	@Column(name = "base_url")
 	private String baseUrl;
+
+	@Column(name = "token_url")
+	private String tokenUrl;
 
 	@Column(name = "username")
 	private String username;
@@ -52,6 +58,19 @@ public class InstanceEntity {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public InstanceEntity withTokenUrl(final String tokenUrl) {
+		this.tokenUrl = tokenUrl;
+		return this;
+	}
+
+	public String getTokenUrl() {
+		return tokenUrl;
+	}
+
+	public void setTokenUrl(String tokenUrl) {
+		this.tokenUrl = tokenUrl;
 	}
 
 	public InstanceEntity withMunicipalityId(final String municipalityId) {
@@ -138,6 +157,7 @@ public class InstanceEntity {
 			"id='" + id + '\'' +
 			", municipalityId='" + municipalityId + '\'' +
 			", baseUrl='" + baseUrl + '\'' +
+			", tokenUrl='" + tokenUrl + '\'' +
 			", username='" + username + '\'' +
 			", password='" + password + '\'' +
 			", connectTimeout=" + connectTimeout +
@@ -151,11 +171,11 @@ public class InstanceEntity {
 			return false;
 		InstanceEntity that = (InstanceEntity) o;
 		return connectTimeout == that.connectTimeout && readTimeout == that.readTimeout && Objects.equals(id, that.id) && Objects.equals(municipalityId, that.municipalityId) && Objects.equals(baseUrl, that.baseUrl)
-			&& Objects.equals(username, that.username) && Objects.equals(password, that.password);
+			&& Objects.equals(tokenUrl, that.tokenUrl) && Objects.equals(username, that.username) && Objects.equals(password, that.password);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, municipalityId, baseUrl, username, password, connectTimeout, readTimeout);
+		return Objects.hash(id, municipalityId, baseUrl, tokenUrl, username, password, connectTimeout, readTimeout);
 	}
 }

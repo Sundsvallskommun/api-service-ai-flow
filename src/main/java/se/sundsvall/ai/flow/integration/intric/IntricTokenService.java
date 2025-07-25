@@ -2,71 +2,73 @@ package se.sundsvall.ai.flow.integration.intric;
 
 import static java.time.Instant.now;
 import static java.util.Optional.ofNullable;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.auth0.jwt.JWT;
 import generated.intric.ai.AccessToken;
 import java.time.Instant;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+import se.sundsvall.ai.flow.integration.intric.configuration.IntricTokenConfiguration;
 
 @Component
-class IntricTokenService {
+public class IntricTokenService {
 
-	private final MultiValueMap<String, String> accessTokenRequestData;
-	private final RestClient restClient;
+	private final IntricTokenConfiguration intricTokenConfiguration;
 
-	private Instant tokenExpiration;
-	private String token;
+	/**
+	 * A cache for access tokens, the key is the municipality ID, and the value is the Token object. This avoids unnecessary
+	 * requests for new tokens if a valid one is already available.
+	 */
+	private final Map<String, Token> intricTokens = new HashMap<>();
 
-	IntricTokenService(final IntricProperties properties) {
-		restClient = RestClient.builder()
-			.baseUrl(properties.oauth2().tokenUrl())
-			.defaultHeader(HttpHeaders.ACCEPT, APPLICATION_JSON_VALUE)
-			.defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_FORM_URLENCODED_VALUE)
-			.defaultStatusHandler(HttpStatusCode::isError, (request, response) -> {
-				throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to retrieve access token");
-			})
-			.build();
-
-		accessTokenRequestData = new LinkedMultiValueMap<>();
-		accessTokenRequestData.add("grant_type", "password");
-		accessTokenRequestData.add("username", properties.oauth2().username());
-		accessTokenRequestData.add("password", properties.oauth2().password());
-		accessTokenRequestData.add("scope", "");
-		accessTokenRequestData.add("client_id", "");
-		accessTokenRequestData.add("client_secret", "");
+	public IntricTokenService(final IntricTokenConfiguration intricTokenConfiguration) {
+		this.intricTokenConfiguration = intricTokenConfiguration;
 	}
 
-	String getToken() {
+	/**
+	 * Retrieves the access token for the given municipality ID.
+	 *
+	 * @param  municipalityId the ID of the municipality for which to retrieve the token
+	 * @return                the access token as a String
+	 */
+	public String getToken(final String municipalityId) {
+		// Get the cached token for the given municipality
+		var token = intricTokens.get(municipalityId);
 		// If we don't have a token at all, or if it's expired - get a new one
-		if (token == null || (tokenExpiration != null && tokenExpiration.isBefore(now()))) {
-			var tokenResponse = retrieveToken();
+		if (token == null || token.accessToken() == null || (token.expiresAt() != null && token.expiresAt().isBefore(now()))) {
+			var tokenResponse = retrieveToken(municipalityId);
 
-			token = ofNullable(tokenResponse.getBody())
+			var accessToken = ofNullable(tokenResponse.getBody())
 				.map(AccessToken::getAccessToken)
 				.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to extract access token"));
 
 			// Decode the token to extract the expiresAt instant
-			var jwt = JWT.decode(token);
-			tokenExpiration = jwt.getExpiresAtAsInstant();
+			var jwt = JWT.decode(accessToken);
+			var tokenExpiration = jwt.getExpiresAtAsInstant();
+
+			intricTokens.put(municipalityId, new Token(accessToken, tokenExpiration));
 		}
 
-		return token;
+		return intricTokens.get(municipalityId).accessToken();
 	}
 
-	ResponseEntity<AccessToken> retrieveToken() {
-		return restClient.post()
-			.body(accessTokenRequestData)
+	/**
+	 * Retrieves the access token for the given municipality ID.
+	 *
+	 * @param  municipalityId the ID of the municipality for which to retrieve the token
+	 * @return                a ResponseEntity containing the AccessToken
+	 */
+	ResponseEntity<AccessToken> retrieveToken(final String municipalityId) {
+		return intricTokenConfiguration.getTokenClient(municipalityId).post()
+			.body(intricTokenConfiguration.getTokenBody(municipalityId))
 			.retrieve()
 			.toEntity(AccessToken.class);
+	}
+
+	public record Token(String accessToken, Instant expiresAt) {
 	}
 }

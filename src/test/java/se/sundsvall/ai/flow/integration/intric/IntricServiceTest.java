@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 @ExtendWith(MockitoExtension.class)
 class IntricServiceTest {
 
+	private static final String MUNICIPALITY_ID = "2281";
+
 	@Mock
 	private IntricIntegration intricIntegrationMock;
 
@@ -40,13 +42,13 @@ class IntricServiceTest {
 		var uploadedFilesInfo = "someInfo";
 		var input = "input";
 
-		when(intricIntegrationMock.runService(eq(intricEndpointId), any(RunService.class))).thenReturn(new ServiceOutput().output("someOutput"));
+		when(intricIntegrationMock.runService(eq(MUNICIPALITY_ID), eq(intricEndpointId), any(RunService.class))).thenReturn(new ServiceOutput().output("someOutput"));
 
-		var response = intricService.runService(intricEndpointId, List.of(), uploadedFilesInfo, input);
+		var response = intricService.runService(MUNICIPALITY_ID, intricEndpointId, List.of(), uploadedFilesInfo, input);
 
 		assertThat(response.answer()).isEqualTo("someOutput");
 
-		verify(intricIntegrationMock).runService(intricEndpointId, new RunService().input(uploadedFilesInfo + INPUT_DELIMITER + input));
+		verify(intricIntegrationMock).runService(MUNICIPALITY_ID, intricEndpointId, new RunService().input(uploadedFilesInfo + INPUT_DELIMITER + input));
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 
@@ -61,14 +63,14 @@ class IntricServiceTest {
 		var intricSessionId = UUID.randomUUID();
 		var answer = "someAnswer";
 
-		when(intricIntegrationMock.askAssistant(eq(intricEndpointId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(intricIntegrationMock.askAssistant(eq(MUNICIPALITY_ID), eq(intricEndpointId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
 
-		var response = intricService.askAssistant(intricEndpointId, uploadedInputFilesInUse, uploadedInputFilesInUseInfo);
+		var response = intricService.askAssistant(MUNICIPALITY_ID, intricEndpointId, uploadedInputFilesInUse, uploadedInputFilesInUseInfo);
 
 		assertThat(response.answer()).isEqualTo(answer);
 		assertThat(response.sessionId()).isEqualTo(intricSessionId);
 
-		verify(intricIntegrationMock).askAssistant(intricEndpointId, askAssistantRequest);
+		verify(intricIntegrationMock).askAssistant(MUNICIPALITY_ID, intricEndpointId, askAssistantRequest);
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 
@@ -81,14 +83,14 @@ class IntricServiceTest {
 		var askAssistantRequest = new AskAssistant().question(uploadedFilesInfo + INPUT_DELIMITER + question);
 		var answer = "someAnswer";
 
-		when(intricIntegrationMock.askAssistantFollowup(eq(intricEndpointId), eq(intricSessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(intricIntegrationMock.askAssistantFollowup(eq(MUNICIPALITY_ID), eq(intricEndpointId), eq(intricSessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
 
-		var response = intricService.askAssistantFollowup(intricEndpointId, intricSessionId, List.of(), uploadedFilesInfo, question);
+		var response = intricService.askAssistantFollowup(MUNICIPALITY_ID, intricEndpointId, intricSessionId, List.of(), uploadedFilesInfo, question);
 
 		assertThat(response.answer()).isEqualTo(answer);
 		assertThat(response.sessionId()).isEqualTo(intricSessionId);
 
-		verify(intricIntegrationMock).askAssistantFollowup(intricEndpointId, intricSessionId, askAssistantRequest);
+		verify(intricIntegrationMock).askAssistantFollowup(MUNICIPALITY_ID, intricEndpointId, intricSessionId, askAssistantRequest);
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 
@@ -98,13 +100,13 @@ class IntricServiceTest {
 		var intricFileId = UUID.randomUUID();
 		var filePublicResponse = new FilePublic().id(intricFileId);
 
-		when(intricIntegrationMock.uploadFile(file)).thenReturn(filePublicResponse);
+		when(intricIntegrationMock.uploadFile(MUNICIPALITY_ID, file)).thenReturn(filePublicResponse);
 
-		var uploadedFileId = intricService.uploadFile(file);
+		var uploadedFileId = intricService.uploadFile(MUNICIPALITY_ID, file);
 
 		assertThat(uploadedFileId).isEqualTo(intricFileId);
 
-		verify(intricIntegrationMock).uploadFile(file);
+		verify(intricIntegrationMock).uploadFile(MUNICIPALITY_ID, file);
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 
@@ -112,12 +114,12 @@ class IntricServiceTest {
 	void deleteFiles() {
 		var fileIds = List.of(UUID.randomUUID(), UUID.randomUUID());
 
-		doNothing().when(intricIntegrationMock).deleteFile(any(UUID.class));
+		doNothing().when(intricIntegrationMock).deleteFile(eq(MUNICIPALITY_ID), any(UUID.class));
 
-		intricService.deleteFiles(fileIds);
+		intricService.deleteFiles(MUNICIPALITY_ID, fileIds);
 
-		verify(intricIntegrationMock).deleteFile(fileIds.getFirst());
-		verify(intricIntegrationMock).deleteFile(fileIds.getLast());
+		verify(intricIntegrationMock).deleteFile(MUNICIPALITY_ID, fileIds.getFirst());
+		verify(intricIntegrationMock).deleteFile(MUNICIPALITY_ID, fileIds.getLast());
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 
@@ -125,11 +127,11 @@ class IntricServiceTest {
 	void deleteFile() {
 		var fileId = UUID.randomUUID();
 
-		doNothing().when(intricIntegrationMock).deleteFile(any(UUID.class));
+		doNothing().when(intricIntegrationMock).deleteFile(eq(MUNICIPALITY_ID), any(UUID.class));
 
-		intricService.deleteFile(fileId);
+		intricService.deleteFile(MUNICIPALITY_ID, fileId);
 
-		verify(intricIntegrationMock).deleteFile(fileId);
+		verify(intricIntegrationMock).deleteFile(MUNICIPALITY_ID, fileId);
 		verifyNoMoreInteractions(intricIntegrationMock);
 	}
 }
