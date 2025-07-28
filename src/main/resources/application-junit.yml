@@ -17,14 +17,6 @@ scheduler:
     maximum-execution-time: PT2M # Defaulted to 2 minutes
 
 integration:
-  intric:
-    base-url: http://base-url.com
-    oauth2:
-      username: override
-      password: override
-      token-url: http://token-url.com
-    read-timeout-in-seconds: 15
-    connect-timeout-in-seconds: 5
   templating:
     base-url: http://base-url.com
     oauth2:
