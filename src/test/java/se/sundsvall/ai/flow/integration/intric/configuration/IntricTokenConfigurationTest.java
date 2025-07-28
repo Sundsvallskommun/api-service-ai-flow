@@ -17,7 +17,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestClient;
 import se.sundsvall.ai.flow.integration.db.InstanceRepository;
 import se.sundsvall.ai.flow.integration.db.model.InstanceEntity;
-import se.sundsvall.ai.flow.integration.intric.util.EncryptionUtility;
+import se.sundsvall.ai.flow.util.EncryptionUtility;
 
 @ExtendWith(MockitoExtension.class)
 class IntricTokenConfigurationTest {

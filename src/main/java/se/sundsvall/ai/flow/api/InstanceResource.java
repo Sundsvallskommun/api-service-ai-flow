@@ -5,9 +5,8 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.web.util.UriComponentsBuilder.fromPath;
+import static org.springframework.http.ResponseEntity.ok;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,11 +55,8 @@ class InstanceResource {
 	ResponseEntity<Void> createInstance(
 		@Parameter(name = "municipalityId", description = "Municipality ID", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Valid @NotNull @RequestBody final Instance instance) {
-
-		return created(fromPath("/{municipalityId}/instances/{instanceId}")
-			.buildAndExpand(municipalityId, instanceService.createInstance(municipalityId, instance)).toUri())
-			.header(CONTENT_TYPE, ALL_VALUE)
-			.build();
+		instanceService.createInstance(municipalityId, instance);
+		return ok().build();
 	}
 
 	@DeleteMapping("/{instanceId}")
