@@ -154,6 +154,12 @@ spring:
 
   Adjust logging levels if necessary.
 
+- **Dynamic clients:**
+
+  The application uses dynamic clients feign and rest clients to connect to Intric. This enables different
+  municipalities to have their own instances of Intric. Each instance is stored in the database and a new instance can
+  be added via the API.
+
 ## Contributing
 
 Contributions are welcome! Please
