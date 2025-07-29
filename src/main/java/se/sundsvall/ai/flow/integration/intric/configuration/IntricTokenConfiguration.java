@@ -15,7 +15,7 @@ import org.springframework.web.client.RestClient;
 import org.zalando.problem.Problem;
 import se.sundsvall.ai.flow.integration.db.InstanceRepository;
 import se.sundsvall.ai.flow.integration.db.model.InstanceEntity;
-import se.sundsvall.ai.flow.integration.intric.util.EncryptionUtility;
+import se.sundsvall.ai.flow.util.EncryptionUtility;
 
 @Component
 public class IntricTokenConfiguration {
