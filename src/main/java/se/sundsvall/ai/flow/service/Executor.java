@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.service;
 
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.joining;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -186,7 +187,7 @@ public class Executor {
 			.flatMap(Collection::stream)
 			.filter(not(Input::isUploadedToIntric))
 			.forEach(input -> {
-				LOG.info("Uploading file for input {}", input.getFile().getName());
+				LOG.info("Uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
 
 				// Upload the file to Intric
 				var intricFileId = intricService.uploadFile(input.getFile());
