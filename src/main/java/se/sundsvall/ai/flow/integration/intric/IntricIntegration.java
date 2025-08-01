@@ -1,6 +1,7 @@
 package se.sundsvall.ai.flow.integration.intric;
 
 import static org.zalando.problem.Status.BAD_GATEWAY;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -78,12 +79,12 @@ public class IntricIntegration {
 
 	public FilePublic uploadFile(final MultipartFile file) {
 		try {
-			LOG.debug("Uploading file: {}", file.getOriginalFilename());
+			LOG.debug("Uploading file: {}", sanitizeForLogging(file.getOriginalFilename()));
 			var result = intricClient.uploadFile(file);
-			LOG.debug("File '{}' uploaded successfully", file.getOriginalFilename());
+			LOG.debug("File '{}' uploaded successfully", sanitizeForLogging(file.getOriginalFilename()));
 			return result.getBody();
 		} catch (Exception e) {
-			LOG.error("Error uploading file: {}", file.getOriginalFilename(), e);
+			LOG.error("Error uploading file: {}", sanitizeForLogging(file.getOriginalFilename()), e);
 			throw Problem.valueOf(BAD_GATEWAY, "Error uploading file: %s".formatted(file.getOriginalFilename()));
 		}
 	}
