@@ -30,6 +30,7 @@ public class IntricClientFactory {
 				.withRequestInterceptor(template -> template.header(AUTHORIZATION, "Bearer " + tokenService.getToken(instanceEntity.getMunicipalityId())))
 				.withRequestTimeoutsInSeconds(instanceEntity.getConnectTimeout(), instanceEntity.getReadTimeout())
 				.composeCustomizersToOne())
+			.url(instanceEntity.getBaseUrl())
 			.build();
 	}
 
