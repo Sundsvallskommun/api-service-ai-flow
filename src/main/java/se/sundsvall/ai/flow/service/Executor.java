@@ -35,20 +35,20 @@ public class Executor {
 	}
 
 	@Async
-	public void executeSession(final Session session, final String requestId) {
+	public void executeSession(final String municipalityId, final Session session, final String requestId) {
 		try {
 			RequestId.init(requestId);
 			var flow = session.getFlow();
 
 			// Upload all inputs (files) in the local session that haven't been uploaded before
-			uploadMissingInputFilesInSessionToIntric(session);
+			uploadMissingInputFilesInSessionToIntric(municipalityId, session);
 
 			// Mark the session as running
 			session.setState(Session.State.RUNNING);
 			// Execute the steps in the order defined in the flow, running required steps if they exist
 			flow.getSteps().stream()
 				.map(step -> session.getStepExecution(step.getId()))
-				.forEach(step -> executeStepInternal(step, null, true));
+				.forEach(step -> executeStepInternal(municipalityId, step, null, true));
 			// Mark the session as finished
 			session.setState(Session.State.FINISHED);
 		} finally {
@@ -57,7 +57,7 @@ public class Executor {
 	}
 
 	// @Async
-	public void executeStep(final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
+	public void executeStep(final String municipalityId, final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
 		var session = stepExecution.getSession();
 
 		// The session must either be running or finished before allowing any individual steps to be executed individually
@@ -70,10 +70,10 @@ public class Executor {
 			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepExecution.getStep().getId(), session.getFlow().getName(), session.getId()));
 		}
 
-		executeStepInternal(stepExecution, input, runRequiredSteps);
+		executeStepInternal(municipalityId, stepExecution, input, runRequiredSteps);
 	}
 
-	void executeStepInternal(final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
+	void executeStepInternal(final String municipalityId, final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
 		var session = stepExecution.getSession();
 		var flow = session.getFlow();
 		var step = stepExecution.getStep();
@@ -87,7 +87,7 @@ public class Executor {
 				if (requiredStepExecution.getIntricSessionId() == null) {
 					LOG.info("Triggering step '{}' required by step '{}' in flow '{}' for session {}", requiredStepExecution.getStep().getName(), step.getName(), flow.getName(), session.getId());
 
-					executeStepInternal(requiredStepExecution, input, runRequiredSteps);
+					executeStepInternal(municipalityId, requiredStepExecution, input, runRequiredSteps);
 				}
 			}
 		}
@@ -120,7 +120,7 @@ public class Executor {
 		});
 
 		// At this point we may have inputs that haven't been uploaded to Intric yet - upload them
-		uploadMissingInputFilesInSessionToIntric(session);
+		uploadMissingInputFilesInSessionToIntric(municipalityId, session);
 
 		// Join both input types to get all inputs actually in use for the current step execution
 		var inputsInUse = Stream.concat(
@@ -149,7 +149,7 @@ public class Executor {
 					LOG.info("Running step {} using SERVICE {}", step.getName(), intricEndpointId);
 
 					// Run the service
-					var response = intricService.runService(intricEndpointId, inputFilesInUse, inputsInUseInfo, input);
+					var response = intricService.runService(municipalityId, intricEndpointId, inputFilesInUse, inputsInUseInfo, input);
 					// Store the answer in the step execution
 					stepExecution.setOutput(response.answer());
 				}
@@ -159,7 +159,7 @@ public class Executor {
 						LOG.info("Running step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant
-						var response = intricService.askAssistant(intricEndpointId, inputFilesInUse, inputsInUseInfo);
+						var response = intricService.askAssistant(municipalityId, intricEndpointId, inputFilesInUse, inputsInUseInfo);
 						// Store the Intric session id in the step execution to be able to ask follow-ups
 						stepExecution.setIntricSessionId(response.sessionId());
 						// Store the (current) answer in the step execution
@@ -168,7 +168,7 @@ public class Executor {
 						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), intricEndpointId);
 
 						// "Ask" the assistant a follow-up
-						var response = intricService.askAssistantFollowup(intricEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
+						var response = intricService.askAssistantFollowup(municipalityId, intricEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					}
@@ -181,7 +181,7 @@ public class Executor {
 		}
 	}
 
-	void uploadMissingInputFilesInSessionToIntric(final Session session) {
+	void uploadMissingInputFilesInSessionToIntric(final String municipalityId, final Session session) {
 		// Upload any missing regular inputs
 		session.getInput().values().stream()
 			.flatMap(Collection::stream)
@@ -190,7 +190,7 @@ public class Executor {
 				LOG.info("Uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
 
 				// Upload the file to Intric
-				var intricFileId = intricService.uploadFile(input.getFile());
+				var intricFileId = intricService.uploadFile(municipalityId, input.getFile());
 				// Keep a reference to it for later
 				input.setIntricFileId(intricFileId);
 			});
@@ -203,14 +203,14 @@ public class Executor {
 					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
 
 					// Delete the file from Intric
-					intricService.deleteFile(input.getIntricFileId());
+					intricService.deleteFile(municipalityId, input.getIntricFileId());
 					// Mark the input for removal from the session
 					inputsToRemoveFromSession.put(sourceStepId, input);
 				} else {
 					LOG.info("Uploading redirected output file from step {}", sourceStepId);
 
 					// Upload the file to Intric
-					var intricFileId = intricService.uploadFile(input.getFile());
+					var intricFileId = intricService.uploadFile(municipalityId, input.getFile());
 					// Keep a reference to it for later
 					input.setIntricFileId(intricFileId);
 

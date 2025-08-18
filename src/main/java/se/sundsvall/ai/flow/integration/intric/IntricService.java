@@ -26,7 +26,7 @@ public class IntricService {
 		this.intricIntegration = intricIntegration;
 	}
 
-	public Response runService(final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
+	public Response runService(final String municipalityId, final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
 		// Construct the actual input - no need to include the provided question if it's null or blank
 		var actualInput = uploadedInputFilesInUseInfo;
 		if (isNotBlank(question)) {
@@ -34,19 +34,19 @@ public class IntricService {
 		}
 
 		var runServiceRequest = toRunService(actualInput, uploadedInputFilesInUse);
-		var response = intricIntegration.runService(serviceId, runServiceRequest);
+		var response = intricIntegration.runService(municipalityId, serviceId, runServiceRequest);
 
 		return toResponse(response);
 	}
 
-	public Response askAssistant(final UUID assistantId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
+	public Response askAssistant(final String municipalityId, final UUID assistantId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
 		var askAssistantRequest = toAskAssistant(uploadedInputFilesInUseInfo, uploadedInputFilesInUse);
-		var response = intricIntegration.askAssistant(assistantId, askAssistantRequest);
+		var response = intricIntegration.askAssistant(municipalityId, assistantId, askAssistantRequest);
 
 		return IntricMapper.toResponse(response);
 	}
 
-	public Response askAssistantFollowup(final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
+	public Response askAssistantFollowup(final String municipalityId, final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
 		// Construct the actual question - no need to include the provided question if it's null or blank
 		var actualQuestion = uploadedInputFilesInUseInfo;
 		if (isNotBlank(question)) {
@@ -54,24 +54,24 @@ public class IntricService {
 		}
 
 		var request = toAskAssistant(actualQuestion, uploadedInputFilesInUse);
-		var response = intricIntegration.askAssistantFollowup(assistantId, sessionId, request);
+		var response = intricIntegration.askAssistantFollowup(municipalityId, assistantId, sessionId, request);
 
 		return IntricMapper.toResponse(response);
 	}
 
-	public UUID uploadFile(final MultipartFile inputMultipartFile) {
-		var filePublic = intricIntegration.uploadFile(inputMultipartFile);
+	public UUID uploadFile(final String municipalityId, final MultipartFile inputMultipartFile) {
+		var filePublic = intricIntegration.uploadFile(municipalityId, inputMultipartFile);
 
 		return ofNullable(filePublic)
 			.map(FilePublic::getId)
 			.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to upload file to Intric"));
 	}
 
-	public void deleteFiles(final List<UUID> fileIds) {
-		fileIds.forEach(this::deleteFile);
+	public void deleteFiles(final String municipalityId, final List<UUID> fileIds) {
+		fileIds.forEach(uuid -> deleteFile(municipalityId, uuid));
 	}
 
-	public void deleteFile(final UUID fileId) {
-		intricIntegration.deleteFile(fileId);
+	public void deleteFile(final String municipalityId, final UUID fileId) {
+		intricIntegration.deleteFile(municipalityId, fileId);
 	}
 }
