@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.ai.flow.integration.db.model.InstanceEntity;
 import se.sundsvall.ai.flow.integration.intric.IntricClient;
 import se.sundsvall.ai.flow.integration.intric.IntricTokenService;
-import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
+import se.sundsvall.dept44.configuration.feign.decoder.JsonPathErrorDecoder;
 
 @Component
 public class IntricClientFactory {
@@ -30,7 +30,7 @@ public class IntricClientFactory {
 		return new FeignClientBuilder(applicationContext)
 			.forType(IntricClient.class, clientName)
 			.customize(builder -> builder
-				.errorDecoder(new ProblemErrorDecoder(clientName))
+				.errorDecoder(new JsonPathErrorDecoder(clientName, new JsonPathErrorDecoder.JsonPathSetup("$.message")))
 				.requestInterceptor(template -> template.header(AUTHORIZATION, "Bearer " + tokenService.getToken(instanceEntity.getMunicipalityId())))
 				.logLevel(Logger.Level.FULL)
 				.dismiss404()
