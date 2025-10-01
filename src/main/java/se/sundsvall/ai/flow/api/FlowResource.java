@@ -33,7 +33,7 @@ import se.sundsvall.ai.flow.service.FlowService;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 
 @RestController
-@RequestMapping(value = "/{municipalityId}/flow", produces = APPLICATION_JSON_VALUE)
+@RequestMapping("/{municipalityId}/flow")
 @Tag(name = "Flows", description = "Flow resources")
 @ApiResponse(
 	responseCode = "400",
@@ -61,7 +61,7 @@ class FlowResource {
 				description = "Ok",
 				useReturnTypeSchema = true)
 		})
-	@GetMapping
+	@GetMapping(produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<List<FlowSummary>> getFlows(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId) {
 		return ok(flowService.getFlows());
@@ -79,7 +79,7 @@ class FlowResource {
 				description = "Not Found",
 				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@GetMapping("/{flowId}")
+	@GetMapping(value = "/{flowId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Flow> getLatestFlowVersionById(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "flowId", description = "Flow id", example = "tjansteskrivelse") @NotBlank @PathVariable final String flowId) {
@@ -98,7 +98,7 @@ class FlowResource {
 				description = "Not Found",
 				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@GetMapping("/{flowId}/{version}")
+	@GetMapping(path = "/{flowId}/{version}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Flow> getFlowByIdAndVersion(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "flowId", description = "Flow id", example = "tjansteskrivelse") @NotBlank @PathVariable final String flowId,
@@ -155,11 +155,11 @@ class FlowResource {
 				description = "Created",
 				useReturnTypeSchema = true),
 		})
-	@PostMapping
+	@PostMapping(produces = ALL_VALUE)
 	ResponseEntity<Void> createFlow(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@RequestBody final Flow flow) {
-		var createdFlow = flowService.createFlow(flow);
+		final var createdFlow = flowService.createFlow(flow);
 		return created(fromPath("/{flowId}/{version}").build(createdFlow.getId(), createdFlow.getVersion()))
 			.header(CONTENT_TYPE, ALL_VALUE)
 			.build();

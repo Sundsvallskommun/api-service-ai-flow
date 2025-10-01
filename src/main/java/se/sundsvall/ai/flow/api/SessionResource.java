@@ -41,18 +41,18 @@ import se.sundsvall.ai.flow.service.SessionService;
 import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 
 @RestController
-@RequestMapping(value = "/{municipalityId}/session", produces = APPLICATION_JSON_VALUE)
+@RequestMapping("/{municipalityId}/session")
 @Tag(name = "Sessions", description = "Session resources")
 @ApiResponse(
 	responseCode = "400",
 	description = "Bad Request",
-	content = @Content(schema = @Schema(oneOf = {
+	content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(oneOf = {
 		Problem.class, ConstraintViolationProblem.class
 	})))
 @ApiResponse(
 	responseCode = "500",
 	description = "Internal Server Error",
-	content = @Content(schema = @Schema(implementation = Problem.class)))
+	content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 class SessionResource {
 
 	private final FlowService flowService;
@@ -75,7 +75,7 @@ class SessionResource {
 				description = "Not Found",
 				content = @Content(schema = @Schema(implementation = Problem.class)))
 		})
-	@GetMapping("/{sessionId}")
+	@GetMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> getSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
@@ -92,16 +92,16 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping
+	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> createSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Valid @RequestBody final CreateSessionRequest request) {
-		var flow = ofNullable(request.version())
+		final var flow = ofNullable(request.version())
 			.map(version -> flowService.getFlowVersion(request.flowId(), version))
 			.orElseGet(() -> flowService.getLatestFlowVersion(request.flowId()));
-		var session = sessionService.createSession(municipalityId, flow);
+		final var session = sessionService.createSession(municipalityId, flow);
 
 		return created(fromPath("/session/{sessionId}").buildAndExpand(session.getId()).toUri())
 			.body(session);
@@ -117,11 +117,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}", consumes = ALL_VALUE, produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@PostMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Void> runSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
@@ -140,9 +138,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@DeleteMapping("/{sessionId}")
+	@DeleteMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Void> deleteSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
@@ -160,11 +158,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@GetMapping(value = "/{sessionId}/step/{stepId}", consumes = APPLICATION_JSON_VALUE, produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@GetMapping(value = "/{sessionId}/step/{stepId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<StepExecution> getStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
@@ -182,11 +178,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}/step/{stepId}", consumes = APPLICATION_JSON_VALUE, produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@PostMapping(value = "/{sessionId}/step/{stepId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Void> runStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
@@ -210,11 +204,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}/input/{inputId}/simple", consumes = APPLICATION_JSON_VALUE, produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@PostMapping(value = "/{sessionId}/input/{inputId}/simple", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addSimpleInputToSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
@@ -234,11 +226,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}/input/{inputId}/file", consumes = MULTIPART_FORM_DATA_VALUE, produces = {
-		APPLICATION_JSON_VALUE, APPLICATION_PROBLEM_JSON_VALUE
-	})
+	@PostMapping(value = "/{sessionId}/input/{inputId}/file", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addFileInputToSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
@@ -257,9 +247,9 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@DeleteMapping("/{sessionId}/input/{inputId}")
+	@DeleteMapping(value = "/{sessionId}/input/{inputId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> clearInputInSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
@@ -277,18 +267,18 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping("/{sessionId}/generate")
+	@PostMapping(value = "/{sessionId}/generate", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Output> generateSessionOutput(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
 		@RequestBody(required = false) @Valid final RenderRequest renderRequest) {
-		var session = sessionService.getSession(sessionId);
-		var templateId = ofNullable(renderRequest)
+		final var session = sessionService.getSession(sessionId);
+		final var templateId = ofNullable(renderRequest)
 			.map(RenderRequest::templateId)
 			.orElseGet(() -> session.getFlow().getDefaultTemplateId());
-		var output = sessionService.renderSession(sessionId, templateId, municipalityId);
+		final var output = sessionService.renderSession(sessionId, templateId, municipalityId);
 
 		return ok(new Output(output));
 	}
