@@ -44,8 +44,10 @@ public class IntricIntegration {
 	}
 
 	void init() {
+		LOG.info("Initializing Intric clients for all instances...");
 		instanceRepository.findAll().forEach(instanceEntity -> {
 			var intricClient = intricClientFactory.createIntricClient(instanceEntity);
+			LOG.info("Created Intric client for municipalityId: {}", instanceEntity.getMunicipalityId());
 			intricClients.put(instanceEntity.getMunicipalityId(), intricClient);
 		});
 	}
