@@ -16,7 +16,7 @@ public interface FlowRepository extends JpaRepository<FlowEntity, FlowEntity.IdA
 
 	void deleteById(String id);
 
-	Optional<FlowEntity> findLatestVersionById(String id);
+	Optional<FlowEntity> findTopByIdOrderByVersionDesc(String id);
 
 	@Query(value = "SELECT MAX(f.version) FROM flow f WHERE f.id = :id", nativeQuery = true)
 	Optional<Integer> findMaxVersionById(@Param("id") final String id);
