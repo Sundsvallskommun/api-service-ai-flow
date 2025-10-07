@@ -31,7 +31,7 @@ public class FlowService {
 
 	@Transactional(readOnly = true)
 	public Flow getLatestFlowVersion(final String flowId) {
-		return flowRepository.findLatestVersionById(flowId)
+		return flowRepository.findTopByIdOrderByVersionDesc(flowId)
 			.map(flowEntity -> fromJson(flowEntity.getContent()))
 			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No flow found with id " + flowId));
 	}
