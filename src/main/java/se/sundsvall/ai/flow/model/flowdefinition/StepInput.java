@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.Map;
-import se.sundsvall.ai.flow.util.StreamUtil;
 
 @JsonDeserialize(using = StepInput.Deserializer.class)
 public abstract class StepInput {
@@ -43,7 +42,7 @@ public abstract class StepInput {
 	static class Deserializer extends StdDeserializer<StepInput> {
 
 		@Serial
-		static final long serialVersionUID = -703432197878787L;
+		private static final long serialVersionUID = -703432197878787L;
 
 		Deserializer() {
 			super((Class<?>) null);
@@ -51,7 +50,7 @@ public abstract class StepInput {
 
 		@Override
 		public StepInput deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-			var root = (JsonNode) parser.getCodec().readTree(parser);
+			final var root = (JsonNode) parser.getCodec().readTree(parser);
 
 			// Make sure we actually have an object node to work with
 			if (!root.isObject()) {
@@ -59,18 +58,18 @@ public abstract class StepInput {
 			}
 
 			// Re-map the child nodes as a map from node name to the actual node, for easier access
-			var children = StreamUtil.fromIterator(root.fields())
+			final var children = root.properties().stream()
 				.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 			// Attempt to extract the "flow-input-ref" field
-			var flowInputRef = ofNullable(children.get(FLOW_INPUT_REF))
+			final var flowInputRef = ofNullable(children.get(FLOW_INPUT_REF))
 				.map(JsonNode::textValue)
 				.orElse(null);
 			// Attempt to extract the "step" and "name" fields
-			var step = ofNullable(children.get(STEP_OUTPUT_REF))
+			final var step = ofNullable(children.get(STEP_OUTPUT_REF))
 				.map(JsonNode::textValue)
 				.orElse(null);
-			var name = ofNullable(children.get(NAME))
+			final var name = ofNullable(children.get(NAME))
 				.map(JsonNode::textValue)
 				.orElse(null);
 

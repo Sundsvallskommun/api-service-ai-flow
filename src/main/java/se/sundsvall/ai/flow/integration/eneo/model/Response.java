@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.intric.model;
+package se.sundsvall.ai.flow.integration.eneo.model;
 
 import java.util.UUID;
 

@@ -1,15 +1,15 @@
-package se.sundsvall.ai.flow.integration.intric;
+package se.sundsvall.ai.flow.integration.eneo;
 
-import generated.intric.ai.AskAssistant;
-import generated.intric.ai.ModelId;
-import generated.intric.ai.RunService;
+import generated.eneo.ai.AskAssistant;
+import generated.eneo.ai.ModelId;
+import generated.eneo.ai.RunService;
 import java.util.List;
 import java.util.UUID;
-import se.sundsvall.ai.flow.integration.intric.model.Response;
+import se.sundsvall.ai.flow.integration.eneo.model.Response;
 
-public final class IntricMapper {
+public final class EneoMapper {
 
-	private IntricMapper() {
+	private EneoMapper() {
 		// Prevent instantiation
 	}
 
@@ -31,12 +31,12 @@ public final class IntricMapper {
 			.files(toModelIds(uploadedInputFilesInUse));
 	}
 
-	public static Response toResponse(final generated.intric.ai.AskResponse askResponse) {
+	public static Response toResponse(final generated.eneo.ai.AskResponse askResponse) {
 		return new Response(askResponse.getSessionId(), askResponse.getAnswer());
 	}
 
-	public static Response toResponse(final generated.intric.ai.ServiceOutput serviceOutput) {
-		return new Response(serviceOutput.getOutput());
+	public static Response toResponse(final generated.eneo.ai.ServiceOutput serviceOutput) {
+		return new Response(serviceOutput.getOutput().toString());
 	}
 
 }

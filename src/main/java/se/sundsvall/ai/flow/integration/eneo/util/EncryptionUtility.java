@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.intric.util;
+package se.sundsvall.ai.flow.integration.eneo.util;
 
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;

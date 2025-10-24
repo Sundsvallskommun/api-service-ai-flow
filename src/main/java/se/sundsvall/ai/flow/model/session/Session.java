@@ -92,21 +92,21 @@ public class Session {
 	}
 
 	public void addSimpleInput(final String inputId, final String value) {
-		var flowInput = flow.getFlowInput(inputId);
-		var inputMultipartFile = new StringMultipartFile(flow.getInputPrefix(), flowInput.getName(), value);
+		final var flowInput = flow.getFlowInput(inputId);
+		final var inputMultipartFile = new StringMultipartFile(flow.getInputPrefix(), flowInput.getName(), value);
 
 		addInput(flowInput, inputMultipartFile);
 	}
 
 	public void addFileInput(final String inputId, final MultipartFile inputMultipartFile) {
-		var flowInput = flow.getFlowInput(inputId);
-		var uploadedInputMultipartFile = new UploadedMultipartFile(flowInput.getName(), inputMultipartFile);
+		final var flowInput = flow.getFlowInput(inputId);
+		final var uploadedInputMultipartFile = new UploadedMultipartFile(flowInput.getName(), inputMultipartFile);
 
 		addInput(flowInput, uploadedInputMultipartFile);
 	}
 
 	public void clearInput(final String inputId) {
-		var flowInput = flow.getFlowInput(inputId);
+		final var flowInput = flow.getFlowInput(inputId);
 
 		// Create an empty input value list, if required
 		input.computeIfAbsent(flowInput.getId(), ignored -> new LinkedList<>());
@@ -152,11 +152,11 @@ public class Session {
 	@JsonIgnore
 	public Map<String, String> getInputInfo() {
 		// Extract/create info on regular inputs
-		var regularInputInfo = input.entrySet().stream()
+		final var regularInputInfo = input.entrySet().stream()
 			.map(entry -> {
-				var inputId = entry.getKey();
+				final var inputId = entry.getKey();
 				// Get the flow input corresponding to this input
-				var flowInput = flow.getFlowInput(inputId);
+				final var flowInput = flow.getFlowInput(inputId);
 
 				// "Skip" optional inputs if they are unset
 				if (flowInput.isOptional() && isEmpty(entry.getValue())) {
@@ -169,11 +169,11 @@ public class Session {
 			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		// Extract/create info on redirected output inputs
-		var redirectedOutputInputInfo = redirectedOutputInput.entrySet().stream()
+		final var redirectedOutputInputInfo = redirectedOutputInput.entrySet().stream()
 			.map(entry -> {
-				var stepId = entry.getKey();
+				final var stepId = entry.getKey();
 				// Get the redirected step
-				var step = flow.getStep(stepId);
+				final var step = flow.getStep(stepId);
 
 				return createInputInfo(stepId, step.getName(), entry.getValue());
 			})
@@ -184,10 +184,10 @@ public class Session {
 	}
 
 	AbstractMap.SimpleEntry<String, String> createInputInfo(final String key, final String name, final List<Input> inputs) {
-		// Extract the Intric uploaded file ids
-		var intricFileIds = inputs.stream().map(Input::getIntricFileId).map(UUID::toString).toList();
+		// Extract the Eneo uploaded file ids
+		final var eneoFileIds = inputs.stream().map(Input::getIntricFileId).map(UUID::toString).toList();
 		// Format the info
-		var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", intricFileIds));
+		final var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", eneoFileIds));
 
 		return new AbstractMap.SimpleEntry<>(key, info);
 	}
@@ -196,12 +196,12 @@ public class Session {
 		LOG.info("Creating step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), id);
 
 		// Validate redirected output inputs
-		var requiredStepExecutions = new ArrayList<StepExecution>();
-		for (var stepInput : step.getInputs()) {
-			if (stepInput instanceof RedirectedOutput redirectedOutput) {
+		final var requiredStepExecutions = new ArrayList<StepExecution>();
+		for (final var stepInput : step.getInputs()) {
+			if (stepInput instanceof final RedirectedOutput redirectedOutput) {
 				// Make sure required step(s) have been executed before this one
-				var sourceStepId = redirectedOutput.getStep();
-				var sourceStep = flow.getStep(sourceStepId);
+				final var sourceStepId = redirectedOutput.getStep();
+				final var sourceStep = flow.getStep(sourceStepId);
 
 				if (!stepExecutions.containsKey(sourceStepId)/* || isBlank(stepExecutions.get(sourceStepId).getOutput()) */) {
 					LOG.info("Creating step execution for missing redirected output from step '{}' for step '{}' in flow '{}' for session {}", sourceStepId, step.getId(), flow.getName(), id);
@@ -213,7 +213,7 @@ public class Session {
 
 		LOG.info("Created step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), id);
 
-		var stepExecution = new StepExecution(this, step, requiredStepExecutions);
+		final var stepExecution = new StepExecution(this, step, requiredStepExecutions);
 		stepExecutions.put(step.getId(), stepExecution);
 		return stepExecution;
 	}

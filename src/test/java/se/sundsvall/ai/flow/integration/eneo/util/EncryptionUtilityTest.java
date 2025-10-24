@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.intric.util;
+package se.sundsvall.ai.flow.integration.eneo.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
