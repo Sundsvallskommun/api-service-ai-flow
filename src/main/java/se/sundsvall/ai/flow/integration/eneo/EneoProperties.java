@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "integration.eneo")
 public record EneoProperties(
-	@NotBlank String baseUrl,
 
 	@Valid @NotNull Oauth2 oauth2,
 

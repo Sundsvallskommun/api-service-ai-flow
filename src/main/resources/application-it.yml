@@ -1,6 +1,5 @@
 integration:
   eneo:
-    base-url: http://localhost:${wiremock.server.port}/eneo
     oauth2:
       token-url: http://localhost:${wiremock.server.port}/eneo/token
       client-id: override
