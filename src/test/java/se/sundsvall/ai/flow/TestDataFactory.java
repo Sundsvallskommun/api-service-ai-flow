@@ -15,11 +15,11 @@ import se.sundsvall.ai.flow.model.session.Session;
 
 public final class TestDataFactory {
 
-	private static final String MUNICIPALITY_ID = "2281";
+	public static final String MUNICIPALITY_ID = "2281";
 
 	public static Session createSession() {
-		var flow = createFlow();
-		var session = new Session(MUNICIPALITY_ID, flow);
+		final var flow = createFlow();
+		final var session = new Session(MUNICIPALITY_ID, flow);
 		flow.getFlowInputs().forEach(flowInput -> session.addSimpleInput(flowInput.getId(), "value"));
 		return session;
 	}

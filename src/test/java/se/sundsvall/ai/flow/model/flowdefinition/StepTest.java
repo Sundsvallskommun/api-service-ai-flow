@@ -12,14 +12,14 @@ class StepTest {
 
 	@Test
 	void getterAndSetter() {
-		var id = "id";
-		var order = 1;
-		var name = "name";
-		var description = "description";
-		var intricEndpoint = new Step.IntricEndpoint(Step.IntricEndpoint.Type.ASSISTANT, UUID.randomUUID());
-		var inputs = List.of(createFlowInputRef("value"));
+		final var id = "id";
+		final var order = 1;
+		final var name = "name";
+		final var description = "description";
+		final var intricEndpoint = new Step.IntricEndpoint(Step.IntricEndpoint.Type.ASSISTANT, UUID.randomUUID());
+		final var inputs = List.of(createFlowInputRef("value"));
 
-		var step = new Step();
+		final var step = new Step();
 
 		step.setId(id);
 		step.setOrder(order);
@@ -38,15 +38,15 @@ class StepTest {
 
 	@Test
 	void builderPattern() {
-		var id = "id";
-		var order = 1;
-		var name = "name";
-		var description = "description";
-		var intricEndpointType = Step.IntricEndpoint.Type.ASSISTANT;
-		var intricEndpointId = UUID.randomUUID();
-		var inputs = List.of(createFlowInputRef("value"));
+		final var id = "id";
+		final var order = 1;
+		final var name = "name";
+		final var description = "description";
+		final var intricEndpointType = Step.IntricEndpoint.Type.ASSISTANT;
+		final var intricEndpointId = UUID.randomUUID();
+		final var inputs = List.of(createFlowInputRef("value"));
 
-		var step = new Step()
+		final var step = new Step()
 			.withId(id)
 			.withOrder(order)
 			.withName(name)
@@ -58,32 +58,32 @@ class StepTest {
 		assertThat(step.getOrder()).isEqualTo(order);
 		assertThat(step.getName()).isEqualTo(name);
 		assertThat(step.getDescription()).isEqualTo(description);
-		assertThat(step.getIntricEndpoint()).satisfies(intricEndpoint -> {
-			assertThat(intricEndpoint.type()).isEqualTo(intricEndpointType);
-			assertThat(intricEndpoint.id()).isEqualTo(intricEndpointId);
+		assertThat(step.getIntricEndpoint()).satisfies(eneoEndpoint -> {
+			assertThat(eneoEndpoint.type()).isEqualTo(intricEndpointType);
+			assertThat(eneoEndpoint.id()).isEqualTo(intricEndpointId);
 		});
 		assertThat(step.getInputs()).isEqualTo(inputs);
 	}
 
 	@Test
 	void compareTo() {
-		var step1 = new Step().withOrder(5);
-		var step2 = new Step().withOrder(2);
-		var step3 = new Step().withOrder(7);
+		final var step1 = new Step().withOrder(5);
+		final var step2 = new Step().withOrder(2);
+		final var step3 = new Step().withOrder(7);
 
 		assertThat(step1).isGreaterThan(step2).isLessThan(step3);
 		assertThat(step2).isLessThan(step3);
 	}
 
 	@Nested
-	class IntricEndpointTest {
+	class EneoEndpointTest {
 
 		@Test
 		void constructorAndGetters() {
-			var type = Step.IntricEndpoint.Type.ASSISTANT;
-			var endpointId = UUID.randomUUID();
+			final var type = Step.IntricEndpoint.Type.ASSISTANT;
+			final var endpointId = UUID.randomUUID();
 
-			var intricEndpoint = new Step.IntricEndpoint(type, endpointId);
+			final var intricEndpoint = new Step.IntricEndpoint(type, endpointId);
 
 			assertThat(intricEndpoint.type()).isEqualTo(type);
 			assertThat(intricEndpoint.id()).isEqualTo(endpointId);

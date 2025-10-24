@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.intric;
+package se.sundsvall.ai.flow.integration.eneo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-class IntricMapperTest {
+class EneoMapperTest {
 
 	@Test
 	void toRunServiceTest() {
@@ -14,7 +14,7 @@ class IntricMapperTest {
 		var uploadedInputFile = UUID.randomUUID();
 		var uploadedInputFilesInUse = List.of(uploadedInputFile);
 
-		var runService = IntricMapper.toRunService(input, uploadedInputFilesInUse);
+		var runService = EneoMapper.toRunService(input, uploadedInputFilesInUse);
 
 		assertThat(runService).isNotNull().satisfies(service -> {
 			assertThat(service.getInput()).isEqualTo(input);
@@ -29,7 +29,7 @@ class IntricMapperTest {
 		var id2 = UUID.randomUUID();
 		var ids = List.of(id1, id2);
 
-		var modelIds = IntricMapper.toModelIds(ids);
+		var modelIds = EneoMapper.toModelIds(ids);
 
 		assertThat(modelIds).isNotNull().hasSize(2)
 			.extracting("id")
@@ -42,7 +42,7 @@ class IntricMapperTest {
 		var uploadedInputFile = UUID.randomUUID();
 		var uploadedInputFilesInUse = List.of(uploadedInputFile);
 
-		var askAssistant = IntricMapper.toAskAssistant(question, uploadedInputFilesInUse);
+		var askAssistant = EneoMapper.toAskAssistant(question, uploadedInputFilesInUse);
 
 		assertThat(askAssistant).isNotNull().satisfies(assistant -> {
 			assertThat(assistant.getQuestion()).isEqualTo(question);
@@ -55,9 +55,9 @@ class IntricMapperTest {
 	void toResponseFromAskResponseTest() {
 		var sessionId = UUID.randomUUID();
 		var answer = "42";
-		var askResponse = new generated.intric.ai.AskResponse().sessionId(sessionId).answer(answer);
+		var askResponse = new generated.eneo.ai.AskResponse().sessionId(sessionId).answer(answer);
 
-		var response = IntricMapper.toResponse(askResponse);
+		var response = EneoMapper.toResponse(askResponse);
 
 		assertThat(response).isNotNull().satisfies(res -> {
 			assertThat(res.sessionId()).isEqualTo(sessionId);
@@ -68,9 +68,9 @@ class IntricMapperTest {
 	@Test
 	void toResponseFromServiceOutputTest() {
 		var output = "Service output";
-		var serviceOutput = new generated.intric.ai.ServiceOutput().output(output);
+		var serviceOutput = new generated.eneo.ai.ServiceOutput().output(output);
 
-		var response = IntricMapper.toResponse(serviceOutput);
+		var response = EneoMapper.toResponse(serviceOutput);
 
 		assertThat(response).isNotNull().satisfies(res -> {
 			assertThat(res.sessionId()).isNull();

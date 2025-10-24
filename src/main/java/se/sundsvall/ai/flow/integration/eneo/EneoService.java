@@ -1,29 +1,29 @@
-package se.sundsvall.ai.flow.integration.intric;
+package se.sundsvall.ai.flow.integration.eneo;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toAskAssistant;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toResponse;
-import static se.sundsvall.ai.flow.integration.intric.IntricMapper.toRunService;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toAskAssistant;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toResponse;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunService;
 
-import generated.intric.ai.FilePublic;
+import generated.eneo.ai.FilePublic;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.integration.intric.model.Response;
+import se.sundsvall.ai.flow.integration.eneo.model.Response;
 
 @Service
-public class IntricService {
+public class EneoService {
 
 	static final String INPUT_DELIMITER = "\n\n";
 
-	private final IntricIntegration intricIntegration;
+	private final EneoIntegration eneoIntegration;
 
-	public IntricService(final IntricIntegration intricIntegration) {
-		this.intricIntegration = intricIntegration;
+	public EneoService(final EneoIntegration eneoIntegration) {
+		this.eneoIntegration = eneoIntegration;
 	}
 
 	public Response runService(final String municipalityId, final UUID serviceId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
@@ -34,16 +34,16 @@ public class IntricService {
 		}
 
 		var runServiceRequest = toRunService(actualInput, uploadedInputFilesInUse);
-		var response = intricIntegration.runService(municipalityId, serviceId, runServiceRequest);
+		var response = eneoIntegration.runService(municipalityId, serviceId, runServiceRequest);
 
 		return toResponse(response);
 	}
 
 	public Response askAssistant(final String municipalityId, final UUID assistantId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo) {
 		var askAssistantRequest = toAskAssistant(uploadedInputFilesInUseInfo, uploadedInputFilesInUse);
-		var response = intricIntegration.askAssistant(municipalityId, assistantId, askAssistantRequest);
+		var response = eneoIntegration.askAssistant(municipalityId, assistantId, askAssistantRequest);
 
-		return IntricMapper.toResponse(response);
+		return EneoMapper.toResponse(response);
 	}
 
 	public Response askAssistantFollowup(final String municipalityId, final UUID assistantId, final UUID sessionId, final List<UUID> uploadedInputFilesInUse, final String uploadedInputFilesInUseInfo, final String question) {
@@ -54,17 +54,17 @@ public class IntricService {
 		}
 
 		var request = toAskAssistant(actualQuestion, uploadedInputFilesInUse);
-		var response = intricIntegration.askAssistantFollowup(municipalityId, assistantId, sessionId, request);
+		var response = eneoIntegration.askAssistantFollowup(municipalityId, assistantId, sessionId, request);
 
-		return IntricMapper.toResponse(response);
+		return EneoMapper.toResponse(response);
 	}
 
 	public UUID uploadFile(final String municipalityId, final MultipartFile inputMultipartFile) {
-		var filePublic = intricIntegration.uploadFile(municipalityId, inputMultipartFile);
+		var filePublic = eneoIntegration.uploadFile(municipalityId, inputMultipartFile);
 
 		return ofNullable(filePublic)
 			.map(FilePublic::getId)
-			.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to upload file to Intric"));
+			.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to upload file to Eneo"));
 	}
 
 	public void deleteFiles(final String municipalityId, final List<UUID> fileIds) {
@@ -72,6 +72,6 @@ public class IntricService {
 	}
 
 	public void deleteFile(final String municipalityId, final UUID fileId) {
-		intricIntegration.deleteFile(municipalityId, fileId);
+		eneoIntegration.deleteFile(municipalityId, fileId);
 	}
 }
