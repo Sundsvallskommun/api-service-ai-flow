@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({
-	"step-output-ref", "name"
+	"use-output-from-step", "use-as"
 })
 public final class RedirectedOutput extends StepInput {
 
-	@JsonProperty(STEP_OUTPUT_REF)
+	@JsonProperty("use-output-from-step")
 	private String step;
-	private String name;
+	@JsonProperty("use-as")
+	private String useAs;
 
 	public RedirectedOutput() {
 		super(Type.STEP_OUTPUT);
@@ -29,16 +30,16 @@ public final class RedirectedOutput extends StepInput {
 		this.step = step;
 	}
 
-	public String getName() {
-		return name;
+	public String getUseAs() {
+		return useAs;
 	}
 
-	public RedirectedOutput withName(final String name) {
-		this.name = name;
+	public RedirectedOutput withUseAs(final String useAs) {
+		this.useAs = useAs;
 		return this;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setUseAs(final String useAs) {
+		this.useAs = useAs;
 	}
 }

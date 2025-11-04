@@ -67,9 +67,8 @@ class StepInputTest {
 
 			final var result = deserializer.deserialize(mockJsonParser, mockDeserializationContext);
 
-			assertThat(result).isInstanceOf(FlowInputRef.class).asInstanceOf(InstanceOfAssertFactories.type(FlowInputRef.class)).satisfies(flowInputRef -> {
-				assertThat(flowInputRef.getInput()).isEqualTo(inputId);
-			});
+			assertThat(result).isInstanceOf(FlowInputRef.class).asInstanceOf(InstanceOfAssertFactories.type(FlowInputRef.class))
+				.satisfies(flowInputRef -> assertThat(flowInputRef.getInput()).isEqualTo(inputId));
 		}
 
 		@Test
@@ -91,7 +90,7 @@ class StepInputTest {
 
 			assertThat(result).isInstanceOf(RedirectedOutput.class).asInstanceOf(InstanceOfAssertFactories.type(RedirectedOutput.class)).satisfies(redirectedOutput -> {
 				assertThat(redirectedOutput.getStep()).isEqualTo(step);
-				assertThat(redirectedOutput.getName()).isEqualTo(name);
+				assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
 			});
 		}
 

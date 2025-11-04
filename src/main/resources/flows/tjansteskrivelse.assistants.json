@@ -3,7 +3,9 @@
 	"version": 1,
 	"name": "Tjänsteskrivelse (assistenter)",
 	"description": "Ett Intric AI-flöde för tjänsteskrivelser",
-	"inputPrefix": "#####",
+	"helptext": "",
+	"spaceId": "",
+	"visible": true,
 	"ttlInMinutes": 180,
 	"defaultTemplateId": "ai-mvp.tjansteskrivelse",
 	"input": [
@@ -46,19 +48,19 @@
 			"id": "arendet",
 			"name": "Ärendet",
 			"order": 1,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "d23e4141-4a30-4652-8fce-12cc5febf676"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		},
@@ -66,19 +68,19 @@
 			"id": "bakgrund",
 			"name": "Bakgrund",
 			"order": 2,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "0c98433d-a600-4f96-bda4-350d7cd44cca"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		},
@@ -86,23 +88,23 @@
 			"id": "forvaltningens-overvaganden",
 			"name": "Förvaltningens överväganden",
 			"order": 3,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "00f9705c-e1f4-4115-946f-fbd5cca70701"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				},
 				{
-					"step-output-ref": "bakgrund",
-					"name": "Bakgrund"
+					"use-output-from-step": "bakgrund",
+					"use-as": "Bakgrund"
 				}
 			]
 		},
@@ -110,22 +112,22 @@
 			"id": "styrdokument-och-juridik",
 			"name": "Styrdokument och juridik",
 			"order": 4,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "db1d10a8-79a0-4520-8a8f-4a8903247d56"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				},
 				{
-					"flow-input-ref": "relaterade-styrdokument"
+					"use-flow-input": "relaterade-styrdokument"
 				}
 			]
 		},
@@ -133,19 +135,19 @@
 			"id": "ekonomisk-hallbarhet",
 			"name": "Ekonomisk hållbarhet",
 			"order": 5,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "4d44fc9c-dc21-4c77-afec-c7f72538978d"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		},
@@ -153,19 +155,19 @@
 			"id": "ekologisk-hallbarhet",
 			"name": "Ekologisk hållbarhet",
 			"order": 6,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "ecd38735-ca21-4849-86cf-65c1051253a8"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		},
@@ -173,19 +175,19 @@
 			"id": "social-hallbarhet",
 			"name": "Social hållbarhet",
 			"order": 7,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "d79e6cfb-9a47-4679-a1c2-5e7393005726"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		},
@@ -193,19 +195,19 @@
 			"id": "landsbygdssakring",
 			"name": "Landsbygdssäkring",
 			"order": 8,
-			"intricEndpoint": {
+			"target": {
 				"type": "ASSISTANT",
 				"id": "d5ac8806-1b72-41bd-9deb-f28f556e0e02"
 			},
 			"input": [
 				{
-					"flow-input-ref": "uppdraget-till-tjansten"
+					"use-flow-input": "uppdraget-till-tjansten"
 				},
 				{
-					"flow-input-ref": "forvaltningens-input"
+					"use-flow-input": "forvaltningens-input"
 				},
 				{
-					"flow-input-ref": "bakgrundsmaterial"
+					"use-flow-input": "bakgrundsmaterial"
 				}
 			]
 		}

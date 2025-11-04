@@ -19,11 +19,10 @@ class StringMultipartFileTest {
 
 	@Test
 	void multipartFileContract() {
-		var prefix = "somePrefix";
-		var name = "someName";
-		var value = "someValue";
+		final var name = "someName";
+		final var value = "someValue";
 
-		var stringMultipartFile = new StringMultipartFile(prefix, name, value);
+		final var stringMultipartFile = new StringMultipartFile(name, value);
 
 		assertThat(stringMultipartFile.getValue()).isEqualTo(value);
 		assertThat(stringMultipartFile.getName()).isEqualTo(name);
@@ -31,7 +30,7 @@ class StringMultipartFileTest {
 		assertThat(stringMultipartFile.getContentType()).isEqualTo(TEXT_PLAIN_VALUE);
 		assertThat(stringMultipartFile.isEmpty()).isFalse();
 		assertThat(stringMultipartFile.getSize()).isEqualTo(stringMultipartFile.getBytes().length);
-		assertThat(stringMultipartFile.getBytes()).isEqualTo("%s%s:%s".formatted(prefix, name, value).getBytes(UTF_8));
+		assertThat(stringMultipartFile.getBytes()).isEqualTo("%s:%s".formatted(name, value).getBytes(UTF_8));
 		assertThat(stringMultipartFile.getInputStream()).isInstanceOf(ByteArrayInputStream.class);
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> stringMultipartFile.transferTo(mock(File.class)))
 			.withMessage("NOT IMPLEMENTED");
@@ -42,13 +41,12 @@ class StringMultipartFileTest {
 
 		@Test
 		void serialize() throws IOException {
-			var prefix = "somePrefix";
-			var name = "someName";
-			var value = "someValue";
+			final var name = "someName";
+			final var value = "someValue";
 
-			var stringMultipartFile = new StringMultipartFile(prefix, name, value);
-			var serializer = new StringMultipartFile.Serializer();
-			var mockJsonGenerator = mock(JsonGenerator.class);
+			final var stringMultipartFile = new StringMultipartFile(name, value);
+			final var serializer = new StringMultipartFile.Serializer();
+			final var mockJsonGenerator = mock(JsonGenerator.class);
 
 			serializer.serialize(stringMultipartFile, mockJsonGenerator, null);
 

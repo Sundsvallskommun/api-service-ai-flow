@@ -8,29 +8,29 @@ class RedirectedOutputTest {
 
 	@Test
 	void getterAndSetters() {
-		var step = "step";
-		var name = "name";
+		final var step = "step";
+		final var name = "name";
 
-		var redirectedOutput = new RedirectedOutput();
+		final var redirectedOutput = new RedirectedOutput();
 		redirectedOutput.setStep(step);
-		redirectedOutput.setName(name);
+		redirectedOutput.setUseAs(name);
 
 		assertThat(redirectedOutput.getStep()).isEqualTo(step);
-		assertThat(redirectedOutput.getName()).isEqualTo(name);
+		assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
 		assertThat(redirectedOutput.getType()).isEqualTo(StepInput.Type.STEP_OUTPUT);
 	}
 
 	@Test
 	void builderPattern() {
-		var step = "step";
-		var name = "name";
+		final var step = "step";
+		final var name = "name";
 
-		var redirectedOutput = new RedirectedOutput()
+		final var redirectedOutput = new RedirectedOutput()
 			.withStep(step)
-			.withName(name);
+			.withUseAs(name);
 
 		assertThat(redirectedOutput.getStep()).isEqualTo(step);
-		assertThat(redirectedOutput.getName()).isEqualTo(name);
+		assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
 		assertThat(redirectedOutput.getType()).isEqualTo(StepInput.Type.STEP_OUTPUT);
 	}
 }
