@@ -126,9 +126,9 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>src/main/resources/integrations/intric-api.yml</inputSpec>
+							<inputSpec>src/main/resources/integrations/eneo.yml</inputSpec>
 							<configOptions>
-								<modelPackage>generated.intric.ai</modelPackage>
+								<modelPackage>generated.eneo.ai</modelPackage>
 								<!--
 									Disabled, since it (a) isn't used and (b) leads to a type/name collision since the
 									OpenAPI spec generates a "Size" enum that clashes with the Size JSR-310 constraint
@@ -177,7 +177,6 @@
 						<exclude>**/se/sundsvall/ai/flow/service/FlowService**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/Executor**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/FlowLoader$Configuration**</exclude>
-						<exclude>**/se/sundsvall/ai/flow/integration/intric/configuration/IntricClientFactory**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

@@ -56,16 +56,16 @@ class StepInputTest {
 
 		@Test
 		void deserializeFlowInputRef() throws IOException {
-			var inputId = "someInputId";
+			final var inputId = "someInputId";
 
-			var fields = Map.of(FLOW_INPUT_REF, mockFlowInputRefNode).entrySet();
+			final var fields = Map.of(FLOW_INPUT_REF, mockFlowInputRefNode).entrySet();
 
 			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
-			when(mockRootNode.fields()).thenReturn(fields.iterator());
+			when(mockRootNode.properties()).thenReturn(fields);
 			when(mockFlowInputRefNode.textValue()).thenReturn(inputId);
 
-			var result = deserializer.deserialize(mockJsonParser, mockDeserializationContext);
+			final var result = deserializer.deserialize(mockJsonParser, mockDeserializationContext);
 
 			assertThat(result).isInstanceOf(FlowInputRef.class).asInstanceOf(InstanceOfAssertFactories.type(FlowInputRef.class)).satisfies(flowInputRef -> {
 				assertThat(flowInputRef.getInput()).isEqualTo(inputId);
@@ -74,20 +74,20 @@ class StepInputTest {
 
 		@Test
 		void deserializeRedirectedOutput() throws IOException {
-			var step = "someStep";
-			var name = "someName";
+			final var step = "someStep";
+			final var name = "someName";
 
-			var fields = Map.of(
+			final var fields = Map.of(
 				STEP_OUTPUT_REF, mockRedirectedOutputNode,
 				NAME, mockNameNode).entrySet();
 
 			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
-			when(mockRootNode.fields()).thenReturn(fields.iterator());
+			when(mockRootNode.properties()).thenReturn(fields);
 			when(mockRedirectedOutputNode.textValue()).thenReturn(step);
 			when(mockNameNode.textValue()).thenReturn(name);
 
-			var result = deserializer.deserialize(mockJsonParser, mockDeserializationContext);
+			final var result = deserializer.deserialize(mockJsonParser, mockDeserializationContext);
 
 			assertThat(result).isInstanceOf(RedirectedOutput.class).asInstanceOf(InstanceOfAssertFactories.type(RedirectedOutput.class)).satisfies(redirectedOutput -> {
 				assertThat(redirectedOutput.getStep()).isEqualTo(step);
@@ -97,11 +97,11 @@ class StepInputTest {
 
 		@Test
 		void deserializeWhenInputIsInvalid() throws IOException {
-			var fields = Map.<String, JsonNode>of().entrySet();
+			final var fields = Map.<String, JsonNode>of().entrySet();
 
 			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
-			when(mockRootNode.fields()).thenReturn(fields.iterator());
+			when(mockRootNode.properties()).thenReturn(fields);
 
 			assertThatExceptionOfType(IOException.class)
 				.isThrownBy(() -> deserializer.deserialize(mockJsonParser, mockDeserializationContext));

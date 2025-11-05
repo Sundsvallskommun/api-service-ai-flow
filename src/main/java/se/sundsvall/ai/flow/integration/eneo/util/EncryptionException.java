@@ -1,4 +1,4 @@
-package se.sundsvall.ai.flow.integration.intric.util;
+package se.sundsvall.ai.flow.integration.eneo.util;
 
 public class EncryptionException extends RuntimeException {
 

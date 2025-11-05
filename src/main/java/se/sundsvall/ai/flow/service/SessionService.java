@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.integration.intric.IntricService;
+import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
@@ -28,17 +28,17 @@ public class SessionService {
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
 	private final Executor executor;
-	private final IntricService intricService;
+	private final EneoService eneoService;
 	private final TemplatingIntegration templatingIntegration;
 
-	SessionService(final Executor executor, final IntricService intricService, final TemplatingIntegration templatingIntegration) {
+	SessionService(final Executor executor, final EneoService eneoService, final TemplatingIntegration templatingIntegration) {
 		this.executor = executor;
-		this.intricService = intricService;
+		this.eneoService = eneoService;
 		this.templatingIntegration = templatingIntegration;
 	}
 
 	public Session createSession(final String municipalityId, final Flow flow) {
-		var session = new Session(municipalityId, flow);
+		final var session = new Session(municipalityId, flow);
 		sessions.put(session.getId(), session);
 		return session;
 	}
@@ -53,11 +53,11 @@ public class SessionService {
 	}
 
 	public void executeSession(final String municipalityId, final UUID sessionId) {
-		var session = getSession(sessionId);
-		var flow = session.getFlow();
+		final var session = getSession(sessionId);
+		final var flow = session.getFlow();
 
 		// Make sure that all required inputs have values
-		var unsetRequiredInputs = flow.getFlowInputs().stream()
+		final var unsetRequiredInputs = flow.getFlowInputs().stream()
 			.filter(FlowInput::isRequired)
 			.map(FlowInput::getId)
 			.filter(inputId -> session.getInput().getOrDefault(inputId, List.of()).isEmpty())
@@ -70,53 +70,53 @@ public class SessionService {
 	}
 
 	public void executeStep(final String municipalityId, final UUID sessionId, final String stepId, final String input, final boolean runRequiredSteps) {
-		var session = getSession(sessionId);
-		var stepExecution = session.getStepExecution(stepId);
+		final var session = getSession(sessionId);
+		final var stepExecution = session.getStepExecution(stepId);
 
 		executor.executeStep(municipalityId, stepExecution, input, runRequiredSteps);
 	}
 
 	public void deleteSession(final String municipalityId, final UUID sessionId) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 
 		// Extract the id:s of the files uploaded in the session
-		var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
+		final var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
 			.flatMap(Collection::stream)
 			.map(Input::getIntricFileId)
 			.flatMap(Stream::ofNullable)
 			.toList();
 		// Delete the files
-		intricService.deleteFiles(municipalityId, uploadedFileIds);
+		eneoService.deleteFiles(municipalityId, uploadedFileIds);
 		// Remove the session
 		sessions.remove(sessionId);
 	}
 
 	public Session addInput(final UUID sessionId, final String inputId, final String value) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 		session.addSimpleInput(inputId, value);
 		return session;
 	}
 
 	public Session addInput(final UUID sessionId, final String inputId, final MultipartFile inputMultipartFile) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 		session.addFileInput(inputId, inputMultipartFile);
 		return session;
 	}
 
 	public Session clearInput(final UUID sessionId, final String inputId) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 		session.clearInput(inputId);
 		return session;
 	}
 
 	public String renderSession(final UUID sessionId, final String templateId, final String municipalityId) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 
 		return templatingIntegration.renderSession(session, templateId, municipalityId);
 	}
 
 	public StepExecution getStepExecution(final UUID sessionId, final String stepId) {
-		var session = getSession(sessionId);
+		final var session = getSession(sessionId);
 
 		return session.getStepExecution(stepId);
 	}

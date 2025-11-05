@@ -1,12 +1,19 @@
 integration:
-  intric:
-    base-url: http://localhost:${wiremock.server.port}/intric
+  eneo:
     oauth2:
-      username: override
-      password: override
-      token-url: http://localhost:${wiremock.server.port}/intric/token
+      token-url: http://localhost:${wiremock.server.port}/eneo/token
+      client-id: override
+      client-secret: override
+      authorization-grant-type: client_credentials
     read-timeout-in-seconds: 15
     connect-timeout-in-seconds: 5
+    municipalities:
+      2281:
+        url: http://localhost:${wiremock.server.port}/eneo
+        api-key: aKey
+      1984:
+        url: http://localhost:${wiremock.server.port}/eneo-arboga
+        api-key: anotherKey
   templating:
     base-url: http://localhost:${wiremock.server.port}/templating
     oauth2:
