@@ -103,7 +103,8 @@ public class Step implements Comparable<Step> {
 
 		public enum Type {
 			SERVICE,
-			ASSISTANT
+			ASSISTANT,
+			APP
 		}
 	}
 }

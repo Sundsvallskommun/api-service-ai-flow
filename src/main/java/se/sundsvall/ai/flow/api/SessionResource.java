@@ -78,7 +78,7 @@ class SessionResource {
 	@GetMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> getSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId) {
 		return ok(sessionService.getSession(sessionId));
 	}
 
@@ -122,7 +122,7 @@ class SessionResource {
 	@PostMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Void> runSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId) {
 		sessionService.executeSession(municipalityId, sessionId);
 
 		return ResponseEntity.ok().build();
@@ -143,7 +143,7 @@ class SessionResource {
 	@DeleteMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Void> deleteSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId) {
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId) {
 		sessionService.deleteSession(municipalityId, sessionId);
 		return ok().build();
 	}
@@ -163,8 +163,8 @@ class SessionResource {
 	@GetMapping(value = "/{sessionId}/step/{stepId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<StepExecution> getStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
-		@Parameter(name = "stepId", description = "Step id") @PathVariable("stepId") String stepId) {
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
+		@PathVariable @Parameter(name = "stepId", description = "Step id") String stepId) {
 		return ok(sessionService.getStepExecution(sessionId, stepId));
 	}
 
@@ -183,8 +183,8 @@ class SessionResource {
 	@PostMapping(value = "/{sessionId}/step/{stepId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Void> runStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
-		@Parameter(name = "stepId", description = "Step id") @PathVariable("stepId") String stepId,
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
+		@PathVariable @Parameter(name = "stepId", description = "Step id") String stepId,
 		@Valid @RequestBody final ChatRequest request) {
 		sessionService.executeStep(municipalityId, sessionId, stepId, request.input(), request.runRequiredSteps());
 
@@ -209,8 +209,8 @@ class SessionResource {
 	@PostMapping(value = "/{sessionId}/input/{inputId}/simple", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addSimpleInputToSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
-		@Parameter(name = "inputId", description = "Input id") @PathVariable("inputId") final String inputId,
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
+		@PathVariable @Parameter(name = "inputId", description = "Input id") final String inputId,
 		@Valid @RequestBody final SimpleInput input) {
 		return ResponseEntity.ok(sessionService.addInput(sessionId, inputId, input.value()));
 	}
@@ -231,8 +231,8 @@ class SessionResource {
 	@PostMapping(value = "/{sessionId}/input/{inputId}/file", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addFileInputToSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
-		@Parameter(name = "inputId", description = "Input id") @PathVariable("inputId") final String inputId,
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
+		@PathVariable @Parameter(name = "inputId", description = "Input id") final String inputId,
 		@RequestPart("file") final MultipartFile inputMultipartFile) {
 		return ResponseEntity.ok(sessionService.addInput(sessionId, inputId, inputMultipartFile));
 	}
@@ -252,8 +252,8 @@ class SessionResource {
 	@DeleteMapping(value = "/{sessionId}/input/{inputId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> clearInputInSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
-		@Parameter(name = "inputId", description = "Input id") @PathVariable("inputId") final String inputId) {
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
+		@PathVariable @Parameter(name = "inputId", description = "Input id") final String inputId) {
 		return ok(sessionService.clearInput(sessionId, inputId));
 	}
 
@@ -272,7 +272,7 @@ class SessionResource {
 	@PostMapping(value = "/{sessionId}/generate", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Output> generateSessionOutput(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@Parameter(name = "sessionId", description = "Session id") @PathVariable("sessionId") final UUID sessionId,
+		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
 		@RequestBody(required = false) @Valid final RenderRequest renderRequest) {
 		final var session = sessionService.getSession(sessionId);
 		final var templateId = ofNullable(renderRequest)

@@ -173,11 +173,68 @@ public class Executor {
 						stepExecution.setOutput(response.answer());
 					}
 				}
+				case APP -> {
+					// Are we initiating a new app run or checking status of an existing one?
+					if (stepExecution.getIntricRunId() == null) {
+						LOG.info("Running step {} using APP {}", step.getName(), eneoEndpointId);
+
+						// Initiate the app run
+						final var response = eneoService.runApp(municipalityId, eneoEndpointId, inputFilesInUse);
+						// Store the Eneo run id in the step execution
+						stepExecution.setIntricRunId(response.runId());
+
+						// Check the current status
+						checkAppRunStatus(municipalityId, stepExecution, step.getName());
+					} else {
+						LOG.info("Checking status of existing app run for step {} using APP {}", step.getName(), eneoEndpointId);
+
+						// Check the status of the existing run
+						checkAppRunStatus(municipalityId, stepExecution, step.getName());
+					}
+					// Note: State is set inside checkAppRunStatus based on the app run status
+				}
 			}
 			stepExecution.setState(StepExecution.State.DONE);
 		} catch (final Exception e) {
 			stepExecution.setState(StepExecution.State.ERROR);
 			stepExecution.setErrorMessage(e.getMessage());
+		}
+	}
+
+	/**
+	 * Checks the status of an app run and updates the step execution.
+	 * Could/Should be used in the future to poll for app run status and return back to client.
+	 *
+	 * @param municipalityId the municipality id
+	 * @param stepExecution  the step execution
+	 * @param stepName       the step name
+	 */
+	void checkAppRunStatus(final String municipalityId, final StepExecution stepExecution, final String stepName) {
+		final var runId = stepExecution.getIntricRunId();
+		LOG.debug("Checking app run status for step {} with run ID {}", stepName, runId);
+
+		// Check the status of the app run
+		final var response = eneoService.getAppRun(municipalityId, runId);
+		final var currentStatus = response.status();
+		final var output = response.answer();
+
+		// Handle the different status cases
+		switch (currentStatus) {
+			case COMPLETE -> {
+				LOG.info("App run for step {} completed successfully", stepName);
+				stepExecution.setOutput(output);
+				stepExecution.setState(StepExecution.State.DONE);
+			}
+			case FAILED -> throw Problem.valueOf(Status.BAD_GATEWAY, "App run for step '%s' failed".formatted(stepName));
+			case NOT_FOUND -> throw Problem.valueOf(Status.NOT_FOUND, "App run for step '%s' not found".formatted(stepName));
+			default -> {
+				// Still running, store output but don't change the RUNNING state
+				LOG.debug("App run for step {} is still running with status {}", stepName, currentStatus);
+				if (output != null && !output.isBlank()) {
+					stepExecution.setOutput(output);
+				}
+				// Keep the step in RUNNING state as client needs to poll
+			}
 		}
 	}
 
