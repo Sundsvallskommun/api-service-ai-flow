@@ -9,10 +9,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
@@ -24,6 +28,8 @@ import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
 public class SessionService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
 
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
@@ -117,6 +123,8 @@ public class SessionService {
 
 	public StepExecution getStepExecution(final UUID sessionId, final String stepId) {
 		final var session = getSession(sessionId);
+
+		LOG.info("Getting step execution for step id {}", stepId);
 
 		return session.getStepExecution(stepId);
 	}
