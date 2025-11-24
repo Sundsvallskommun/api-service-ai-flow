@@ -122,8 +122,6 @@ public class SessionService {
 	public StepExecution getStepExecution(final UUID sessionId, final String stepId) {
 		final var session = getSession(sessionId);
 
-		LOG.info("Getting step execution for step id {}", stepId);
-
 		return session.getStepExecution(stepId);
 	}
 }

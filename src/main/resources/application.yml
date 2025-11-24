@@ -1,3 +1,6 @@
+app-polling:
+  interval: PT2S
+  max-duration: PT180S  # Based on the max duration of the longest running flow
 openapi:
   name: ${spring.application.name}
   title: ${spring.application.name}

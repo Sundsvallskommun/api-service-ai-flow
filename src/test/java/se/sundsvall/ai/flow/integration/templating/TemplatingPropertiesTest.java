@@ -4,12 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import se.sundsvall.ai.flow.Application;
+import se.sundsvall.ai.flow.test.annotation.PropertiesTest;
 
-@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("junit")
+@PropertiesTest(value = TemplatingProperties.class)
 class TemplatingPropertiesTest {
 
 	@Autowired

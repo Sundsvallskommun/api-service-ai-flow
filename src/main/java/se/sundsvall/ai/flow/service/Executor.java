@@ -10,6 +10,7 @@ import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -208,41 +209,41 @@ public class Executor {
 		} catch (final Exception e) {
 			stepExecution.setState(StepExecution.State.ERROR);
 			stepExecution.setErrorMessage(e.getMessage());
+			Thread.currentThread().interrupt();
 		}
 	}
 
 	String pollAppRunUntilComplete(final String municipalityId, final java.util.UUID runId, final String stepName) throws InterruptedException {
-		// Get polling configuration from properties
-		final int pollIntervalMs = appPollingProperties.intervalMs();
-		final int maxPollDurationMs = appPollingProperties.maxDurationMs();
+		// Get polling configuration
+		final var pollIntervalMs = appPollingProperties.interval().toMillis();
+		final var maxPollDurationMs = appPollingProperties.maxDuration().toMillis();
 		final long startTime = System.currentTimeMillis();
 
 		generated.eneo.ai.Status currentStatus;
 		String output;
 
-		do {
+		while (true) {
 			// Check if we've exceeded the maximum polling duration
 			if (System.currentTimeMillis() - startTime > maxPollDurationMs) {
-				throw Problem.valueOf(Status.GATEWAY_TIMEOUT, "App run for step '%s' timed out after %d ms".formatted(stepName, maxPollDurationMs));
+				throw Problem.valueOf(Status.GATEWAY_TIMEOUT, "App run for step '%s' timed out after %s ms".formatted(stepName, maxPollDurationMs));
 			}
 
-			// Poll the app run status
+			// Poll the status of the app run
 			LOG.debug("Polling app run status for step {} with run ID {}", stepName, runId);
 			final var currentResponse = eneoService.getAppRun(municipalityId, runId);
 			currentStatus = currentResponse.status();
 			output = currentResponse.answer();
 
-			// Check if the run is complete, failed, or not found
+			// Check if the run is done
 			if (currentStatus == COMPLETE ||
 				currentStatus == FAILED ||
 				currentStatus == NOT_FOUND) {
 				break;
 			}
 
-			// Wait before next poll
-			Thread.sleep(pollIntervalMs);
-
-		} while (true);
+			// Wait before we poll again
+			TimeUnit.MILLISECONDS.sleep(pollIntervalMs);
+		}
 
 		// Check if the run failed
 		if (currentStatus == FAILED) {

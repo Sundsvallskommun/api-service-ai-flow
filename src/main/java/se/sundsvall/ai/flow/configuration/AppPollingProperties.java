@@ -1,10 +1,12 @@
 package se.sundsvall.ai.flow.configuration;
 
+import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @ConfigurationProperties(prefix = "app-polling")
 public record AppPollingProperties(
-	@DefaultValue("2000") int intervalMs,
+	@DefaultValue("PT2S") Duration interval,
 
-	@DefaultValue("300000") int maxDurationMs) {}
+	@DefaultValue("PT30S") Duration maxDuration) {
+}
