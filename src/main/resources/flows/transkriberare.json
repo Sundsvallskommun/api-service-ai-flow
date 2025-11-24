@@ -1,0 +1,37 @@
+{
+	"id": "ljud-tolkare",
+	"version": 1,
+	"name": "Transkriberare",
+	"description": "Eneo AI-flöde för att transkribera ljud",
+	"inputPrefix": "#####",
+	"defaultTemplateId": null,
+	"ttlInMinutes": 180,
+	"input": [
+		{
+			"id": "indata-ljud",
+			"name": "Indata för ljud",
+			"description": "Lägg till ljud som skall transkriberas",
+			"type": "FILE",
+			"optional": false,
+			"multipleValued": true,
+			"passthrough": false
+		}
+	],
+	"steps": [
+		{
+			"id": "transkribera-ljudfil",
+			"order": 1,
+			"name": "Transkribera ljudfil",
+			"description": "Ljudfil att transkribera",
+			"intricEndpoint": {
+				"type": "APP",
+				"id": "2d859fc5-c313-4793-a8ef-3431536bae0e"
+			},
+			"input": [
+				{
+					"flow-input-ref": "indata-ljud"
+				}
+			]
+		}
+	]
+}

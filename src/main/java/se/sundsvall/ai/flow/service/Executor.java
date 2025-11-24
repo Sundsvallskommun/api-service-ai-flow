@@ -11,14 +11,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-
 import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInputRef;
