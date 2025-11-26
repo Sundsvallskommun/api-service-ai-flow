@@ -10,12 +10,15 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.ai.flow.integration.eneo.EneoService.INPUT_DELIMITER;
 
+import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.FilePublic;
 import generated.eneo.ai.ModelId;
+import generated.eneo.ai.RunAppRequest;
 import generated.eneo.ai.RunService;
 import generated.eneo.ai.ServiceOutput;
+import generated.eneo.ai.Status;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -132,6 +135,50 @@ class EneoServiceTest {
 		eneoService.deleteFile(MUNICIPALITY_ID, fileId);
 
 		verify(eneoIntegrationMock).deleteFile(MUNICIPALITY_ID, fileId);
+		verifyNoMoreInteractions(eneoIntegrationMock);
+	}
+
+	@Test
+	void runApp() {
+		var appId = UUID.randomUUID();
+		var uploadedInputFilesInUse = List.of(UUID.randomUUID());
+		var runId = UUID.randomUUID();
+		var output = "output";
+		var appRunPublic = new AppRunPublic()
+			.id(runId)
+			.output(output)
+			.status(Status.COMPLETE);
+
+		when(eneoIntegrationMock.runApp(eq(MUNICIPALITY_ID), eq(appId), any(RunAppRequest.class))).thenReturn(appRunPublic);
+
+		var response = eneoService.runApp(MUNICIPALITY_ID, appId, uploadedInputFilesInUse);
+
+		assertThat(response.runId()).isEqualTo(runId);
+		assertThat(response.answer()).isEqualTo(output);
+		assertThat(response.status()).isEqualTo(Status.COMPLETE);
+
+		verify(eneoIntegrationMock).runApp(eq(MUNICIPALITY_ID), eq(appId), any(RunAppRequest.class));
+		verifyNoMoreInteractions(eneoIntegrationMock);
+	}
+
+	@Test
+	void getAppRun() {
+		var runId = UUID.randomUUID();
+		var output = "App output";
+		var appRunPublic = new AppRunPublic()
+			.id(runId)
+			.output(output)
+			.status(Status.COMPLETE);
+
+		when(eneoIntegrationMock.getAppRun(MUNICIPALITY_ID, runId)).thenReturn(appRunPublic);
+
+		var response = eneoService.getAppRun(MUNICIPALITY_ID, runId);
+
+		assertThat(response.runId()).isEqualTo(runId);
+		assertThat(response.answer()).isEqualTo(output);
+		assertThat(response.status()).isEqualTo(Status.COMPLETE);
+
+		verify(eneoIntegrationMock).getAppRun(MUNICIPALITY_ID, runId);
 		verifyNoMoreInteractions(eneoIntegrationMock);
 	}
 }

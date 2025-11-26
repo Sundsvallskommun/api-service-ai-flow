@@ -1,0 +1,37 @@
+{
+	"id": "bild-tolkare",
+	"version": 1,
+	"name": "Bildtolkare",
+	"description": "Eneo AI-flöde för att tolka bilder",
+	"inputPrefix": "#####",
+	"defaultTemplateId": null,
+	"ttlInMinutes": 180,
+	"input": [
+		{
+			"id": "indata-bild",
+			"name": "Bild",
+			"description": "Lägg till bild som skall tolkas",
+			"type": "FILE",
+			"optional": false,
+			"multipleValued": true,
+			"passthrough": false
+		}
+	],
+	"steps": [
+		{
+			"id": "tolka-bild",
+			"order": 1,
+			"name": "Bilden",
+			"description": "Bilden att tolka",
+			"intricEndpoint": {
+				"type": "APP",
+				"id": "b5415f0f-06bf-42c3-b781-c803ed347e77"
+			},
+			"input": [
+				{
+					"flow-input-ref": "indata-bild"
+				}
+			]
+		}
+	]
+}

@@ -1,17 +1,20 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static se.sundsvall.ai.flow.TestDataFactory.MUNICIPALITY_ID;
 
+import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.FilePublic;
+import generated.eneo.ai.RunAppRequest;
 import generated.eneo.ai.RunService;
 import generated.eneo.ai.ServiceOutput;
+import generated.eneo.ai.Status;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
@@ -24,7 +27,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import org.zalando.problem.Problem;
+import org.zalando.problem.ThrowableProblem;
 
 @ExtendWith(MockitoExtension.class)
 class EneoIntegrationTest {
@@ -69,10 +72,10 @@ class EneoIntegrationTest {
 
 		when(mockEneoClient.runService(serviceId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> eneoIntegration.runService(MUNICIPALITY_ID, serviceId, request))
-			.isInstanceOf(Problem.class)
-			.hasMessageContaining("Bad Gateway")
-			.hasMessageContaining("Error running service with ID: %s".formatted(serviceId));
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.runService(MUNICIPALITY_ID, serviceId, request))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error running service with ID: %s".formatted(serviceId));
 
 		verify(mockEneoClient).runService(serviceId, request);
 	}
@@ -100,10 +103,10 @@ class EneoIntegrationTest {
 
 		when(mockEneoClient.askAssistant(assistantId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> eneoIntegration.askAssistant(MUNICIPALITY_ID, assistantId, request))
-			.isInstanceOf(Problem.class)
-			.hasMessageContaining("Bad Gateway")
-			.hasMessageContaining("Error asking assistant with ID: %s".formatted(assistantId));
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.askAssistant(MUNICIPALITY_ID, assistantId, request))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error asking assistant with ID: %s".formatted(assistantId));
 
 		verify(mockEneoClient).askAssistant(assistantId, request);
 	}
@@ -133,10 +136,10 @@ class EneoIntegrationTest {
 
 		when(mockEneoClient.askAssistantFollowup(assistantId, sessionId, request)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> eneoIntegration.askAssistantFollowup(MUNICIPALITY_ID, assistantId, sessionId, request))
-			.isInstanceOf(Problem.class)
-			.hasMessageContaining("Bad Gateway")
-			.hasMessageContaining("Error asking assistant with ID: %s and session ID: %s".formatted(assistantId, sessionId));
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.askAssistantFollowup(MUNICIPALITY_ID, assistantId, sessionId, request))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error asking assistant with ID: %s and session ID: %s".formatted(assistantId, sessionId));
 
 		verify(mockEneoClient).askAssistantFollowup(assistantId, sessionId, request);
 	}
@@ -161,10 +164,10 @@ class EneoIntegrationTest {
 		when(multipartFile.getOriginalFilename()).thenReturn("testFile.txt");
 		when(mockEneoClient.uploadFile(multipartFile)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> eneoIntegration.uploadFile(MUNICIPALITY_ID, multipartFile))
-			.isInstanceOf(Problem.class)
-			.hasMessageContaining("Bad Gateway")
-			.hasMessageContaining("Error uploading file: %s".formatted(multipartFile.getOriginalFilename()));
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.uploadFile(MUNICIPALITY_ID, multipartFile))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error uploading file: %s".formatted(multipartFile.getOriginalFilename()));
 
 		verify(mockEneoClient).uploadFile(multipartFile);
 	}
@@ -186,11 +189,73 @@ class EneoIntegrationTest {
 
 		when(mockEneoClient.deleteFile(fileId)).thenThrow(RuntimeException.class);
 
-		assertThatThrownBy(() -> eneoIntegration.deleteFile(MUNICIPALITY_ID, fileId))
-			.isInstanceOf(Problem.class)
-			.hasMessageContaining("Bad Gateway")
-			.hasMessageContaining("Error deleting file with ID: %s".formatted(fileId));
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.deleteFile(MUNICIPALITY_ID, fileId))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error deleting file with ID: %s".formatted(fileId));
 
 		verify(mockEneoClient).deleteFile(fileId);
+	}
+
+	@Test
+	void runApp() {
+		final var appId = UUID.randomUUID();
+		final var request = new RunAppRequest();
+		final var appRunPublic = new AppRunPublic()
+			.id(UUID.randomUUID())
+			.output("someOutput")
+			.status(Status.COMPLETE);
+
+		when(mockEneoClient.runApp(appId, request)).thenReturn(appRunPublic);
+
+		final var result = eneoIntegration.runApp(MUNICIPALITY_ID, appId, request);
+
+		assertThat(result).isNotNull().isEqualTo(appRunPublic);
+		verify(mockEneoClient).runApp(appId, request);
+	}
+
+	@Test
+	void runAppExceptionWhenRunningApp() {
+		final var appId = UUID.randomUUID();
+		final var request = new RunAppRequest();
+
+		when(mockEneoClient.runApp(appId, request)).thenThrow(RuntimeException.class);
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.runApp(MUNICIPALITY_ID, appId, request))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error running app with ID: %s".formatted(appId));
+
+		verify(mockEneoClient).runApp(appId, request);
+	}
+
+	@Test
+	void getAppRun() {
+		final var runId = UUID.randomUUID();
+		final var appRunPublic = new AppRunPublic()
+			.id(runId)
+			.output("someOutput")
+			.status(Status.COMPLETE);
+
+		when(mockEneoClient.getAppRun(runId)).thenReturn(appRunPublic);
+
+		final var result = eneoIntegration.getAppRun(MUNICIPALITY_ID, runId);
+
+		assertThat(result).isNotNull().isEqualTo(appRunPublic);
+		verify(mockEneoClient).getAppRun(runId);
+	}
+
+	@Test
+	void getAppRunExceptionWhenGettingAppRun() {
+		final var runId = UUID.randomUUID();
+
+		when(mockEneoClient.getAppRun(runId)).thenThrow(RuntimeException.class);
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.getAppRun(MUNICIPALITY_ID, runId))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error getting app run with run ID: %s".formatted(runId));
+
+		verify(mockEneoClient).getAppRun(runId);
 	}
 }

@@ -4,6 +4,7 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toAskAssistant;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toResponse;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunAppRequest;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunService;
 
 import generated.eneo.ai.FilePublic;
@@ -73,5 +74,20 @@ public class EneoService {
 
 	public void deleteFile(final String municipalityId, final UUID fileId) {
 		eneoIntegration.deleteFile(municipalityId, fileId);
+	}
+
+	public Response runApp(final String municipalityId, final UUID appId, final List<UUID> uploadedInputFilesInUse) {
+		// APP endpoints only works with files and doesn't accept text input even though the RunAppRequest model contains an
+		// input field.
+		var runAppRequest = toRunAppRequest(uploadedInputFilesInUse);
+		var response = eneoIntegration.runApp(municipalityId, appId, runAppRequest);
+
+		return toResponse(response);
+	}
+
+	public Response getAppRun(final String municipalityId, final UUID runId) {
+		var response = eneoIntegration.getAppRun(municipalityId, runId);
+
+		return toResponse(response);
 	}
 }

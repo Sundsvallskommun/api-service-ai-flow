@@ -1,5 +1,8 @@
 package se.sundsvall.ai.flow.service;
 
+import static generated.eneo.ai.Status.COMPLETE;
+import static generated.eneo.ai.Status.FAILED;
+import static generated.eneo.ai.Status.NOT_FOUND;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.joining;
 import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
@@ -7,6 +10,7 @@ import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
+import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInputRef;
 import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
@@ -29,9 +34,11 @@ public class Executor {
 	private static final Logger LOG = LoggerFactory.getLogger(Executor.class);
 
 	private final EneoService eneoService;
+	private final AppPollingProperties appPollingProperties;
 
-	public Executor(final EneoService eneoService) {
+	public Executor(final EneoService eneoService, final AppPollingProperties appPollingProperties) {
 		this.eneoService = eneoService;
+		this.appPollingProperties = appPollingProperties;
 	}
 
 	@Async
@@ -173,12 +180,83 @@ public class Executor {
 						stepExecution.setOutput(response.answer());
 					}
 				}
+				case APP -> {
+					// Are we initiating a new app run or re-polling an existing one?
+					if (stepExecution.getIntricRunId() == null) {
+						LOG.info("Running step {} using APP {}", step.getName(), targetEndpointId);
+
+						// Initiate the app run
+						final var response = eneoService.runApp(municipalityId, targetEndpointId, inputFilesInUse);
+						// Store the Eneo run id in the step execution to be able to poll for completion
+						stepExecution.setIntricRunId(response.runId());
+
+						// Poll until the app run is complete
+						final var output = pollAppRunUntilComplete(municipalityId, response.runId(), step.getName());
+						// Store the output in the step execution
+						stepExecution.setOutput(output);
+					} else {
+						LOG.info("Re-polling existing app run for step {} using APP {}", step.getName(), targetEndpointId);
+
+						// Re-poll the existing run
+						final var output = pollAppRunUntilComplete(municipalityId, stepExecution.getIntricRunId(), step.getName());
+						// Store the output in the step execution
+						stepExecution.setOutput(output);
+					}
+					// Note: State is set inside checkAppRunStatus based on the app run status
+				}
 			}
 			stepExecution.setState(StepExecution.State.DONE);
 		} catch (final Exception e) {
 			stepExecution.setState(StepExecution.State.ERROR);
 			stepExecution.setErrorMessage(e.getMessage());
+			Thread.currentThread().interrupt();
 		}
+	}
+
+	String pollAppRunUntilComplete(final String municipalityId, final java.util.UUID runId, final String stepName) throws InterruptedException {
+		// Get polling configuration
+		final var pollIntervalMs = appPollingProperties.interval().toMillis();
+		final var maxPollDurationMs = appPollingProperties.maxDuration().toMillis();
+		final long startTime = System.currentTimeMillis();
+
+		generated.eneo.ai.Status currentStatus;
+		String output;
+
+		while (true) {
+			// Check if we've exceeded the maximum polling duration
+			if (System.currentTimeMillis() - startTime > maxPollDurationMs) {
+				throw Problem.valueOf(Status.GATEWAY_TIMEOUT, "App run for step '%s' timed out after %s ms".formatted(stepName, maxPollDurationMs));
+			}
+
+			// Poll the status of the app run
+			LOG.debug("Polling app run status for step {} with run ID {}", stepName, runId);
+			final var currentResponse = eneoService.getAppRun(municipalityId, runId);
+			currentStatus = currentResponse.status();
+			output = currentResponse.answer();
+
+			// Check if the run is done
+			if (currentStatus == COMPLETE ||
+				currentStatus == FAILED ||
+				currentStatus == NOT_FOUND) {
+				break;
+			}
+
+			// Wait before we poll again
+			TimeUnit.MILLISECONDS.sleep(pollIntervalMs);
+		}
+
+		// Check if the run failed
+		if (currentStatus == FAILED) {
+			throw Problem.valueOf(Status.BAD_GATEWAY, "App run for step '%s' failed".formatted(stepName));
+		}
+
+		// Check if the run was not found
+		if (currentStatus == NOT_FOUND) {
+			throw Problem.valueOf(Status.NOT_FOUND, "App run for step '%s' not found".formatted(stepName));
+		}
+
+		LOG.info("App run for step {} completed successfully", stepName);
+		return output;
 	}
 
 	void uploadMissingInputFilesInSessionToEneo(final String municipalityId, final Session session) {

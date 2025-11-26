@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
@@ -24,6 +26,8 @@ import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
 public class SessionService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
 
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 

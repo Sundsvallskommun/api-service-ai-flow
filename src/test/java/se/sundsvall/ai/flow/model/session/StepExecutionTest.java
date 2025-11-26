@@ -22,6 +22,7 @@ class StepExecutionTest {
 		final var output = "output";
 		final var errorMessage = "errorMessage";
 		final var intricSessionId = UUID.randomUUID();
+		var intricRunId = UUID.randomUUID();
 
 		final var stepExecution = new StepExecution(session, step, requiredStepExecutions);
 		assertThat(stepExecution.getState()).isEqualTo(state);
@@ -29,6 +30,7 @@ class StepExecutionTest {
 		state = StepExecution.State.ERROR;
 		stepExecution.setState(state);
 		stepExecution.setIntricSessionId(intricSessionId);
+		stepExecution.setIntricRunId(intricRunId);
 		stepExecution.setOutput(output);
 		stepExecution.setErrorMessage(errorMessage);
 
@@ -38,6 +40,7 @@ class StepExecutionTest {
 		assertThat(stepExecution.getRequiredStepExecutions()).isEqualTo(requiredStepExecutions);
 		assertThat(stepExecution.getState()).isEqualTo(state);
 		assertThat(stepExecution.getIntricSessionId()).isEqualTo(intricSessionId);
+		assertThat(stepExecution.getIntricRunId()).isEqualTo(intricRunId);
 		assertThat(stepExecution.getOutput()).isEqualTo(output);
 		assertThat(stepExecution.getErrorMessage()).isEqualTo(errorMessage);
 		assertThat(stepExecution.isRunning()).isFalse();

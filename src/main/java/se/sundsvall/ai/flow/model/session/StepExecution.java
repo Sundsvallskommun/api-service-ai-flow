@@ -20,6 +20,8 @@ public class StepExecution implements Comparable<StepExecution> {
 	private final List<StepExecution> requiredStepExecutions;
 	@JsonIgnore
 	private UUID intricSessionId;
+	@JsonIgnore
+	private UUID intricRunId;
 	private State state;
 	private LocalDateTime startedAt;
 	private LocalDateTime lastUpdatedAt;
@@ -113,6 +115,14 @@ public class StepExecution implements Comparable<StepExecution> {
 
 	public void setIntricSessionId(final UUID intricSessionId) {
 		this.intricSessionId = intricSessionId;
+	}
+
+	public UUID getIntricRunId() {
+		return intricRunId;
+	}
+
+	public void setIntricRunId(final UUID intricRunId) {
+		this.intricRunId = intricRunId;
 	}
 
 	@Override

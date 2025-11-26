@@ -2,6 +2,9 @@ package se.sundsvall.ai.flow.integration.eneo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import generated.eneo.ai.AppRunPublic;
+import generated.eneo.ai.ServiceOutput;
+import generated.eneo.ai.Status;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -68,13 +71,46 @@ class EneoMapperTest {
 	@Test
 	void toResponseFromServiceOutputTest() {
 		var output = "Service output";
-		var serviceOutput = new generated.eneo.ai.ServiceOutput().output(output);
+		var serviceOutput = new ServiceOutput().output(output);
 
 		var response = EneoMapper.toResponse(serviceOutput);
 
 		assertThat(response).isNotNull().satisfies(res -> {
 			assertThat(res.sessionId()).isNull();
 			assertThat(res.answer()).isEqualTo(output);
+		});
+	}
+
+	@Test
+	void toRunAppRequestRequestTest() {
+		var inputFileUuid = UUID.randomUUID();
+		var uploadedInputFilesInUse = List.of(inputFileUuid);
+
+		var runAppRequest = EneoMapper.toRunAppRequest(uploadedInputFilesInUse);
+
+		assertThat(runAppRequest).isNotNull().satisfies(request -> {
+			assertThat(request.getFiles()).hasSize(1);
+			assertThat(request.getFiles().getFirst().getId()).isEqualTo(inputFileUuid);
+		});
+	}
+
+	@Test
+	void toResponseFromAppRunPublicTest() {
+		var runId = UUID.randomUUID();
+		var output = "output";
+		var status = Status.COMPLETE;
+		var appRunPublic = new AppRunPublic()
+			.id(runId)
+			.output(output)
+			.status(status);
+
+		var response = EneoMapper.toResponse(appRunPublic);
+
+		assertThat(response).isNotNull().satisfies(res -> {
+			assertThat(res.runId()).isEqualTo(runId);
+			assertThat(res.answer()).isEqualTo(output);
+			assertThat(res.status()).isEqualTo(status);
+			assertThat(res.sessionId()).isNull();
 		});
 	}
 
