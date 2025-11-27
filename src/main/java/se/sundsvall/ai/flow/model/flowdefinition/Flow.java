@@ -15,7 +15,9 @@ public class Flow {
 	private Integer version;
 	private String name;
 	private String description;
-	private String inputPrefix = "#####";
+	private String helptext;
+	private String spaceId;
+	private boolean visible = true;
 	private String defaultTemplateId;
 	private int ttlInMinutes = 180;
 
@@ -41,13 +43,13 @@ public class Flow {
 		return version;
 	}
 
+	public void setVersion(final Integer version) {
+		this.version = version;
+	}
+
 	public Flow withVersion(final Integer version) {
 		this.version = version;
 		return this;
-	}
-
-	public void setVersion(final Integer version) {
-		this.version = version;
 	}
 
 	public String getName() {
@@ -76,16 +78,42 @@ public class Flow {
 		return this;
 	}
 
-	public String getInputPrefix() {
-		return inputPrefix;
+	public String getHelptext() {
+		return helptext;
 	}
 
-	public void setInputPrefix(final String inputPrefix) {
-		this.inputPrefix = inputPrefix;
+	public void setHelptext(final String helptext) {
+		this.helptext = helptext;
 	}
 
-	public Flow withInputPrefix(final String inputPrefix) {
-		this.inputPrefix = inputPrefix;
+	public Flow withHelptext(final String helptext) {
+		this.helptext = helptext;
+		return this;
+	}
+
+	public String getSpaceId() {
+		return spaceId;
+	}
+
+	public void setSpaceId(final String spaceId) {
+		this.spaceId = spaceId;
+	}
+
+	public Flow withSpaceId(final String spaceId) {
+		this.spaceId = spaceId;
+		return this;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(final boolean visible) {
+		this.visible = visible;
+	}
+
+	public Flow withVisible(final boolean visible) {
+		this.visible = visible;
 		return this;
 	}
 
@@ -106,13 +134,13 @@ public class Flow {
 		return ttlInMinutes;
 	}
 
+	public void setTtlInMinutes(final int ttlInMinutes) {
+		this.ttlInMinutes = ttlInMinutes;
+	}
+
 	public Flow withTtlInMinutes(final int ttlInMinutes) {
 		this.ttlInMinutes = ttlInMinutes;
 		return this;
-	}
-
-	public void setTtlInMinutes(final int ttlInMinutes) {
-		this.ttlInMinutes = ttlInMinutes;
 	}
 
 	public FlowInput getFlowInput(final String inputId) {
@@ -157,7 +185,7 @@ public class Flow {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Flow other)) {
+		if (!(o instanceof final Flow other)) {
 			return false;
 		}
 		return Objects.equals(id, other.id) && Objects.equals(version, other.version);

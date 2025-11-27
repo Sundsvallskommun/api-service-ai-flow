@@ -14,17 +14,17 @@ class StepExecutionTest {
 
 	@Test
 	void getterAndSetter() {
-		var session = new Session(MUNICIPALITY_ID, new Flow());
-		var step = new Step();
-		var requiredStepExecutions = List.<StepExecution>of();
+		final var session = new Session(MUNICIPALITY_ID, new Flow());
+		final var step = new Step();
+		final var requiredStepExecutions = List.<StepExecution>of();
 
 		var state = StepExecution.State.CREATED;
-		var output = "output";
-		var errorMessage = "errorMessage";
-		var intricSessionId = UUID.randomUUID();
+		final var output = "output";
+		final var errorMessage = "errorMessage";
+		final var intricSessionId = UUID.randomUUID();
 		var intricRunId = UUID.randomUUID();
 
-		var stepExecution = new StepExecution(session, step, requiredStepExecutions);
+		final var stepExecution = new StepExecution(session, step, requiredStepExecutions);
 		assertThat(stepExecution.getState()).isEqualTo(state);
 
 		state = StepExecution.State.ERROR;
@@ -48,7 +48,7 @@ class StepExecutionTest {
 
 	@Test
 	void setState() {
-		var stepExecution = new StepExecution(null, null, null);
+		final var stepExecution = new StepExecution(null, null, null);
 
 		assertThat(stepExecution.getStartedAt()).isNull();
 		assertThat(stepExecution.getFinishedAt()).isNull();
@@ -69,9 +69,9 @@ class StepExecutionTest {
 
 	@Test
 	void compareTo() {
-		var stepExecution1 = new StepExecution(null, new Step().withOrder(5));
-		var stepExecution2 = new StepExecution(null, new Step().withOrder(2));
-		var stepExecution3 = new StepExecution(null, new Step().withOrder(7));
+		final var stepExecution1 = new StepExecution(null, new Step().withOrder(5));
+		final var stepExecution2 = new StepExecution(null, new Step().withOrder(2));
+		final var stepExecution3 = new StepExecution(null, new Step().withOrder(7));
 
 		assertThat(stepExecution1).isGreaterThan(stepExecution2).isLessThan(stepExecution3);
 		assertThat(stepExecution2).isLessThan(stepExecution3);

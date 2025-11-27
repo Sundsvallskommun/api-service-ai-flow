@@ -2,18 +2,15 @@ package se.sundsvall.ai.flow.model.flowdefinition;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.ai.flow.TestDataFactory.createFlowInputRef;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.APP;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.ASSISTANT;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.SERVICE;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.values;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.APP;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.ASSISTANT;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.values;
 
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type;
 
 class StepTest {
 
@@ -23,7 +20,7 @@ class StepTest {
 		final var order = 1;
 		final var name = "name";
 		final var description = "description";
-		final var intricEndpoint = new Step.IntricEndpoint(ASSISTANT, UUID.randomUUID());
+		final var target = new Step.Target(Step.Target.Type.ASSISTANT, UUID.randomUUID());
 		final var inputs = List.of(createFlowInputRef("value"));
 
 		final var step = new Step();
@@ -32,14 +29,14 @@ class StepTest {
 		step.setOrder(order);
 		step.setName(name);
 		step.setDescription(description);
-		step.setIntricEndpoint(intricEndpoint);
+		step.setTarget(target);
 		step.setInputs(inputs);
 
 		assertThat(step.getId()).isEqualTo(id);
 		assertThat(step.getOrder()).isEqualTo(order);
 		assertThat(step.getName()).isEqualTo(name);
 		assertThat(step.getDescription()).isEqualTo(description);
-		assertThat(step.getIntricEndpoint()).isEqualTo(intricEndpoint);
+		assertThat(step.getTarget()).isEqualTo(target);
 		assertThat(step.getInputs()).isEqualTo(inputs);
 	}
 
@@ -49,8 +46,8 @@ class StepTest {
 		final var order = 1;
 		final var name = "name";
 		final var description = "description";
-		final var intricEndpointType = ASSISTANT;
-		final var intricEndpointId = UUID.randomUUID();
+		final var targetType = Step.Target.Type.ASSISTANT;
+		final var targetId = UUID.randomUUID();
 		final var inputs = List.of(createFlowInputRef("value"));
 
 		final var step = new Step()
@@ -58,16 +55,16 @@ class StepTest {
 			.withOrder(order)
 			.withName(name)
 			.withDescription(description)
-			.withIntricEndpoint(new Step.IntricEndpoint(intricEndpointType, intricEndpointId))
+			.withTarget(new Step.Target(targetType, targetId))
 			.withInputs(inputs);
 
 		assertThat(step.getId()).isEqualTo(id);
 		assertThat(step.getOrder()).isEqualTo(order);
 		assertThat(step.getName()).isEqualTo(name);
 		assertThat(step.getDescription()).isEqualTo(description);
-		assertThat(step.getIntricEndpoint()).satisfies(eneoEndpoint -> {
-			assertThat(eneoEndpoint.type()).isEqualTo(intricEndpointType);
-			assertThat(eneoEndpoint.id()).isEqualTo(intricEndpointId);
+		assertThat(step.getTarget()).satisfies(target -> {
+			assertThat(target.type()).isEqualTo(targetType);
+			assertThat(target.id()).isEqualTo(targetId);
 		});
 		assertThat(step.getInputs()).isEqualTo(inputs);
 	}
@@ -85,16 +82,16 @@ class StepTest {
 	@Nested
 	class EneoEndpointTest {
 
-		@EnumSource(value = Type.class)
-		@ParameterizedTest
-		void testConstructorAndGetters(final Type type) {
+		@Test
+		void constructorAndGetters() {
+			final var type = Step.Target.Type.ASSISTANT;
 			final var endpointId = UUID.randomUUID();
 
-			final var intricEndpoint = new Step.IntricEndpoint(type, endpointId);
+			final var target = new Step.Target(type, endpointId);
 
-			assertThat(intricEndpoint.type()).isEqualTo(type);
-			assertThat(intricEndpoint.id()).isEqualTo(endpointId);
-			assertThat(intricEndpoint).hasNoNullFieldsOrProperties();
+			assertThat(target.type()).isEqualTo(type);
+			assertThat(target.id()).isEqualTo(endpointId);
+			assertThat(target).hasNoNullFieldsOrProperties();
 		}
 
 		@Test

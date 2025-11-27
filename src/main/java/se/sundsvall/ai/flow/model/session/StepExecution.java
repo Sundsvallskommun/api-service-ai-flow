@@ -10,13 +10,6 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 
 public class StepExecution implements Comparable<StepExecution> {
 
-	public enum State {
-		CREATED,
-		RUNNING,
-		DONE,
-		ERROR
-	}
-
 	@JsonIgnore
 	private final UUID id;
 	@JsonIgnore
@@ -29,7 +22,6 @@ public class StepExecution implements Comparable<StepExecution> {
 	private UUID intricSessionId;
 	@JsonIgnore
 	private UUID intricRunId;
-
 	private State state;
 	private LocalDateTime startedAt;
 	private LocalDateTime lastUpdatedAt;
@@ -136,5 +128,12 @@ public class StepExecution implements Comparable<StepExecution> {
 	@Override
 	public int compareTo(final StepExecution other) {
 		return step.compareTo(other.step);
+	}
+
+	public enum State {
+		CREATED,
+		RUNNING,
+		DONE,
+		ERROR
 	}
 }

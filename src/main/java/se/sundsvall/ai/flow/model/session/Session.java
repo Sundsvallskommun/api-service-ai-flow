@@ -93,7 +93,7 @@ public class Session {
 
 	public void addSimpleInput(final String inputId, final String value) {
 		final var flowInput = flow.getFlowInput(inputId);
-		final var inputMultipartFile = new StringMultipartFile(flow.getInputPrefix(), flowInput.getName(), value);
+		final var inputMultipartFile = new StringMultipartFile(flowInput.getName(), value);
 
 		addInput(flowInput, inputMultipartFile);
 	}

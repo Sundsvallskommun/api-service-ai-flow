@@ -121,7 +121,7 @@ public class Executor {
 			// Get the required step execution
 			final var requiredStepExecution = session.getStepExecutions().get(redirectedOutputInput.getStep());
 			// Wrap the output of the required step execution in a StringMultipartFile
-			final var requiredStepOutputMultipartFile = new StringMultipartFile(session.getFlow().getInputPrefix(), redirectedOutputInput.getName(), requiredStepExecution.getOutput());
+			final var requiredStepOutputMultipartFile = new StringMultipartFile(redirectedOutputInput.getUseAs(), requiredStepExecution.getOutput());
 			// Add it as an input to the session
 			session.addRedirectedOutputAsInput(redirectedOutputInput.getStep(), requiredStepOutputMultipartFile);
 		});
@@ -147,35 +147,35 @@ public class Executor {
 			.map(Map.Entry::getValue)
 			.collect(joining());
 
-		// Get the Eneo endpoint id
-		final var eneoEndpointId = step.getIntricEndpoint().id();
+		// Get the target endpoint id
+		final var targetEndpointId = step.getTarget().id();
 
 		try {
-			switch (step.getIntricEndpoint().type()) {
+			switch (step.getTarget().type()) {
 				case SERVICE -> {
-					LOG.info("Running step {} using SERVICE {}", step.getName(), eneoEndpointId);
+					LOG.info("Running step {} using SERVICE {}", step.getName(), targetEndpointId);
 
 					// Run the service
-					final var response = eneoService.runService(municipalityId, eneoEndpointId, inputFilesInUse, inputsInUseInfo, input);
+					final var response = eneoService.runService(municipalityId, targetEndpointId, inputFilesInUse, inputsInUseInfo, input);
 					// Store the answer in the step execution
 					stepExecution.setOutput(response.answer());
 				}
 				case ASSISTANT -> {
 					// Are we asking the initial question or a follow-up?
 					if (stepExecution.getIntricSessionId() == null) {
-						LOG.info("Running step {} using ASSISTANT {}", step.getName(), eneoEndpointId);
+						LOG.info("Running step {} using ASSISTANT {}", step.getName(), targetEndpointId);
 
 						// "Ask" the assistant
-						final var response = eneoService.askAssistant(municipalityId, eneoEndpointId, inputFilesInUse, inputsInUseInfo);
+						final var response = eneoService.askAssistant(municipalityId, targetEndpointId, inputFilesInUse, inputsInUseInfo);
 						// Store the Eneo session id in the step execution to be able to ask follow-ups
 						stepExecution.setIntricSessionId(response.sessionId());
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					} else {
-						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), eneoEndpointId);
+						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), targetEndpointId);
 
 						// "Ask" the assistant a follow-up
-						final var response = eneoService.askAssistantFollowup(municipalityId, eneoEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
+						final var response = eneoService.askAssistantFollowup(municipalityId, targetEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
 						// Store the (current) answer in the step execution
 						stepExecution.setOutput(response.answer());
 					}
@@ -183,10 +183,10 @@ public class Executor {
 				case APP -> {
 					// Are we initiating a new app run or re-polling an existing one?
 					if (stepExecution.getIntricRunId() == null) {
-						LOG.info("Running step {} using APP {}", step.getName(), eneoEndpointId);
+						LOG.info("Running step {} using APP {}", step.getName(), targetEndpointId);
 
 						// Initiate the app run
-						final var response = eneoService.runApp(municipalityId, eneoEndpointId, inputFilesInUse);
+						final var response = eneoService.runApp(municipalityId, targetEndpointId, inputFilesInUse);
 						// Store the Eneo run id in the step execution to be able to poll for completion
 						stepExecution.setIntricRunId(response.runId());
 
@@ -195,7 +195,7 @@ public class Executor {
 						// Store the output in the step execution
 						stepExecution.setOutput(output);
 					} else {
-						LOG.info("Re-polling existing app run for step {} using APP {}", step.getName(), eneoEndpointId);
+						LOG.info("Re-polling existing app run for step {} using APP {}", step.getName(), targetEndpointId);
 
 						// Re-poll the existing run
 						final var output = pollAppRunUntilComplete(municipalityId, stepExecution.getIntricRunId(), step.getName());

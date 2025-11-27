@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class FlowInputRef extends StepInput {
 
-	@JsonProperty(FLOW_INPUT_REF)
+	@JsonProperty("use-flow-input")
 	private String input;
 
 	public FlowInputRef() {
