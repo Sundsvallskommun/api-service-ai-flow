@@ -38,15 +38,15 @@ class FlowLoader implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		for (var flowResource : configuration.getFlowResources()) {
-			var flowResourceString = new String(flowResource.getContentAsByteArray(), UTF_8);
-			var flow = objectMapper.readValue(flowResourceString, Flow.class);
+	public void run(final String... args) throws Exception {
+		for (final var flowResource : configuration.getFlowResources()) {
+			final var flowResourceString = new String(flowResource.getContentAsByteArray(), UTF_8);
+			final var flow = objectMapper.readValue(flowResourceString, Flow.class);
 
-			var flowId = flow.getId();
-			var flowVersion = flow.getVersion();
-			var flowName = flow.getName();
-			var flowDescription = flow.getDescription();
+			final var flowId = flow.getId();
+			final var flowVersion = flow.getVersion();
+			final var flowName = flow.getName();
+			final var flowDescription = flow.getDescription();
 
 			// Validate the flow
 			if (hasStepDependencyCycle(flow)) {
@@ -74,7 +74,7 @@ class FlowLoader implements CommandLineRunner {
 	record Configuration(@DefaultValue("false") boolean enabled, @DefaultValue("classpath:/flows/*.json") String locationPattern) {
 
 		Resource[] getFlowResources() throws IOException {
-			var resolver = new PathMatchingResourcePatternResolver();
+			final var resolver = new PathMatchingResourcePatternResolver();
 
 			return resolver.getResources(locationPattern);
 		}

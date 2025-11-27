@@ -25,7 +25,7 @@ public class UploadedMultipartFile implements MultipartFile {
 		try {
 			value = original.getBytes();
 			contentType = original.getContentType();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new FlowException("Unable to handle uploaded file", e);
 		}
 	}
@@ -73,7 +73,7 @@ public class UploadedMultipartFile implements MultipartFile {
 	static class Serializer extends StdSerializer<UploadedMultipartFile> {
 
 		@Serial
-		static final long serialVersionUID = -555432197878555L;
+		private static final long serialVersionUID = -555432197878555L;
 
 		protected Serializer() {
 			super(UploadedMultipartFile.class);

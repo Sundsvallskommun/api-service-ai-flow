@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-- url: http://localhost:59799
+- url: http://localhost:59979
   description: Generated server url
 tags:
 - name: Sessions
@@ -837,20 +837,20 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
     StatusType:
       type: object
       properties:
+        reasonPhrase:
+          type: string
         statusCode:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     CreateSessionRequest:
       required:
       - flowId
@@ -987,12 +987,12 @@ components:
           type: object
           additionalProperties:
             type: object
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         suppressed:
           type: array
           items:
@@ -1039,7 +1039,7 @@ components:
         file:
           type: string
           format: binary
-        uploadedToIntric:
+        uploadedToEneo:
           type: boolean
     Session:
       type: object
@@ -1065,6 +1065,7 @@ components:
           - CREATED
           - RUNNING
           - FINISHED
+          - ERROR
     StepExecution:
       type: object
       properties:

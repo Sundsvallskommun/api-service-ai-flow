@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 
 @RestController
 @RequestMapping("/{municipalityId}/session")
+@Validated
 @Tag(name = "Sessions", description = "Session resources")
 @ApiResponse(
 	responseCode = "400",
@@ -164,7 +166,7 @@ class SessionResource {
 	ResponseEntity<StepExecution> getStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
-		@PathVariable @Parameter(name = "stepId", description = "Step id") String stepId) {
+		@PathVariable @Parameter(name = "stepId", description = "Step id") final String stepId) {
 		return ok(sessionService.getStepExecution(sessionId, stepId));
 	}
 
@@ -184,7 +186,7 @@ class SessionResource {
 	ResponseEntity<Void> runStep(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
-		@PathVariable @Parameter(name = "stepId", description = "Step id") String stepId,
+		@PathVariable @Parameter(name = "stepId", description = "Step id") final String stepId,
 		@Valid @RequestBody final ChatRequest request) {
 		sessionService.executeStep(municipalityId, sessionId, stepId, request.input(), request.runRequiredSteps());
 

@@ -4,7 +4,7 @@ import java.io.Serial;
 
 public class ExecutionException extends RuntimeException {
 	@Serial
-	static final long serialVersionUID = -123432197878787L;
+	private static final long serialVersionUID = -123432197878787L;
 
 	public ExecutionException(final String message) {
 		super(message);
