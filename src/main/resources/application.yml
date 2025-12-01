@@ -30,3 +30,9 @@ spring:
     multipart:
       max-file-size: 25MB
       max-request-size: -1
+
+logbook:
+  body-filters:
+    jsonPath:
+      - key: '$..data'
+        value: '[base64]'
