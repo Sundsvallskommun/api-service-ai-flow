@@ -147,7 +147,8 @@ public class Session {
 	}
 
 	/**
-	 * Removes a specific redirected output input instance for a given source step id. This provides a controlled mutation entry point since the public view is unmodifiable.
+	 * Removes a specific redirected output input instance for a given source step id. This provides a controlled mutation
+	 * entry point since the public view is unmodifiable.
 	 */
 	public void removeRedirectedOutputInput(final String sourceStepId, final Input inputToRemove) {
 		final var list = redirectedOutputInput.get(sourceStepId);
