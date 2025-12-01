@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
@@ -24,7 +25,7 @@ class AppTargetExecutorTest {
 		assertThat(executor.supports(Step.Target.Type.APP)).isTrue();
 
 		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.APP, UUID.randomUUID()));
-		final var flow = new se.sundsvall.ai.flow.model.flowdefinition.Flow().withSteps(List.of(step));
+		final var flow = new Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var exec = session.getStepExecution("S1");
 
@@ -32,8 +33,8 @@ class AppTargetExecutorTest {
 		when(eneoService.runApp("2281", step.getTarget().id(), List.of())).thenReturn(new Response(runId, "ignored", null));
 		when(poller.pollUntilComplete("2281", runId, step.getName())).thenReturn("done");
 
-		final var ctx = new StepRunContext("2281", session, exec, List.of(), List.of(), "", null, true);
-		final var result = executor.execute(ctx);
+		final var stepRunContext = new StepRunContext("2281", session, exec, List.of(), List.of(), "", null, true);
+		final var result = executor.execute(stepRunContext);
 
 		assertThat(result.output()).isEqualTo("done");
 		assertThat(result.runId()).isEqualTo(runId);
@@ -47,18 +48,18 @@ class AppTargetExecutorTest {
 		final var executor = new AppTargetExecutor(eneoService, poller);
 
 		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.APP, UUID.randomUUID()));
-		final var flow = new se.sundsvall.ai.flow.model.flowdefinition.Flow().withSteps(List.of(step));
+		final var flow = new Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var exec = session.getStepExecution("S1");
-		exec.setIntricRunId(UUID.randomUUID());
+		exec.setEneoRunId(UUID.randomUUID());
 
-		when(poller.pollUntilComplete("2281", exec.getIntricRunId(), step.getName())).thenReturn("done2");
+		when(poller.pollUntilComplete("2281", exec.getEneoRunId(), step.getName())).thenReturn("done2");
 
-		final var ctx = new StepRunContext("2281", session, exec, List.of(), List.of(), "", null, true);
-		final var result = executor.execute(ctx);
+		final var stepRunContext = new StepRunContext("2281", session, exec, List.of(), List.of(), "", null, true);
+		final var result = executor.execute(stepRunContext);
 
 		assertThat(result.output()).isEqualTo("done2");
-		assertThat(result.runId()).isEqualTo(exec.getIntricRunId());
+		assertThat(result.runId()).isEqualTo(exec.getEneoRunId());
 		assertThat(result.sessionId()).isNull();
 	}
 }

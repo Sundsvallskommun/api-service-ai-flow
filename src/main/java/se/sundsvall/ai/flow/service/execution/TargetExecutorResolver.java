@@ -9,15 +9,15 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 @Component
 public class TargetExecutorResolver {
 
-	private final List<TargetExecutor> executors;
+	private final List<TargetExecutor> targetExecutors;
 
-	public TargetExecutorResolver(final List<TargetExecutor> executors) {
-		this.executors = executors;
+	public TargetExecutorResolver(final List<TargetExecutor> targetExecutors) {
+		this.targetExecutors = targetExecutors;
 	}
 
 	public TargetExecutor resolve(final Step.Target.Type type) {
-		return executors.stream()
-			.filter(ex -> ex.supports(type))
+		return targetExecutors.stream()
+			.filter(targetExecutor -> targetExecutor.supports(type))
 			.findFirst()
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_IMPLEMENTED, "No TargetExecutor for type " + type));
 	}

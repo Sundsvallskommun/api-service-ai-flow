@@ -12,21 +12,21 @@ class StepExecutionFactoryTest {
 
 	@Test
 	void wiresRedirectedOutputsAsRequiredExecutions() {
-		// Arrange: S2 depends on S1 via redirected output
-		final var s1 = new Step().withId("S1").withOrder(1);
-		final var s2 = new Step().withId("S2").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("use-as")));
+		// Arrange: step2 depends on step1 via redirected output
+		final var step1 = new Step().withId("step1").withOrder(1);
+		final var step2 = new Step().withId("step2").withOrder(2)
+			.withInputs(List.of(new RedirectedOutput().withStep("step1").withUseAs("use-as")));
 
-		final var flow = new Flow().withSteps(List.of(s1, s2));
+		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
 		// Act
-		final var exec1 = session.getStepExecution("S1");
-		final var exec2 = session.getStepExecution("S2");
+		final var stepExecution1 = session.getStepExecution("step1");
+		final var stepExecution2 = session.getStepExecution("step2");
 
 		// Assert
-		assertThat(exec1).isNotNull();
-		assertThat(exec2).isNotNull();
-		assertThat(exec2.getRequiredStepExecutions()).containsExactly(exec1);
+		assertThat(stepExecution1).isNotNull();
+		assertThat(stepExecution2).isNotNull();
+		assertThat(stepExecution2.getRequiredStepExecutions()).containsExactly(stepExecution1);
 	}
 }

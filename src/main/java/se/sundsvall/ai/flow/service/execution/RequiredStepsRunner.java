@@ -1,5 +1,6 @@
 package se.sundsvall.ai.flow.service.execution;
 
+import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -10,18 +11,14 @@ import se.sundsvall.ai.flow.model.session.StepExecution;
 public class RequiredStepsRunner {
 	private static final Logger LOG = LoggerFactory.getLogger(RequiredStepsRunner.class);
 
-	public void ensureRequiredStepsExecuted(
-		final StepExecution execution,
-		final String userInput,
-		final boolean runRequiredSteps,
-		final java.util.function.BiConsumer<StepExecution, String> stepInvoker) {
+	public void ensureRequiredStepsExecuted(final StepExecution execution, final String userInput, final boolean runRequiredSteps, final BiConsumer<StepExecution, String> stepInvoker) {
 		if (!runRequiredSteps) {
 			return;
 		}
-		for (final var required : execution.getRequiredStepExecutions()) {
-			if (required.getState() != StepExecution.State.DONE) {
-				LOG.info("Triggering required step '{}' for '{}'", required.getStep().getName(), execution.getStep().getName());
-				stepInvoker.accept(required, userInput);
+		for (final var requiredStepExecution : execution.getRequiredStepExecutions()) {
+			if (requiredStepExecution.getState() != StepExecution.State.DONE) {
+				LOG.info("Triggering required step '{}' for '{}'", requiredStepExecution.getStep().getName(), execution.getStep().getName());
+				stepInvoker.accept(requiredStepExecution, userInput);
 			}
 		}
 	}

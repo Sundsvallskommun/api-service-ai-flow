@@ -12,23 +12,23 @@ class StepExecutionResultTest {
 		final var runId = UUID.randomUUID();
 		final var sessionId = UUID.randomUUID();
 
-		final var r = StepExecutionResult.success("out", runId, sessionId);
+		final var result = StepExecutionResult.success("out", runId, sessionId);
 
-		assertThat(r.success()).isTrue();
-		assertThat(r.output()).isEqualTo("out");
-		assertThat(r.runId()).isEqualTo(runId);
-		assertThat(r.sessionId()).isEqualTo(sessionId);
-		assertThat(r.errorMessage()).isNull();
+		assertThat(result.success()).isTrue();
+		assertThat(result.output()).isEqualTo("out");
+		assertThat(result.runId()).isEqualTo(runId);
+		assertThat(result.sessionId()).isEqualTo(sessionId);
+		assertThat(result.errorMessage()).isNull();
 	}
 
 	@Test
 	void failureFactoryCreatesFailure() {
-		final var r = StepExecutionResult.failure("boom");
+		final var result = StepExecutionResult.failure("boom");
 
-		assertThat(r.success()).isFalse();
-		assertThat(r.output()).isNull();
-		assertThat(r.runId()).isNull();
-		assertThat(r.sessionId()).isNull();
-		assertThat(r.errorMessage()).isEqualTo("boom");
+		assertThat(result.success()).isFalse();
+		assertThat(result.output()).isNull();
+		assertThat(result.runId()).isNull();
+		assertThat(result.sessionId()).isNull();
+		assertThat(result.errorMessage()).isEqualTo("boom");
 	}
 }

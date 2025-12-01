@@ -1,5 +1,6 @@
 package se.sundsvall.ai.flow.service.execution;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 import se.sundsvall.ai.flow.model.session.StepExecution;
@@ -8,23 +9,20 @@ import se.sundsvall.ai.flow.model.session.StepExecution;
 @Component
 public class StepStateUpdater {
 
-	public void markRunning(final StepExecution exec) {
-		exec.setState(StepExecution.State.RUNNING);
+	public void markRunning(final StepExecution stepExecution) {
+		stepExecution.setState(StepExecution.State.RUNNING);
 	}
 
-	public void markFinished(final StepExecution exec, final String output, final UUID runId, final UUID sessionId) {
-		if (runId != null) {
-			exec.setIntricRunId(runId);
-		}
-		if (sessionId != null) {
-			exec.setIntricSessionId(sessionId);
-		}
-		exec.setOutput(output);
-		exec.setState(StepExecution.State.DONE);
+	public void markFinished(final StepExecution stepExecution, final String output, final UUID runId, final UUID sessionId) {
+		Optional.ofNullable(runId).ifPresent(stepExecution::setEneoRunId);
+		Optional.ofNullable(sessionId).ifPresent(stepExecution::setEneoSessionId);
+
+		stepExecution.setOutput(output);
+		stepExecution.setState(StepExecution.State.DONE);
 	}
 
-	public void markFailed(final StepExecution exec, final String message) {
-		exec.setErrorMessage(message);
-		exec.setState(StepExecution.State.ERROR);
+	public void markFailed(final StepExecution stepExecution, final String message) {
+		stepExecution.setErrorMessage(message);
+		stepExecution.setState(StepExecution.State.ERROR);
 	}
 }

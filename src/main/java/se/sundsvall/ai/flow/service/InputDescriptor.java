@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.service;
 
 import static java.util.stream.Collectors.toMap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class InputDescriptor {
 			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
-	private Map.Entry<String, String> createInfoEntry(final String key, final String name, final java.util.List<Input> inputs) {
+	private Map.Entry<String, String> createInfoEntry(final String key, final String name, final List<Input> inputs) {
 		final var fileIds = inputs.stream()
 			.map(Input::getEneoFileId)
 			.map(UUID::toString)

@@ -15,19 +15,19 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
  */
 public class StepExecutionFactory {
 
-	public Map<String, StepExecution> create(final Session session, final Flow flow) {
+	public Map<String, StepExecution> createStepExecutions(final Session session, final Flow flow) {
 		requireNonNull(session);
 		requireNonNull(flow);
 
-		final Map<String, StepExecution> result = new HashMap<>();
+		final Map<String, StepExecution> stepExecutionMap = new HashMap<>();
 		// Create initial (empty) executions for all steps, wiring dependencies recursively
-		flow.getSteps().forEach(step -> createForStep(session, flow, step, result));
-		return result;
+		flow.getSteps().forEach(step -> createForStep(session, flow, step, stepExecutionMap));
+		return stepExecutionMap;
 	}
 
-	private StepExecution createForStep(final Session session, final Flow flow, final Step step, final Map<String, StepExecution> acc) {
+	private StepExecution createForStep(final Session session, final Flow flow, final Step step, final Map<String, StepExecution> stepExecutionMap) {
 		// Return existing if already created
-		final var existing = acc.get(step.getId());
+		final var existing = stepExecutionMap.get(step.getId());
 		if (existing != null) {
 			return existing;
 		}
@@ -38,12 +38,12 @@ public class StepExecutionFactory {
 			if (stepInput instanceof final RedirectedOutput redirectedOutput) {
 				final var sourceStepId = redirectedOutput.getStep();
 				final var sourceStep = flow.getStep(sourceStepId);
-				required.add(createForStep(session, flow, sourceStep, acc));
+				required.add(createForStep(session, flow, sourceStep, stepExecutionMap));
 			}
 		}
 
-		final var created = new StepExecution(session, step, required);
-		acc.put(step.getId(), created);
-		return created;
+		final var stepExecution = new StepExecution(session, step, required);
+		stepExecutionMap.put(step.getId(), stepExecution);
+		return stepExecution;
 	}
 }

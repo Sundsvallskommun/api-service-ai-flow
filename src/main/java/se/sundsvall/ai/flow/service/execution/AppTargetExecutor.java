@@ -25,40 +25,25 @@ public class AppTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public TargetResult execute(final StepRunContext ctx) throws InterruptedException {
-		final var stepExecution = ctx.stepExecution();
+	public TargetResult execute(final StepRunContext stepRunContext) throws InterruptedException {
+		final var stepExecution = stepRunContext.stepExecution();
 		final var step = stepExecution.getStep();
-		final UUID targetEndpointId = step.getTarget().id();
+		final var targetEndpointId = step.getTarget().id();
 
-		if (stepExecution.getIntricRunId() == null) {
+		if (stepExecution.getEneoRunId() == null) {
 			LOG.info("Running step {} using APP {}", step.getName(), targetEndpointId);
-			final var response = eneoService.runApp(ctx.municipalityId(), targetEndpointId, ctx.inputFileIdsInUse());
+			final var response = eneoService.runApp(stepRunContext.municipalityId(), targetEndpointId, stepRunContext.inputFileIdsInUse());
 			final var runId = response.runId();
-			return getTargetResult(ctx, step, runId);
+			return getTargetResult(stepRunContext, step, runId);
 		} else {
 			LOG.info("Re-polling existing app run for step {} using APP {}", step.getName(), targetEndpointId);
-			final var runId = stepExecution.getIntricRunId();
-			return getTargetResult(ctx, step, runId);
+			final var runId = stepExecution.getEneoRunId();
+			return getTargetResult(stepRunContext, step, runId);
 		}
 	}
 
-	private TargetExecutor.TargetResult getTargetResult(final StepRunContext ctx, final Step step, final UUID runId) throws InterruptedException {
-		final var output = appRunPoller.pollUntilComplete(ctx.municipalityId(), runId, step.getName());
-		return new TargetResult() {
-			@Override
-			public String output() {
-				return output;
-			}
-
-			@Override
-			public UUID runId() {
-				return runId;
-			}
-
-			@Override
-			public UUID sessionId() {
-				return null;
-			}
-		};
+	private TargetExecutor.TargetResult getTargetResult(final StepRunContext stepRunContext, final Step step, final UUID runId) throws InterruptedException {
+		final var output = appRunPoller.pollUntilComplete(stepRunContext.municipalityId(), runId, step.getName());
+		return new TargetResult(output, runId, null);
 	}
 }

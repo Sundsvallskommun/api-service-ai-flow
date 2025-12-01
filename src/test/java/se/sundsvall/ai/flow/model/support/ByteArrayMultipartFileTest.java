@@ -3,7 +3,7 @@ package se.sundsvall.ai.flow.model.support;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.io.InputStream;
+import java.io.File;
 import org.junit.jupiter.api.Test;
 
 class ByteArrayMultipartFileTest {
@@ -19,11 +19,11 @@ class ByteArrayMultipartFileTest {
 		assertThat(file.isEmpty()).isFalse();
 		assertThat(file.getSize()).isEqualTo(bytes.length);
 		assertThat(file.getBytes()).isEqualTo(bytes);
-		try (final InputStream in = file.getInputStream()) {
-			assertThat(in.readAllBytes()).isEqualTo(bytes);
+		try (final var inputStream = file.getInputStream()) {
+			assertThat(inputStream.readAllBytes()).isEqualTo(bytes);
 		}
 
-		final var destination = new java.io.File("/tmp/nowhere");
+		final var destination = new File("/tmp/nowhere");
 		assertThatThrownBy(() -> file.transferTo(destination))
 			.isInstanceOf(UnsupportedOperationException.class)
 			.hasMessageContaining("not supported");

@@ -10,8 +10,7 @@ public class SessionOrchestrator {
 	private final FileUploadManager fileUploadManager;
 	private final StepRunner stepRunner;
 
-	public SessionOrchestrator(final FileUploadManager fileUploadManager,
-		final StepRunner stepRunner) {
+	public SessionOrchestrator(final FileUploadManager fileUploadManager, final StepRunner stepRunner) {
 		this.fileUploadManager = fileUploadManager;
 		this.stepRunner = stepRunner;
 	}

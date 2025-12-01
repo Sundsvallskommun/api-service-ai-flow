@@ -21,12 +21,12 @@ class InputDescriptorTest {
 		final var inputA = new FlowInput().withId("A").withName("Required Doc").withMultipleValued(true).withOptional(false);
 		final var inputB = new FlowInput().withId("B").withName("Optional Doc").withMultipleValued(true).withOptional(true);
 
-		// Steps: S1 (no inputs), S2 consumes redirected output from S1
-		final var s1 = new Step().withId("S1").withName("Step One").withOrder(1);
-		final var s2 = new Step().withId("S2").withName("Step Two").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("S1 output")));
+		// Steps: step1 (no inputs), step2 consumes redirected output from step1
+		final var step1 = new Step().withId("step1").withName("Step One").withOrder(1);
+		final var step2 = new Step().withId("step2").withName("Step Two").withOrder(2)
+			.withInputs(List.of(new RedirectedOutput().withStep("step1").withUseAs("step1 output")));
 
-		final var flow = new Flow().withFlowInputs(List.of(inputA, inputB)).withSteps(List.of(s1, s2));
+		final var flow = new Flow().withFlowInputs(List.of(inputA, inputB)).withSteps(List.of(step1, step2));
 
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
@@ -41,17 +41,17 @@ class InputDescriptorTest {
 
 		// Optional B remains empty -> should be omitted
 
-		// Add redirected output for S1 as input (as text), then set an id
-		session.addRedirectedOutputAsInput("S1", new se.sundsvall.ai.flow.model.session.TextInputValue("S1 output", "text"));
+		// Add redirected output for step1 as input (as text), then set an id
+		session.addRedirectedOutputAsInput("step1", new se.sundsvall.ai.flow.model.session.TextInputValue("step1 output", "text"));
 		final var redirectedId = UUID.randomUUID();
-		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(redirectedId);
+		session.getRedirectedOutputInput().get("step1").getFirst().setEneoFileId(redirectedId);
 
 		final var descriptor = new InputDescriptor();
 		final Map<String, String> info = descriptor.describe(session);
 
-		assertThat(info).containsOnlyKeys("A", "S1");
+		assertThat(info).containsOnlyKeys("A", "step1");
 		assertThat(info.get("A")).contains("du hittar", "filen/filerna");
 		assertThat(info.get("A")).contains(idsA.get(0).toString()).contains(idsA.get(1).toString());
-		assertThat(info.get("S1")).contains(redirectedId.toString());
+		assertThat(info.get("step1")).contains(redirectedId.toString());
 	}
 }

@@ -4,6 +4,7 @@ import static generated.eneo.ai.Status.COMPLETE;
 import static generated.eneo.ai.Status.FAILED;
 import static generated.eneo.ai.Status.NOT_FOUND;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class AppRunPoller {
 		this.appPollingProperties = appPollingProperties;
 	}
 
-	public String pollUntilComplete(final String municipalityId, final java.util.UUID runId, final String stepName) throws InterruptedException {
+	public String pollUntilComplete(final String municipalityId, final UUID runId, final String stepName) throws InterruptedException {
 		final var pollIntervalMs = appPollingProperties.interval().toMillis();
 		final var maxPollDurationMs = appPollingProperties.maxDuration().toMillis();
 		final long startTime = System.currentTimeMillis();

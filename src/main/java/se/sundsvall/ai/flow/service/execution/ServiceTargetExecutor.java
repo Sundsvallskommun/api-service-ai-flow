@@ -1,6 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,34 +22,19 @@ public class ServiceTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public TargetResult execute(final StepRunContext ctx) {
-		final var step = ctx.stepExecution().getStep();
-		final UUID targetEndpointId = step.getTarget().id();
+	public TargetResult execute(final StepRunContext stepRunContext) {
+		final var step = stepRunContext.stepExecution().getStep();
+		final var targetEndpointId = step.getTarget().id();
 		LOG.info("Running step {} using SERVICE {}", step.getName(), targetEndpointId);
 
 		final var response = eneoService.runService(
-			ctx.municipalityId(),
+			stepRunContext.municipalityId(),
 			targetEndpointId,
-			ctx.inputFileIdsInUse(),
-			ctx.inputsInUseInfo(),
-			ctx.userInput());
+			stepRunContext.inputFileIdsInUse(),
+			stepRunContext.inputsInUseInfo(),
+			stepRunContext.userInput());
 
 		final var output = response.answer();
-		return new TargetResult() {
-			@Override
-			public String output() {
-				return output;
-			}
-
-			@Override
-			public UUID runId() {
-				return null;
-			}
-
-			@Override
-			public UUID sessionId() {
-				return null;
-			}
-		};
+		return new TargetResult(output, null, null);
 	}
 }

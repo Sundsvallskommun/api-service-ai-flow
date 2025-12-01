@@ -23,6 +23,7 @@ class SessionOrchestratorTest {
 
 	@Mock
 	private FileUploadManager fileUploadManager;
+
 	@Mock
 	private StepRunner stepRunner;
 
@@ -30,9 +31,9 @@ class SessionOrchestratorTest {
 	private SessionOrchestrator orchestrator;
 
 	private Session newSessionWithTwoSteps() {
-		final var s1 = new Step().withId("S1").withName("S1").withOrder(1);
-		final var s2 = new Step().withId("S2").withName("S2").withOrder(2);
-		final var flow = new Flow().withSteps(List.of(s1, s2));
+		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
+		final var step2 = new Step().withId("S2").withName("S2").withOrder(2);
+		final var flow = new Flow().withSteps(List.of(step1, step2));
 		return new Session("2281", flow, new StepExecutionFactory());
 	}
 
@@ -50,8 +51,8 @@ class SessionOrchestratorTest {
 
 	@Test
 	void runSession_stepFailureSetsSessionError() {
-		final var s1 = new Step().withId("S1").withName("S1").withOrder(1);
-		final var flow = new Flow().withSteps(List.of(s1));
+		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
+		final var flow = new Flow().withSteps(List.of(step1));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
 		when(stepRunner.runStep(any())).thenReturn(StepExecutionResult.failure("boom"));
