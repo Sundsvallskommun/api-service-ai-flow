@@ -92,7 +92,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("createArguments")
 	void createWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.post().uri(builder -> builder.path(PATH).build(Map.of("municipalityId", municipalityId)))
+		final var response = webTestClient.post().uri(builder -> builder.path(PATH)
+			.build(Map.of("municipalityId", municipalityId)))
 			.bodyValue(new CreateSessionRequest("fid", null))
 			.exchange()
 			.expectStatus().isBadRequest()
@@ -111,7 +112,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("getSessionArguments")
 	void getSessionWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.get().uri(builder -> builder.path(PATH + "/{sessionId}").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
+		final var response = webTestClient.get().uri(builder -> builder.path(PATH + "/{sessionId}")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectBody(ConstraintViolationProblem.class)
@@ -129,7 +131,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("runSessionArguments")
 	void runSessionWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
+		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectBody(ConstraintViolationProblem.class)
@@ -147,7 +150,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("deleteArguments")
 	void deleteWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.delete().uri(builder -> builder.path(PATH + "/{sessionId}").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
+		final var response = webTestClient.delete().uri(builder -> builder.path(PATH + "/{sessionId}")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID())))
 			.exchange()
 			.expectStatus().isBadRequest()
 			.expectBody(ConstraintViolationProblem.class)
@@ -165,7 +169,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("runStepArguments")
 	void runStepWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/step/{stepId}").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "stepId", "S1")))
+		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/step/{stepId}")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "stepId", "S1")))
 			.bodyValue(new ChatRequest("hi", true))
 			.exchange()
 			.expectStatus().isBadRequest()
@@ -184,7 +189,8 @@ class SessionResourceFailureTest {
 	@ParameterizedTest
 	@MethodSource("addSimpleInputArguments")
 	void addSimpleInputWithInvalidArguments(final String municipalityId, final Tuple expectedResponse) {
-		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/input/{inputId}/simple").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "inputId", "A")))
+		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/input/{inputId}/simple")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "inputId", "A")))
 			.bodyValue(new SimpleInput("v"))
 			.exchange()
 			.expectStatus().isBadRequest()
@@ -212,7 +218,8 @@ class SessionResourceFailureTest {
 		};
 		parts.add("file", resource);
 
-		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/input/{inputId}/file").build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "inputId", "B")))
+		final var response = webTestClient.post().uri(builder -> builder.path(PATH + "/{sessionId}/input/{inputId}/file")
+			.build(Map.of("municipalityId", municipalityId, "sessionId", UUID.randomUUID(), "inputId", "B")))
 			.contentType(MediaType.MULTIPART_FORM_DATA)
 			.body(BodyInserters.fromMultipartData(parts))
 			.exchange()

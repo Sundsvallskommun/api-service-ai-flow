@@ -1,10 +1,13 @@
-// java
 package se.sundsvall.ai.flow.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.ALL;
@@ -15,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.assertj.core.groups.Tuple;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,6 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 import org.zalando.problem.violations.Violation;
 import se.sundsvall.ai.flow.Application;
@@ -44,6 +49,11 @@ class FlowResourceTest {
 
 	@Autowired
 	private WebTestClient webTestClient;
+
+	@AfterEach
+	void tearDown() {
+		verifyNoMoreInteractions(flowService);
+	}
 
 	private static Stream<Arguments> listFlowsArguments() {
 		return Stream.of(
@@ -70,8 +80,6 @@ class FlowResourceTest {
 			Arguments.of("666", "fid", 1, tuple("deleteFlowVersion.municipalityId", "not a valid municipality ID")));
 	}
 
-	// Failure tests following the provided pattern
-
 	private static Stream<Arguments> createArguments() {
 		return Stream.of(
 			Arguments.of("666", tuple("createFlow.municipalityId", "not a valid municipality ID")));
@@ -87,7 +95,9 @@ class FlowResourceTest {
 			.expectStatus().isOk()
 			.expectHeader().contentType(APPLICATION_JSON)
 			.expectBody(FlowSummary[].class)
-			.value(arr -> assertThat(arr[0].id()).isEqualTo("id1"));
+			.value(flowSummary -> assertThat(flowSummary[0].id()).isEqualTo("id1"));
+
+		verify(flowService).getFlows();
 	}
 
 	@Test
@@ -105,12 +115,15 @@ class FlowResourceTest {
 				assertThat(flow.getVersion()).isEqualTo(2);
 			});
 
-		when(flowService.getLatestFlowVersion("missing")).thenThrow(Problem.valueOf(org.zalando.problem.Status.NOT_FOUND));
+		when(flowService.getLatestFlowVersion("missing")).thenThrow(Problem.valueOf(Status.NOT_FOUND));
 
 		webTestClient.get()
 			.uri(builder -> builder.path(PATH + "/{flowId}").build(Map.of("municipalityId", MUNICIPALITY_ID, "flowId", "missing")))
 			.exchange()
 			.expectStatus().isNotFound();
+
+		verify(flowService).getLatestFlowVersion(eq("fid"));
+		verify(flowService).getLatestFlowVersion(eq("missing"));
 	}
 
 	@Test
@@ -125,12 +138,14 @@ class FlowResourceTest {
 			.expectBody(Flow.class)
 			.value(flow -> assertThat(flow.getVersion()).isEqualTo(3));
 
-		when(flowService.getFlowVersion("fid", 99)).thenThrow(Problem.valueOf(org.zalando.problem.Status.NOT_FOUND));
+		when(flowService.getFlowVersion("fid", 99)).thenThrow(Problem.valueOf(Status.NOT_FOUND));
 
 		webTestClient.get()
 			.uri(builder -> builder.path(PATH + "/{flowId}/{version}").build(Map.of("municipalityId", MUNICIPALITY_ID, "flowId", "fid", "version", 99)))
 			.exchange()
 			.expectStatus().isNotFound();
+
+		verify(flowService, times(2)).getFlowVersion(eq("fid"), any());
 	}
 
 	@Test
@@ -139,13 +154,13 @@ class FlowResourceTest {
 			.uri(builder -> builder.path(PATH + "/{flowId}").build(Map.of("municipalityId", MUNICIPALITY_ID, "flowId", "fid")))
 			.exchange()
 			.expectStatus().isOk();
-		org.mockito.Mockito.verify(flowService).deleteFlow("fid");
+		verify(flowService).deleteFlow("fid");
 
 		webTestClient.delete()
 			.uri(builder -> builder.path(PATH + "/{flowId}/{version}").build(Map.of("municipalityId", MUNICIPALITY_ID, "flowId", "fid", "version", 2)))
 			.exchange()
 			.expectStatus().isOk();
-		org.mockito.Mockito.verify(flowService).deleteFlowVersion("fid", 2);
+		verify(flowService).deleteFlowVersion("fid", 2);
 	}
 
 	@Test
@@ -163,7 +178,7 @@ class FlowResourceTest {
 			.expectHeader().location("/fid/5")
 			.expectBody().isEmpty();
 
-		org.mockito.Mockito.verify(flowService).createFlow(any(Flow.class));
+		verify(flowService).createFlow(any(Flow.class));
 	}
 
 	@ParameterizedTest

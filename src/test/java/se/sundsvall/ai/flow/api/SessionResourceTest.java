@@ -1,13 +1,16 @@
 package se.sundsvall.ai.flow.api;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.util.Map;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +41,11 @@ class SessionResourceTest {
 
 	@Autowired
 	private WebTestClient webTestClient;
+
+	@AfterEach
+	void tearDown() {
+		verifyNoMoreInteractions(sessionService, flowService);
+	}
 
 	@Test
 	void createGetRunAndDeleteSession_happy() {
@@ -78,6 +86,8 @@ class SessionResourceTest {
 			.exchange()
 			.expectStatus().isOk();
 
+		verify(sessionService).getSession(session.getId());
+		verify(flowService).getLatestFlowVersion("fid");
 		verify(sessionService).createSession("2281", flow);
 		verify(sessionService).executeSession("2281", session.getId());
 		verify(sessionService).deleteSession("2281", session.getId());
@@ -89,7 +99,6 @@ class SessionResourceTest {
 		final var session = new Session("2281", flow);
 		final var stepId = "S1";
 
-		// Ensure executeStep is stubbed so the controller doesn't rely on real implementation
 		doNothing().when(sessionService).executeStep(eq("2281"), eq(session.getId()), eq(stepId), any(String.class), eq(true));
 
 		// run step
@@ -119,5 +128,10 @@ class SessionResourceTest {
 			.expectStatus().isOk()
 			.expectBody()
 			.jsonPath("$.data").isEqualTo("rendered");
+
+		verify(sessionService).getSession(session.getId());
+		verify(sessionService).renderSession(session.getId(), "tpl", "2281");
+		verify(sessionService).addInput(eq(session.getId()), anyString(), anyString());
+		verify(sessionService).executeStep(eq("2281"), eq(session.getId()), eq(stepId), anyString(), eq(true));
 	}
 }

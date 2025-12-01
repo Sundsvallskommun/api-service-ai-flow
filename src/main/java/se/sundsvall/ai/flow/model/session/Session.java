@@ -22,8 +22,6 @@ import se.sundsvall.ai.flow.model.support.StringMultipartFile;
 
 public class Session {
 
-	// Kept empty; input description formatting has moved to InputDescriptor service
-
 	private final UUID id;
 	private final String municipalityId;
 	@JsonIgnore
@@ -42,7 +40,7 @@ public class Session {
 		this.flow = flow;
 
 		// Create initial (empty) executions for all steps
-		stepExecutions.putAll(stepExecutionFactory.create(this, flow));
+		stepExecutions.putAll(stepExecutionFactory.createStepExecutions(this, flow));
 		// Create initial (empty) input lists
 		flow.getFlowInputs().forEach(flowInput -> input.put(flowInput.getId(), new LinkedList<>()));
 	}
@@ -96,8 +94,6 @@ public class Session {
 		input.get(flowInput.getId()).clear();
 	}
 
-	// Removed deprecated MultipartFile-based APIs in favor of InputValue
-
 	private void addInputInternal(final FlowInput flowInput, final MultipartFile inputMultipartFile) {
 		// Create an empty input value list, if required
 		input.computeIfAbsent(flowInput.getId(), ignored -> new LinkedList<>());
@@ -116,36 +112,31 @@ public class Session {
 		return Collections.unmodifiableMap(wrapped);
 	}
 
-	public void addInput(final String inputId, final InputValue value) {
+	public void addInput(final String inputId, final InputValue inputValue) {
 		final var flowInput = flow.getFlowInput(inputId);
-		final MultipartFile multipart;
-		// Use instanceof checks instead of pattern-matching switch to remain compatible with compiler settings
-		if (value instanceof final TextInputValue t) {
-			multipart = new StringMultipartFile(flowInput.getName(), t.value());
-		} else if (value instanceof final FileInputValue f) {
-			multipart = new ByteArrayMultipartFile(flowInput.getName(), f.content(), f.contentType());
+		final var flowInputName = flowInput.getName();
+
+		if (inputValue instanceof final TextInputValue textInputValue) {
+			addInputInternal(flowInput, new StringMultipartFile(flowInputName, textInputValue.value()));
+		} else if (inputValue instanceof final FileInputValue fileInputValue) {
+			addInputInternal(flowInput, new ByteArrayMultipartFile(flowInputName, fileInputValue.content(), fileInputValue.contentType()));
 		} else {
-			throw new IllegalArgumentException("Unsupported InputValue implementation: " + value.getClass());
+			throw new IllegalArgumentException("Unsupported InputValue implementation: " + inputValue.getClass());
 		}
-		addInputInternal(flowInput, multipart);
 	}
 
-	// Removed deprecated redirected output MultipartFile overload
-
-	// --- InputValue-based overloads (preferred) ---
-
-	public void addRedirectedOutputAsInput(final String stepId, final InputValue value) {
-		final MultipartFile multipart;
-		// Use instanceof checks instead of pattern-matching deconstruction
-		if (value instanceof TextInputValue(final String name, final String value1)) {
-			multipart = new StringMultipartFile(name, value1);
-		} else if (value instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
-			multipart = new ByteArrayMultipartFile(name, content, contentType);
-		} else {
-			throw new IllegalArgumentException("Unsupported InputValue implementation: " + value.getClass());
-		}
+	public void addRedirectedOutputAsInput(final String stepId, final InputValue inputValue) {
 		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
-		redirectedOutputInput.get(stepId).add(new Input(multipart));
+
+		if (inputValue instanceof TextInputValue(final String name, final String value)) {
+			var input = new Input(new StringMultipartFile(name, value));
+			redirectedOutputInput.get(stepId).add(input);
+		} else if (inputValue instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
+			var input = new Input(new ByteArrayMultipartFile(name, content, contentType));
+			redirectedOutputInput.get(stepId).add(input);
+		} else {
+			throw new IllegalArgumentException("Unsupported InputValue implementation: " + inputValue.getClass());
+		}
 	}
 
 	@JsonIgnore
@@ -176,8 +167,6 @@ public class Session {
 	public Map<String, StepExecution> getStepExecutions() {
 		return stepExecutions;
 	}
-
-	// Input description logic moved to DefaultInputDescriptor
 
 	public StepExecution getStepExecution(final String stepId) {
 		return of(stepExecutions)

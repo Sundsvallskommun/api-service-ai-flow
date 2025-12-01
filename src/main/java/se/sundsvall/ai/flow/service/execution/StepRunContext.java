@@ -14,4 +14,5 @@ public record StepRunContext(
 	List<UUID> inputFileIdsInUse,
 	String inputsInUseInfo,
 	String userInput,
-	boolean runRequiredSteps) {}
+	boolean runRequiredSteps) {
+}

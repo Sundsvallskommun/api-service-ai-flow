@@ -1,6 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,53 +22,23 @@ public class AssistantTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public TargetResult execute(final StepRunContext ctx) {
-		final var stepExecution = ctx.stepExecution();
+	public TargetResult execute(final StepRunContext stepRunContext) {
+		final var stepExecution = stepRunContext.stepExecution();
 		final var step = stepExecution.getStep();
-		final UUID targetEndpointId = step.getTarget().id();
+		final var targetEndpointId = step.getTarget().id();
 
-		if (stepExecution.getIntricSessionId() == null) {
+		if (stepExecution.getEneoSessionId() == null) {
 			LOG.info("Running step {} using ASSISTANT {}", step.getName(), targetEndpointId);
-			final var response = eneoService.askAssistant(ctx.municipalityId(), targetEndpointId, ctx.inputFileIdsInUse(), ctx.inputsInUseInfo());
+			final var response = eneoService.askAssistant(stepRunContext.municipalityId(), targetEndpointId, stepRunContext.inputFileIdsInUse(), stepRunContext.inputsInUseInfo());
 			final var output = response.answer();
 			final var sessionId = response.sessionId();
-			return new TargetResult() {
-				@Override
-				public String output() {
-					return output;
-				}
-
-				@Override
-				public UUID runId() {
-					return null;
-				}
-
-				@Override
-				public UUID sessionId() {
-					return sessionId;
-				}
-			};
+			return new TargetResult(output, null, sessionId);
 		} else {
 			LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), targetEndpointId);
-			final var response = eneoService.askAssistantFollowup(ctx.municipalityId(), targetEndpointId, stepExecution.getIntricSessionId(), ctx.inputFileIdsInUse(), ctx.inputsInUseInfo(), ctx.userInput());
+			final var response = eneoService.askAssistantFollowup(stepRunContext.municipalityId(), targetEndpointId, stepExecution.getEneoSessionId(), stepRunContext.inputFileIdsInUse(), stepRunContext.inputsInUseInfo(), stepRunContext.userInput());
 			final var output = response.answer();
-			final var sessionId = stepExecution.getIntricSessionId();
-			return new TargetResult() {
-				@Override
-				public String output() {
-					return output;
-				}
-
-				@Override
-				public UUID runId() {
-					return null;
-				}
-
-				@Override
-				public UUID sessionId() {
-					return sessionId;
-				}
-			};
+			final var sessionId = stepExecution.getEneoSessionId();
+			return new TargetResult(output, null, sessionId);
 		}
 	}
 }

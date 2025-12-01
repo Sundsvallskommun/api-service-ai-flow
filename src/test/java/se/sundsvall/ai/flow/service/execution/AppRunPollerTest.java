@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.service.execution;
 
 import static generated.eneo.ai.Status.COMPLETE;
 import static generated.eneo.ai.Status.FAILED;
+import static generated.eneo.ai.Status.IN_PROGRESS;
 import static generated.eneo.ai.Status.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,7 +28,7 @@ class AppRunPollerTest {
 
 		// First poll returns IN_PROGRESS, second returns COMPLETE with answer
 		when(eneo.getAppRun("2281", runId))
-			.thenReturn(new Response(runId, null, generated.eneo.ai.Status.IN_PROGRESS))
+			.thenReturn(new Response(runId, null, IN_PROGRESS))
 			.thenReturn(new Response(runId, "done", COMPLETE));
 
 		final var out = poller.pollUntilComplete("2281", runId, "step");

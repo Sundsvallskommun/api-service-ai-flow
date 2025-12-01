@@ -16,17 +16,17 @@ class RequiredStepsRunnerTest {
 
 	@Test
 	void triggersRequiredStepsWhenEnabledAndNotDone() {
-		final var s1 = new Step().withId("S1").withName("S1").withOrder(1);
-		final var s2 = new Step().withId("S2").withName("S2").withOrder(2)
+		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
+		final var step2 = new Step().withId("S2").withName("S2").withOrder(2)
 			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("use")));
-		final var flow = new Flow().withSteps(List.of(s1, s2));
+		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
-		final var exec2 = session.getStepExecution("S2");
+		final var stepExecution = session.getStepExecution("S2");
 		final var runner = new RequiredStepsRunner();
 
 		final AtomicInteger invoked = new AtomicInteger();
-		runner.ensureRequiredStepsExecuted(exec2, null, true, (required, in) -> {
+		runner.ensureRequiredStepsExecuted(stepExecution, null, true, (required, in) -> {
 			invoked.incrementAndGet();
 			// mark the required step as done to prevent re-invocation
 			required.setState(StepExecution.State.DONE);
@@ -37,16 +37,16 @@ class RequiredStepsRunnerTest {
 
 	@Test
 	void doesNotTriggerWhenDisabled() {
-		final var s1 = new Step().withId("S1").withName("S1").withOrder(1);
-		final var s2 = new Step().withId("S2").withName("S2").withOrder(2)
+		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
+		final var step2 = new Step().withId("S2").withName("S2").withOrder(2)
 			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("use")));
-		final var flow = new Flow().withSteps(List.of(s1, s2));
+		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
-		final var exec2 = session.getStepExecution("S2");
+		final var stepExecution = session.getStepExecution("S2");
 		final var runner = new RequiredStepsRunner();
 
 		final AtomicInteger invoked = new AtomicInteger();
-		runner.ensureRequiredStepsExecuted(exec2, null, false, (required, in) -> invoked.incrementAndGet());
+		runner.ensureRequiredStepsExecuted(stepExecution, null, false, (required, in) -> invoked.incrementAndGet());
 
 		assertThat(invoked.get()).isZero();
 	}

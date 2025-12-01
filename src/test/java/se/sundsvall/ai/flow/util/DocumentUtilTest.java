@@ -17,11 +17,11 @@ class DocumentUtilTest {
 	void isPdf_true_and_extract() throws IOException {
 		// create a minimal PDF in memory
 		byte[] pdfBytes;
-		try (PDDocument doc = new PDDocument()) {
-			doc.addPage(new PDPage());
-			try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-				doc.save(out);
-				pdfBytes = out.toByteArray();
+		try (var document = new PDDocument()) {
+			document.addPage(new PDPage());
+			try (var outputStream = new ByteArrayOutputStream()) {
+				document.save(outputStream);
+				pdfBytes = outputStream.toByteArray();
 			}
 		}
 
@@ -32,7 +32,7 @@ class DocumentUtilTest {
 
 	@Test
 	void isPdf_false_and_extract_throws() {
-		byte[] notPdf = "not a pdf".getBytes();
+		var notPdf = "not a pdf".getBytes();
 		assertThat(DocumentUtil.isPdf(notPdf)).isFalse();
 		assertThatThrownBy(() -> DocumentUtil.extractTextFromPdf(notPdf))
 			.isInstanceOf(FlowException.class)
@@ -42,10 +42,10 @@ class DocumentUtilTest {
 	@Test
 	void isDocx_true_and_extract() throws Exception {
 		byte[] docxBytes;
-		try (XWPFDocument docx = new XWPFDocument()) {
-			try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-				docx.write(out);
-				docxBytes = out.toByteArray();
+		try (var docx = new XWPFDocument()) {
+			try (var outputStream = new ByteArrayOutputStream()) {
+				docx.write(outputStream);
+				docxBytes = outputStream.toByteArray();
 			}
 		}
 
@@ -55,7 +55,7 @@ class DocumentUtilTest {
 
 	@Test
 	void isDocx_false_and_extract_throws() {
-		byte[] notDocx = new byte[] {
+		var notDocx = new byte[] {
 			0x01, 0x02, 0x03
 		};
 		assertThat(DocumentUtil.isDocx(notDocx)).isFalse();

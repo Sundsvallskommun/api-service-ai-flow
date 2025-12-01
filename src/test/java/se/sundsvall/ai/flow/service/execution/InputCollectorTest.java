@@ -15,6 +15,7 @@ import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
+import se.sundsvall.ai.flow.model.session.TextInputValue;
 import se.sundsvall.ai.flow.service.InputDescriptor;
 
 class InputCollectorTest {
@@ -25,11 +26,11 @@ class InputCollectorTest {
 		final var flowInputA = new FlowInput().withId("A").withName("Doc A").withMultipleValued(true);
 		final var flowInputB = new FlowInput().withId("B").withName("Doc B").withMultipleValued(true);
 
-		final var s1 = new Step().withId("S1").withName("Step One").withOrder(1);
-		final var s2 = new Step().withId("S2").withName("Step Two").withOrder(2)
+		final var step1 = new Step().withId("S1").withName("Step One").withOrder(1);
+		final var step2 = new Step().withId("S2").withName("Step Two").withOrder(2)
 			.withInputs(List.of(new FlowInputRef().withInput("A"), new RedirectedOutput().withStep("S1").withUseAs("S1 out")));
 
-		final var flow = new Flow().withFlowInputs(List.of(flowInputA, flowInputB)).withSteps(List.of(s1, s2));
+		final var flow = new Flow().withFlowInputs(List.of(flowInputA, flowInputB)).withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
 		// Add A twice; set Intric ids
@@ -40,12 +41,12 @@ class InputCollectorTest {
 		session.getInput().get("A").get(1).setEneoFileId(idsA.get(1));
 
 		// Add redirected output from S1 and set id
-		session.addRedirectedOutputAsInput("S1", new se.sundsvall.ai.flow.model.session.TextInputValue("S1 out", "hello"));
+		session.addRedirectedOutputAsInput("S1", new TextInputValue("S1 out", "hello"));
 		final var redirectedId = UUID.randomUUID();
 		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(redirectedId);
 
 		// Mock descriptor to return canned strings
-		final InputDescriptor descriptor = mock(InputDescriptor.class);
+		final var descriptor = mock(InputDescriptor.class);
 		when(descriptor.describe(session)).thenReturn(Map.of(
 			"A", "infoA",
 			"S1", "infoS1"));
@@ -53,7 +54,7 @@ class InputCollectorTest {
 		final var collector = new InputCollector(descriptor);
 
 		// Act
-		final var inputs = collector.resolve(session, s2);
+		final var inputs = collector.resolve(session, step2);
 
 		// Assert
 		assertThat(inputs.inputsInUse()).containsExactlyInAnyOrder("A", "S1");

@@ -38,9 +38,9 @@ class ExecutorTest {
 	@Test
 	void executeStepFailsWhenSessionNotRunOrFinished() {
 		final var session = newSessionWithSingleStep();
-		final var exec = session.getStepExecution("S1");
+		final var stepExecution = session.getStepExecution("S1");
 
-		assertThatThrownBy(() -> executor.executeStep("2281", exec, null, true))
+		assertThatThrownBy(() -> executor.executeStep("2281", stepExecution, null, true))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("since the session has never been run yet");
 	}
@@ -50,10 +50,10 @@ class ExecutorTest {
 		final var session = newSessionWithSingleStep();
 		// put session in RUNNING to pass the first check
 		session.setState(Session.State.RUNNING);
-		final var exec = session.getStepExecution("S1");
-		exec.setState(StepExecution.State.RUNNING);
+		final var stepExecution = session.getStepExecution("S1");
+		stepExecution.setState(StepExecution.State.RUNNING);
 
-		assertThatThrownBy(() -> executor.executeStep("2281", exec, null, true))
+		assertThatThrownBy(() -> executor.executeStep("2281", stepExecution, null, true))
 			.isInstanceOf(Problem.class)
 			.hasMessageContaining("already running step");
 	}
@@ -62,10 +62,10 @@ class ExecutorTest {
 	void unsupportedTargetMarksFailed() {
 		final var session = newSessionWithSingleStep();
 		session.setState(Session.State.RUNNING);
-		final var exec = session.getStepExecution("S1");
+		final var stepExecution = session.getStepExecution("S1");
 
 		// Will delegate to StepRunner; verify that StepRunner was invoked
-		executor.executeStep("2281", exec, null, true);
+		executor.executeStep("2281", stepExecution, null, true);
 
 		verify(stepRunner).runStep(any());
 	}
@@ -74,9 +74,9 @@ class ExecutorTest {
 	void successPathMarksFinished() {
 		final var session = newSessionWithSingleStep();
 		session.setState(Session.State.RUNNING);
-		final var exec = session.getStepExecution("S1");
+		final var stepExecution = session.getStepExecution("S1");
 
-		executor.executeStep("2281", exec, "q", true);
+		executor.executeStep("2281", stepExecution, "q", true);
 
 		// Verify delegation to StepRunner
 		verify(stepRunner).runStep(any());

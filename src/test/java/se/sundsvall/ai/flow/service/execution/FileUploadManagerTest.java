@@ -17,6 +17,7 @@ import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.session.FileInputValue;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
+import se.sundsvall.ai.flow.model.session.TextInputValue;
 
 class FileUploadManagerTest {
 
@@ -33,10 +34,10 @@ class FileUploadManagerTest {
 
 		// Redirected output: first an already uploaded one -> should be deleted and removed, then a not uploaded -> should be
 		// uploaded
-		session.addRedirectedOutputAsInput("S1", new se.sundsvall.ai.flow.model.session.TextInputValue("useAs", "old"));
+		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "old"));
 		final var oldId = UUID.randomUUID();
 		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(oldId);
-		session.addRedirectedOutputAsInput("S1", new se.sundsvall.ai.flow.model.session.TextInputValue("useAs", "new"));
+		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "new"));
 
 		// Stubs
 		when(eneo.uploadFile(eq("2281"), any())).thenReturn(UUID.randomUUID());

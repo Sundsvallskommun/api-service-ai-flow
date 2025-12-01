@@ -11,9 +11,7 @@ public class StepRunner {
 
 	private final RequiredStepsRunner requiredStepsRunner;
 	private final StepStateUpdater stepStateUpdater;
-
 	private final InputPreparation inputPreparation;
-
 	private final TargetExecutorResolver targetExecutorResolver;
 
 	public StepRunner(final RequiredStepsRunner requiredStepsRunner,
@@ -39,7 +37,6 @@ public class StepRunner {
 		requiredStepsRunner.ensureRequiredStepsExecuted(stepExecution, context.userInput(), context.runRequiredSteps(),
 			(requiredExec, userIn) -> runStep(new StepRunContext(municipalityId, session, requiredExec, context.inputsInUse(), context.inputFileIdsInUse(), context.inputsInUseInfo(), userIn, context.runRequiredSteps())));
 
-		// Mark running
 		stepStateUpdater.markRunning(stepExecution);
 
 		// Prepare inputs (redirected outputs, uploads and resolution)
