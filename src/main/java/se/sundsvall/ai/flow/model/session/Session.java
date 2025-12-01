@@ -129,11 +129,11 @@ public class Session {
 		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
 
 		if (inputValue instanceof TextInputValue(final String name, final String value)) {
-			var input = new Input(new StringMultipartFile(name, value));
-			redirectedOutputInput.get(stepId).add(input);
+			var textInput = new Input(new StringMultipartFile(name, value));
+			redirectedOutputInput.get(stepId).add(textInput);
 		} else if (inputValue instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
-			var input = new Input(new ByteArrayMultipartFile(name, content, contentType));
-			redirectedOutputInput.get(stepId).add(input);
+			var fileInput = new Input(new ByteArrayMultipartFile(name, content, contentType));
+			redirectedOutputInput.get(stepId).add(fileInput);
 		} else {
 			throw new IllegalArgumentException("Unsupported InputValue implementation: " + inputValue.getClass());
 		}
@@ -147,8 +147,7 @@ public class Session {
 	}
 
 	/**
-	 * Removes a specific redirected output input instance for a given source step id. This provides a controlled mutation
-	 * entry point since the public view is unmodifiable.
+	 * Removes a specific redirected output input instance for a given source step id. This provides a controlled mutation entry point since the public view is unmodifiable.
 	 */
 	public void removeRedirectedOutputInput(final String sourceStepId, final Input inputToRemove) {
 		final var list = redirectedOutputInput.get(sourceStepId);

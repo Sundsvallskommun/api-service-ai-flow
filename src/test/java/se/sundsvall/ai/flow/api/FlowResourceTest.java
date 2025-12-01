@@ -122,8 +122,8 @@ class FlowResourceTest {
 			.exchange()
 			.expectStatus().isNotFound();
 
-		verify(flowService).getLatestFlowVersion(eq("fid"));
-		verify(flowService).getLatestFlowVersion(eq("missing"));
+		verify(flowService).getLatestFlowVersion("fid");
+		verify(flowService).getLatestFlowVersion("missing");
 	}
 
 	@Test
