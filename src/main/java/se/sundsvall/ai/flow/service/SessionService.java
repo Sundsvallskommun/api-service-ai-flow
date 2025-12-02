@@ -3,14 +3,13 @@ package se.sundsvall.ai.flow.service;
 import static java.util.Optional.ofNullable;
 import static org.zalando.problem.Status.NOT_FOUND;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
@@ -19,6 +18,7 @@ import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
+import se.sundsvall.ai.flow.model.session.FileInputValue;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
@@ -26,8 +26,6 @@ import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
 public class SessionService {
-
-	private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
 
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
@@ -86,7 +84,7 @@ public class SessionService {
 		// Extract the id:s of the files uploaded in the session
 		final var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
 			.flatMap(Collection::stream)
-			.map(Input::getIntricFileId)
+			.map(Input::getEneoFileId)
 			.flatMap(Stream::ofNullable)
 			.toList();
 		// Delete the files
@@ -103,8 +101,16 @@ public class SessionService {
 
 	public Session addInput(final UUID sessionId, final String inputId, final MultipartFile inputMultipartFile) {
 		final var session = getSession(sessionId);
-		session.addFileInput(inputId, inputMultipartFile);
-		return session;
+		try {
+			final var value = new FileInputValue(
+				inputMultipartFile.getOriginalFilename(),
+				inputMultipartFile.getBytes(),
+				inputMultipartFile.getContentType());
+			session.addInput(inputId, value);
+			return session;
+		} catch (final IOException e) {
+			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to read uploaded file for input '" + inputId + "'");
+		}
 	}
 
 	public Session clearInput(final UUID sessionId, final String inputId) {

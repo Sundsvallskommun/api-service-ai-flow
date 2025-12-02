@@ -4,62 +4,56 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
 
 class InputTest {
 
-	@Mock
-	private MultipartFile mockMultipartFile;
-
 	@Test
-	void constructorAndGetters() {
-		var input = new Input(mockMultipartFile);
+	void builder() {
+		// Arrange
+		final var eneoFileId = UUID.randomUUID();
+		final var file = new MockMultipartFile("Some String", "some bytes".getBytes());
+		// Act
+		final var result = new Input(file)
+			.withEneoFileId(eneoFileId);
 
-		assertThat(input.getFile()).isEqualTo(mockMultipartFile);
-		assertThat(input.getIntricFileId()).isNull();
-		assertThat(input.isUploadedToIntric()).isFalse();
-	}
+		// Assert
+		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
+		assertThat(result.getEneoFileId()).isEqualTo(eneoFileId);
+		assertThat(result.getFile()).isSameAs(file);
 
-	@Test
-	void setIntricFileId() {
-		var intricFileId = UUID.randomUUID();
-
-		var input = new Input(mockMultipartFile);
-		input.setIntricFileId(intricFileId);
-
-		assertThat(input.getIntricFileId()).isEqualTo(intricFileId);
-		assertThat(input.isUploadedToIntric()).isTrue();
 	}
 
 	@Test
 	void testEquals() {
-		var input1 = new Input(mockMultipartFile);
-		var input2 = new Input(mockMultipartFile);
+		final var file = new MockMultipartFile("Some String", "some bytes".getBytes());
+		final var input1 = new Input(file);
+		final var input2 = new Input(file);
 
 		assertThat(input1.equals(input2)).isTrue();
 
-		input1.setIntricFileId(UUID.randomUUID());
-		input2.setIntricFileId(UUID.randomUUID());
+		input1.setEneoFileId(UUID.randomUUID());
+		input2.setEneoFileId(UUID.randomUUID());
 
 		assertThat(input1.equals(input2)).isFalse();
 	}
 
 	@Test
 	void testHashCode() {
-		var input1 = new Input(mockMultipartFile);
-		var input2 = new Input(mockMultipartFile);
+		final var file = new MockMultipartFile("Some String", "some bytes".getBytes());
+		final var input1 = new Input(file);
+		final var input2 = new Input(file);
 
 		assertThat(input1).hasSameHashCodeAs(input2);
 
-		var intricFileId = UUID.randomUUID();
-		input1.setIntricFileId(intricFileId);
-		input2.setIntricFileId(intricFileId);
+		final var eneoFileId = UUID.randomUUID();
+		input1.setEneoFileId(eneoFileId);
+		input2.setEneoFileId(eneoFileId);
 
 		assertThat(input1).hasSameHashCodeAs(input2);
 
-		input1.setIntricFileId(UUID.randomUUID());
-		input2.setIntricFileId(UUID.randomUUID());
+		input1.setEneoFileId(UUID.randomUUID());
+		input2.setEneoFileId(UUID.randomUUID());
 
 		assertThat(input1.hashCode()).isNotEqualTo(input2.hashCode());
 	}

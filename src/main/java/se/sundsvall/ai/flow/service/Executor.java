@@ -1,69 +1,40 @@
 package se.sundsvall.ai.flow.service;
 
-import static generated.eneo.ai.Status.COMPLETE;
-import static generated.eneo.ai.Status.FAILED;
-import static generated.eneo.ai.Status.NOT_FOUND;
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.joining;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
-import se.sundsvall.ai.flow.configuration.AppPollingProperties;
-import se.sundsvall.ai.flow.integration.eneo.EneoService;
-import se.sundsvall.ai.flow.model.flowdefinition.FlowInputRef;
-import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
-import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
-import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+import se.sundsvall.ai.flow.service.execution.SessionOrchestrator;
+import se.sundsvall.ai.flow.service.execution.StepRunContext;
+import se.sundsvall.ai.flow.service.execution.StepRunner;
 import se.sundsvall.dept44.requestid.RequestId;
 
-@Service
+@Component
 public class Executor {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Executor.class);
+	private final StepRunner stepRunner;
+	private final SessionOrchestrator sessionOrchestrator;
 
-	private final EneoService eneoService;
-	private final AppPollingProperties appPollingProperties;
-
-	public Executor(final EneoService eneoService, final AppPollingProperties appPollingProperties) {
-		this.eneoService = eneoService;
-		this.appPollingProperties = appPollingProperties;
+	public Executor(final StepRunner stepRunner,
+		final SessionOrchestrator sessionOrchestrator) {
+		this.stepRunner = stepRunner;
+		this.sessionOrchestrator = sessionOrchestrator;
 	}
 
 	@Async
 	public void executeSession(final String municipalityId, final Session session, final String requestId) {
+		RequestId.init(requestId);
 		try {
-			RequestId.init(requestId);
-			final var flow = session.getFlow();
-
-			// Upload all inputs (files) in the local session that haven't been uploaded before
-			uploadMissingInputFilesInSessionToEneo(municipalityId, session);
-
-			// Mark the session as running
-			session.setState(Session.State.RUNNING);
-			// Execute the steps in the order defined in the flow, running required steps if they exist
-			flow.getSteps().stream()
-				.map(step -> session.getStepExecution(step.getId()))
-				.forEach(step -> executeStepInternal(municipalityId, step, null, true));
-			// Mark the session as finished
-			session.setState(Session.State.FINISHED);
+			sessionOrchestrator.runSession(municipalityId, session);
 		} finally {
 			RequestId.reset();
 		}
 	}
 
-	// @Async
+	@Async
 	public void executeStep(final String municipalityId, final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
 		final var session = stepExecution.getSession();
 
@@ -81,223 +52,8 @@ public class Executor {
 	}
 
 	void executeStepInternal(final String municipalityId, final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
-		final var session = stepExecution.getSession();
-		final var flow = session.getFlow();
-		final var step = stepExecution.getStep();
-
-		LOG.info("Executing step '{}' in flow '{}' for session {}", step.getName(), flow.getName(), session.getId());
-
-		// Recursively execute required steps, if "enabled" and if there are any
-		if (runRequiredSteps) {
-			for (final var requiredStepExecution : stepExecution.getRequiredStepExecutions()) {
-				// Skip if the required step has already been executed
-				if (requiredStepExecution.getIntricSessionId() == null) {
-					LOG.info("Triggering step '{}' required by step '{}' in flow '{}' for session {}", requiredStepExecution.getStep().getName(), step.getName(), flow.getName(), session.getId());
-
-					executeStepInternal(municipalityId, requiredStepExecution, input, runRequiredSteps);
-				}
-			}
-		}
-
-		// Mark the step execution as running
-		stepExecution.setState(StepExecution.State.RUNNING);
-
-		// Extract inputs that are "regular" flow input references
-		final var flowInputRefStepInputs = step.getInputs().stream()
-			.filter(FlowInputRef.class::isInstance)
-			.map(FlowInputRef.class::cast)
-			// Skip inputs that are marked as passthrough
-			.filter(not(flowInputRef -> flow.getFlowInput(flowInputRef.getInput()).isPassthrough()))
-			.toList();
-
-		// Extract inputs that are redirected output from other steps
-		final var redirectedOutputStepInputs = step.getInputs().stream()
-			.filter(RedirectedOutput.class::isInstance)
-			.map(RedirectedOutput.class::cast)
-			.toList();
-
-		// Add any redirected output inputs to the session
-		redirectedOutputStepInputs.forEach(redirectedOutputInput -> {
-			// Get the required step execution
-			final var requiredStepExecution = session.getStepExecutions().get(redirectedOutputInput.getStep());
-			// Wrap the output of the required step execution in a StringMultipartFile
-			final var requiredStepOutputMultipartFile = new StringMultipartFile(redirectedOutputInput.getUseAs(), requiredStepExecution.getOutput());
-			// Add it as an input to the session
-			session.addRedirectedOutputAsInput(redirectedOutputInput.getStep(), requiredStepOutputMultipartFile);
-		});
-
-		// At this point we may have inputs that haven't been uploaded to Eneo yet - upload them
-		uploadMissingInputFilesInSessionToEneo(municipalityId, session);
-
-		// Join both input types to get all inputs actually in use for the current step execution
-		final var inputsInUse = Stream.concat(
-			flowInputRefStepInputs.stream().map(FlowInputRef::getInput),
-			redirectedOutputStepInputs.stream().map(RedirectedOutput::getStep)).toList();
-
-		// Extract the input files (ie Eneo file id:s) for the inputs actually in use for the current step execution
-		final var inputFilesInUse = session.getAllInput().entrySet().stream()
-			.filter(entry -> inputsInUse.contains(entry.getKey()))
-			.flatMap(entry -> entry.getValue().stream())
-			.map(Input::getIntricFileId)
-			.toList();
-
-		// Create an additional instruction on what information lies within each input
-		final var inputsInUseInfo = session.getInputInfo().entrySet().stream()
-			.filter(entry -> inputsInUse.contains(entry.getKey()))
-			.map(Map.Entry::getValue)
-			.collect(joining());
-
-		// Get the target endpoint id
-		final var targetEndpointId = step.getTarget().id();
-
-		try {
-			switch (step.getTarget().type()) {
-				case SERVICE -> {
-					LOG.info("Running step {} using SERVICE {}", step.getName(), targetEndpointId);
-
-					// Run the service
-					final var response = eneoService.runService(municipalityId, targetEndpointId, inputFilesInUse, inputsInUseInfo, input);
-					// Store the answer in the step execution
-					stepExecution.setOutput(response.answer());
-				}
-				case ASSISTANT -> {
-					// Are we asking the initial question or a follow-up?
-					if (stepExecution.getIntricSessionId() == null) {
-						LOG.info("Running step {} using ASSISTANT {}", step.getName(), targetEndpointId);
-
-						// "Ask" the assistant
-						final var response = eneoService.askAssistant(municipalityId, targetEndpointId, inputFilesInUse, inputsInUseInfo);
-						// Store the Eneo session id in the step execution to be able to ask follow-ups
-						stepExecution.setIntricSessionId(response.sessionId());
-						// Store the (current) answer in the step execution
-						stepExecution.setOutput(response.answer());
-					} else {
-						LOG.info("Running FOLLOW-UP on step {} using ASSISTANT {}", step.getName(), targetEndpointId);
-
-						// "Ask" the assistant a follow-up
-						final var response = eneoService.askAssistantFollowup(municipalityId, targetEndpointId, stepExecution.getIntricSessionId(), inputFilesInUse, inputsInUseInfo, input);
-						// Store the (current) answer in the step execution
-						stepExecution.setOutput(response.answer());
-					}
-				}
-				case APP -> {
-					// Are we initiating a new app run or re-polling an existing one?
-					if (stepExecution.getIntricRunId() == null) {
-						LOG.info("Running step {} using APP {}", step.getName(), targetEndpointId);
-
-						// Initiate the app run
-						final var response = eneoService.runApp(municipalityId, targetEndpointId, inputFilesInUse);
-						// Store the Eneo run id in the step execution to be able to poll for completion
-						stepExecution.setIntricRunId(response.runId());
-
-						// Poll until the app run is complete
-						final var output = pollAppRunUntilComplete(municipalityId, response.runId(), step.getName());
-						// Store the output in the step execution
-						stepExecution.setOutput(output);
-					} else {
-						LOG.info("Re-polling existing app run for step {} using APP {}", step.getName(), targetEndpointId);
-
-						// Re-poll the existing run
-						final var output = pollAppRunUntilComplete(municipalityId, stepExecution.getIntricRunId(), step.getName());
-						// Store the output in the step execution
-						stepExecution.setOutput(output);
-					}
-					// Note: State is set inside checkAppRunStatus based on the app run status
-				}
-			}
-			stepExecution.setState(StepExecution.State.DONE);
-		} catch (final Exception e) {
-			stepExecution.setState(StepExecution.State.ERROR);
-			stepExecution.setErrorMessage(e.getMessage());
-			Thread.currentThread().interrupt();
-		}
-	}
-
-	String pollAppRunUntilComplete(final String municipalityId, final java.util.UUID runId, final String stepName) throws InterruptedException {
-		// Get polling configuration
-		final var pollIntervalMs = appPollingProperties.interval().toMillis();
-		final var maxPollDurationMs = appPollingProperties.maxDuration().toMillis();
-		final long startTime = System.currentTimeMillis();
-
-		generated.eneo.ai.Status currentStatus;
-		String output;
-
-		while (true) {
-			// Check if we've exceeded the maximum polling duration
-			if (System.currentTimeMillis() - startTime > maxPollDurationMs) {
-				throw Problem.valueOf(Status.GATEWAY_TIMEOUT, "App run for step '%s' timed out after %s ms".formatted(stepName, maxPollDurationMs));
-			}
-
-			// Poll the status of the app run
-			LOG.debug("Polling app run status for step {} with run ID {}", stepName, runId);
-			final var currentResponse = eneoService.getAppRun(municipalityId, runId);
-			currentStatus = currentResponse.status();
-			output = currentResponse.answer();
-
-			// Check if the run is done
-			if (currentStatus == COMPLETE ||
-				currentStatus == FAILED ||
-				currentStatus == NOT_FOUND) {
-				break;
-			}
-
-			// Wait before we poll again
-			TimeUnit.MILLISECONDS.sleep(pollIntervalMs);
-		}
-
-		// Check if the run failed
-		if (currentStatus == FAILED) {
-			throw Problem.valueOf(Status.BAD_GATEWAY, "App run for step '%s' failed".formatted(stepName));
-		}
-
-		// Check if the run was not found
-		if (currentStatus == NOT_FOUND) {
-			throw Problem.valueOf(Status.NOT_FOUND, "App run for step '%s' not found".formatted(stepName));
-		}
-
-		LOG.info("App run for step {} completed successfully", stepName);
-		return output;
-	}
-
-	void uploadMissingInputFilesInSessionToEneo(final String municipalityId, final Session session) {
-		// Upload any missing regular inputs
-		session.getInput().values().stream()
-			.flatMap(Collection::stream)
-			.filter(not(Input::isUploadedToIntric))
-			.forEach(input -> {
-				LOG.info("Uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
-
-				// Upload the file to Eneo
-				final var eneoFileId = eneoService.uploadFile(municipalityId, input.getFile());
-				// Keep a reference to it for later
-				input.setIntricFileId(eneoFileId);
-			});
-
-		// Handle redirected output inputs by deleting old ones and uploading ones
-		final var inputsToRemoveFromSession = new HashMap<String, Input>();
-		session.getRedirectedOutputInput().forEach((sourceStepId, inputs) -> {
-			for (final var input : inputs) {
-				if (input.isUploadedToIntric()) {
-					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
-
-					// Delete the file from Eneo
-					eneoService.deleteFile(municipalityId, input.getIntricFileId());
-					// Mark the input for removal from the session
-					inputsToRemoveFromSession.put(sourceStepId, input);
-				} else {
-					LOG.info("Uploading redirected output file from step {}", sourceStepId);
-
-					// Upload the file to Eneo
-					final var eneoFileId = eneoService.uploadFile(municipalityId, input.getFile());
-					// Keep a reference to it for later
-					input.setIntricFileId(eneoFileId);
-
-					LOG.info("Uploaded redirected output file for step {} with id {}", sourceStepId, eneoFileId);
-				}
-			}
-		});
-
-		// Remove inputs from the session if needed
-		inputsToRemoveFromSession.forEach((sourceStepId, input) -> session.getRedirectedOutputInput().get(sourceStepId).remove(input));
+		// Build context and delegate to StepRunner (StepRunner will re-resolve inputs via InputPreparation)
+		final var context = new StepRunContext(municipalityId, stepExecution.getSession(), stepExecution, List.of(), List.of(), "", input, runRequiredSteps);
+		stepRunner.runStep(context);
 	}
 }

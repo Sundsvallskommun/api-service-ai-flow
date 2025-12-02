@@ -72,7 +72,7 @@ public class StringMultipartFile implements MultipartFile {
 	static class Serializer extends StdSerializer<StringMultipartFile> {
 
 		@Serial
-		static final long serialVersionUID = -666632197878666L;
+		private static final long serialVersionUID = -666632197878666L;
 
 		protected Serializer() {
 			super(StringMultipartFile.class);

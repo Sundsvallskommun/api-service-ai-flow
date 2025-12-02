@@ -13,8 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * Test annotation for testing {@link org.springframework.boot.context.properties.ConfigurationProperties}
- * classes without starting the full application context.
+ * Test annotation for testing {@link org.springframework.boot.context.properties.ConfigurationProperties} classes
+ * without starting the full application context.
  *
  * <p>
  * Usage:
@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * 	&#64;code
  * 	&#64;PropertiesTest(TemplatingProperties.class)
  * 	class TemplatingPropertiesTest {
- * 		@Autowired
+ * 		&#64;Autowired
  * 		private TemplatingProperties properties;
  * 	}
  * }

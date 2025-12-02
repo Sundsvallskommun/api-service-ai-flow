@@ -29,8 +29,8 @@ class StepExecutionTest {
 
 		state = StepExecution.State.ERROR;
 		stepExecution.setState(state);
-		stepExecution.setIntricSessionId(intricSessionId);
-		stepExecution.setIntricRunId(intricRunId);
+		stepExecution.setEneoSessionId(intricSessionId);
+		stepExecution.setEneoRunId(intricRunId);
 		stepExecution.setOutput(output);
 		stepExecution.setErrorMessage(errorMessage);
 
@@ -39,8 +39,8 @@ class StepExecutionTest {
 		assertThat(stepExecution.getStep()).isEqualTo(step);
 		assertThat(stepExecution.getRequiredStepExecutions()).isEqualTo(requiredStepExecutions);
 		assertThat(stepExecution.getState()).isEqualTo(state);
-		assertThat(stepExecution.getIntricSessionId()).isEqualTo(intricSessionId);
-		assertThat(stepExecution.getIntricRunId()).isEqualTo(intricRunId);
+		assertThat(stepExecution.getEneoSessionId()).isEqualTo(intricSessionId);
+		assertThat(stepExecution.getEneoRunId()).isEqualTo(intricRunId);
 		assertThat(stepExecution.getOutput()).isEqualTo(output);
 		assertThat(stepExecution.getErrorMessage()).isEqualTo(errorMessage);
 		assertThat(stepExecution.isRunning()).isFalse();

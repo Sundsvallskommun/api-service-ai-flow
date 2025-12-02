@@ -2,42 +2,25 @@ package se.sundsvall.ai.flow.model.session;
 
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
-import java.util.AbstractMap;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
-import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
-import se.sundsvall.ai.flow.model.flowdefinition.Step;
+import se.sundsvall.ai.flow.model.support.ByteArrayMultipartFile;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
-import se.sundsvall.ai.flow.model.support.UploadedMultipartFile;
 
 public class Session {
-
-	private static final Logger LOG = LoggerFactory.getLogger(Session.class);
-
-	static final String FILE_INFO_TEMPLATE = "Du hittar %s i filen/filerna %s. ";
-
-	public enum State {
-		CREATED,
-		RUNNING,
-		FINISHED
-	}
 
 	private final UUID id;
 	private final String municipalityId;
@@ -49,7 +32,7 @@ public class Session {
 	private final Map<String, StepExecution> stepExecutions = new TreeMap<>();
 	private State state;
 
-	public Session(final String municipalityId, final Flow flow) {
+	public Session(final String municipalityId, final Flow flow, final StepExecutionFactory stepExecutionFactory) {
 		this.municipalityId = municipalityId;
 		id = UUID.randomUUID();
 		state = State.CREATED;
@@ -57,9 +40,14 @@ public class Session {
 		this.flow = flow;
 
 		// Create initial (empty) executions for all steps
-		flow.getSteps().forEach(this::createStepExecution);
+		stepExecutions.putAll(stepExecutionFactory.createStepExecutions(this, flow));
 		// Create initial (empty) input lists
 		flow.getFlowInputs().forEach(flowInput -> input.put(flowInput.getId(), new LinkedList<>()));
+	}
+
+	// Backwards compatible constructor
+	public Session(final String municipalityId, final Flow flow) {
+		this(municipalityId, flow, new StepExecutionFactory());
 	}
 
 	public String getMunicipalityId() {
@@ -94,15 +82,7 @@ public class Session {
 	public void addSimpleInput(final String inputId, final String value) {
 		final var flowInput = flow.getFlowInput(inputId);
 		final var inputMultipartFile = new StringMultipartFile(flowInput.getName(), value);
-
-		addInput(flowInput, inputMultipartFile);
-	}
-
-	public void addFileInput(final String inputId, final MultipartFile inputMultipartFile) {
-		final var flowInput = flow.getFlowInput(inputId);
-		final var uploadedInputMultipartFile = new UploadedMultipartFile(flowInput.getName(), inputMultipartFile);
-
-		addInput(flowInput, uploadedInputMultipartFile);
+		addInputInternal(flowInput, inputMultipartFile);
 	}
 
 	public void clearInput(final String inputId) {
@@ -114,10 +94,9 @@ public class Session {
 		input.get(flowInput.getId()).clear();
 	}
 
-	void addInput(final FlowInput flowInput, final MultipartFile inputMultipartFile) {
+	private void addInputInternal(final FlowInput flowInput, final MultipartFile inputMultipartFile) {
 		// Create an empty input value list, if required
 		input.computeIfAbsent(flowInput.getId(), ignored -> new LinkedList<>());
-
 		// If the flow input is single-valued - replace the previous value by clearing any previous value(s)
 		if (flowInput.isSingleValued()) {
 			input.get(flowInput.getId()).clear();
@@ -127,95 +106,62 @@ public class Session {
 	}
 
 	public Map<String, List<Input>> getInput() {
-		return input;
+		// Wrap with unmodifiable collections to avoid external mutation
+		final var wrapped = input.entrySet().stream()
+			.collect(toMap(Map.Entry::getKey, e -> Collections.unmodifiableList(e.getValue())));
+		return Collections.unmodifiableMap(wrapped);
 	}
 
-	public void addRedirectedOutputAsInput(final String stepId, final MultipartFile redirectedOutputMultipartFile) {
-		// Create an empty input value list, if required
+	public void addInput(final String inputId, final InputValue inputValue) {
+		final var flowInput = flow.getFlowInput(inputId);
+		final var flowInputName = flowInput.getName();
+
+		if (inputValue instanceof final TextInputValue textInputValue) {
+			addInputInternal(flowInput, new StringMultipartFile(flowInputName, textInputValue.value()));
+		} else if (inputValue instanceof final FileInputValue fileInputValue) {
+			addInputInternal(flowInput, new ByteArrayMultipartFile(flowInputName, fileInputValue.content(), fileInputValue.contentType()));
+		} else {
+			throw new IllegalArgumentException("Unsupported InputValue implementation: " + inputValue.getClass());
+		}
+	}
+
+	public void addRedirectedOutputAsInput(final String stepId, final InputValue inputValue) {
 		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
 
-		// Add the input
-		redirectedOutputInput.get(stepId).add(new Input(redirectedOutputMultipartFile));
+		if (inputValue instanceof TextInputValue(final String name, final String value)) {
+			var textInput = new Input(new StringMultipartFile(name, value));
+			redirectedOutputInput.get(stepId).add(textInput);
+		} else if (inputValue instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
+			var fileInput = new Input(new ByteArrayMultipartFile(name, content, contentType));
+			redirectedOutputInput.get(stepId).add(fileInput);
+		} else {
+			throw new IllegalArgumentException("Unsupported InputValue implementation: " + inputValue.getClass());
+		}
 	}
 
 	@JsonIgnore
 	public Map<String, List<Input>> getRedirectedOutputInput() {
-		return redirectedOutputInput;
+		final var wrapped = redirectedOutputInput.entrySet().stream()
+			.collect(toMap(Map.Entry::getKey, e -> Collections.unmodifiableList(e.getValue())));
+		return Collections.unmodifiableMap(wrapped);
+	}
+
+	/**
+	 * Removes a specific redirected output input instance for a given source step id. This provides a controlled mutation
+	 * entry point since the public view is unmodifiable.
+	 */
+	public void removeRedirectedOutputInput(final String sourceStepId, final Input inputToRemove) {
+		final var list = redirectedOutputInput.get(sourceStepId);
+		if (list != null) {
+			list.remove(inputToRemove);
+		}
 	}
 
 	@JsonIgnore
 	public Map<String, List<Input>> getAllInput() {
-		return Stream.concat(input.entrySet().stream(), redirectedOutputInput.entrySet().stream())
-			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-	}
-
-	@JsonIgnore
-	public Map<String, String> getInputInfo() {
-		// Extract/create info on regular inputs
-		final var regularInputInfo = input.entrySet().stream()
-			.map(entry -> {
-				final var inputId = entry.getKey();
-				// Get the flow input corresponding to this input
-				final var flowInput = flow.getFlowInput(inputId);
-
-				// "Skip" optional inputs if they are unset
-				if (flowInput.isOptional() && isEmpty(entry.getValue())) {
-					return null;
-				}
-
-				return createInputInfo(inputId, flowInput.getName(), entry.getValue());
-			})
-			.filter(Objects::nonNull)
-			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		// Extract/create info on redirected output inputs
-		final var redirectedOutputInputInfo = redirectedOutputInput.entrySet().stream()
-			.map(entry -> {
-				final var stepId = entry.getKey();
-				// Get the redirected step
-				final var step = flow.getStep(stepId);
-
-				return createInputInfo(stepId, step.getName(), entry.getValue());
-			})
-			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-		return Stream.concat(regularInputInfo.entrySet().stream(), redirectedOutputInputInfo.entrySet().stream())
-			.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-	}
-
-	AbstractMap.SimpleEntry<String, String> createInputInfo(final String key, final String name, final List<Input> inputs) {
-		// Extract the Eneo uploaded file ids
-		final var eneoFileIds = inputs.stream().map(Input::getIntricFileId).map(UUID::toString).toList();
-		// Format the info
-		final var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", eneoFileIds));
-
-		return new AbstractMap.SimpleEntry<>(key, info);
-	}
-
-	StepExecution createStepExecution(final Step step) {
-		LOG.info("Creating step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), id);
-
-		// Validate redirected output inputs
-		final var requiredStepExecutions = new ArrayList<StepExecution>();
-		for (final var stepInput : step.getInputs()) {
-			if (stepInput instanceof final RedirectedOutput redirectedOutput) {
-				// Make sure required step(s) have been executed before this one
-				final var sourceStepId = redirectedOutput.getStep();
-				final var sourceStep = flow.getStep(sourceStepId);
-
-				if (!stepExecutions.containsKey(sourceStepId)/* || isBlank(stepExecutions.get(sourceStepId).getOutput()) */) {
-					LOG.info("Creating step execution for missing redirected output from step '{}' for step '{}' in flow '{}' for session {}", sourceStepId, step.getId(), flow.getName(), id);
-
-					requiredStepExecutions.add(createStepExecution(sourceStep));
-				}
-			}
-		}
-
-		LOG.info("Created step execution for step '{}' from flow '{}' for session {}", step.getName(), flow.getName(), id);
-
-		final var stepExecution = new StepExecution(this, step, requiredStepExecutions);
-		stepExecutions.put(step.getId(), stepExecution);
-		return stepExecution;
+		final var merged = Stream.concat(input.entrySet().stream(), redirectedOutputInput.entrySet().stream())
+			.collect(toMap(Map.Entry::getKey, e -> Collections.unmodifiableList(e.getValue())));
+		return Collections.unmodifiableMap(merged);
 	}
 
 	public Map<String, StepExecution> getStepExecutions() {
@@ -226,5 +172,12 @@ public class Session {
 		return of(stepExecutions)
 			.map(actualStepExecutions -> actualStepExecutions.get(stepId))
 			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No step execution exists for step '%s' in session '%s'".formatted(stepId, id)));
+	}
+
+	public enum State {
+		CREATED,
+		RUNNING,
+		FINISHED,
+		ERROR
 	}
 }

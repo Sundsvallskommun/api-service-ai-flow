@@ -8,13 +8,13 @@ import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
 /*
- * "Mapping" between locally uploaded files and Intric file uploads
+ * "Mapping" between locally uploaded files and Eneo file uploads
  */
 public class Input {
 
 	private final MultipartFile file;
 	@JsonIgnore
-	private UUID intricFileId;
+	private UUID eneoFileId;
 
 	public Input(final MultipartFile file) {
 		this.file = file;
@@ -24,33 +24,34 @@ public class Input {
 		return file;
 	}
 
-	public boolean isUploadedToIntric() {
-		return nonNull(intricFileId);
+	public boolean isUploadedToEneo() {
+		return nonNull(eneoFileId);
 	}
 
-	public UUID getIntricFileId() {
-		return intricFileId;
+	// Current public API (kept)
+	public UUID getEneoFileId() {
+		return eneoFileId;
 	}
 
-	public Input withIntricFileId(final UUID intricFileId) {
-		this.intricFileId = intricFileId;
+	public void setEneoFileId(final UUID eneoFileId) {
+		this.eneoFileId = eneoFileId;
+	}
+
+	public Input withEneoFileId(final UUID eneoFileId) {
+		this.eneoFileId = eneoFileId;
 		return this;
-	}
-
-	public void setIntricFileId(final UUID intricFileId) {
-		this.intricFileId = intricFileId;
 	}
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Input other)) {
+		if (!(o instanceof final Input other)) {
 			return false;
 		}
-		return Objects.equals(intricFileId, other.intricFileId);
+		return Objects.equals(eneoFileId, other.eneoFileId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(intricFileId);
+		return Objects.hashCode(eneoFileId);
 	}
 }

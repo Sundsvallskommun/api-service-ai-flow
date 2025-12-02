@@ -8,7 +8,7 @@ class ExecutionExceptionTest {
 
 	@Test
 	void constructorWithMessage() {
-		var message = "someMessage";
+		final var message = "someMessage";
 
 		assertThatExceptionOfType(ExecutionException.class)
 			.isThrownBy(() -> { throw new ExecutionException(message); })
@@ -17,8 +17,8 @@ class ExecutionExceptionTest {
 
 	@Test
 	void constructorWithMessageAndCause() {
-		var message = "someMessage";
-		var cause = new RuntimeException("someCauseMessage");
+		final var message = "someMessage";
+		final var cause = new RuntimeException("someCauseMessage");
 
 		assertThatExceptionOfType(ExecutionException.class)
 			.isThrownBy(() -> { throw new ExecutionException(message, cause); })
