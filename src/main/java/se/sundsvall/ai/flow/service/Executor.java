@@ -1,6 +1,7 @@
 package se.sundsvall.ai.flow.service;
 
 import java.util.List;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
@@ -23,6 +24,7 @@ public class Executor {
 		this.sessionOrchestrator = sessionOrchestrator;
 	}
 
+	@Async
 	public void executeSession(final String municipalityId, final Session session, final String requestId) {
 		RequestId.init(requestId);
 		try {
@@ -32,6 +34,7 @@ public class Executor {
 		}
 	}
 
+	@Async
 	public void executeStep(final String municipalityId, final StepExecution stepExecution, final String input, final boolean runRequiredSteps) {
 		final var session = stepExecution.getSession();
 
