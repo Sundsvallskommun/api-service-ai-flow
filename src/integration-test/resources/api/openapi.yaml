@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.1
 info:
   title: ai-flow
   contact: { }
@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-  - url: http://localhost:58864
+  - url: http://localhost:64579
     description: Generated server url
 tags:
   - name: Sessions
@@ -398,13 +398,13 @@ paths:
         content:
           multipart/form-data:
             schema:
+              required:
+                - file
               type: object
               properties:
                 file:
                   type: string
                   format: binary
-              required:
-                - file
       responses:
         "200":
           description: Ok
@@ -577,8 +577,8 @@ paths:
           description: Flow id
           required: true
           schema:
-            type: string
             minLength: 1
+            type: string
           example: tjansteskrivelse
       responses:
         "200":
@@ -667,8 +667,8 @@ paths:
           description: Flow id
           required: true
           schema:
-            type: string
             minLength: 1
+            type: string
           example: tjansteskrivelse
         - name: version
           in: path
@@ -827,10 +827,10 @@ components:
     Problem:
       type: object
       properties:
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         detail:
           type: string
         instance:
@@ -841,7 +841,8 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: { }
+          additionalProperties:
+            type: object
     StatusType:
       type: object
       properties:
@@ -851,22 +852,20 @@ components:
         reasonPhrase:
           type: string
     CreateSessionRequest:
+      required:
+        - flowId
       type: object
       properties:
         flowId:
+          minLength: 1
           type: string
           description: Flow id
-          examples:
-            - tjansteskrivelse
-          minLength: 1
+          example: tjansteskrivelse
         version:
           type: integer
-          format: int32
           description: Flow version
-          examples:
-            - "1"
-      required:
-        - flowId
+          format: int32
+          example: 1
     ConstraintViolationProblem:
       type: object
       properties:
@@ -914,7 +913,8 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: { }
+          additionalProperties:
+            type: object
         suppressed:
           type: array
           items:
@@ -951,7 +951,8 @@ components:
     ThrowableProblem:
       type: object
       properties:
-        cause: { }
+        cause:
+          $ref: "#/components/schemas/ThrowableProblem"
         stackTrace:
           type: array
           items:
@@ -976,10 +977,10 @@ components:
                 type: boolean
         message:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
+        status:
+          $ref: "#/components/schemas/StatusType"
         detail:
           type: string
         instance:
@@ -990,7 +991,8 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: { }
+          additionalProperties:
+            type: object
         suppressed:
           type: array
           items:
@@ -1088,27 +1090,27 @@ components:
         errorMessage:
           type: string
     ChatRequest:
+      required:
+        - input
       type: object
       properties:
         input:
+          minLength: 1
           type: string
           description: The input
-          minLength: 1
         runRequiredSteps:
           type: boolean
-          default: false
           description: Whether to run/re-run required steps
-      required:
-        - input
+          default: false
     SimpleInput:
+      required:
+        - value
       type: object
       properties:
         value:
+          minLength: 1
           type: string
           description: The input value
-          minLength: 1
-      required:
-        - value
     RenderRequest:
       type: object
       properties:
@@ -1192,7 +1194,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/StepInput"
-    StepInput: { }
+    StepInput:
+      type: object
     Target:
       type: object
       properties:
@@ -1213,8 +1216,8 @@ components:
           description: The flow id
         version:
           type: integer
-          format: int32
           description: The flow version
+          format: int32
         name:
           type: string
           description: The flow name
