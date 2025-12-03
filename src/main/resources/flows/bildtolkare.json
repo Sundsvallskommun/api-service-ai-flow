@@ -1,9 +1,11 @@
 {
 	"id": "bild-tolkare",
-	"version": 1,
+	"version": 2,
 	"name": "Bildtolkare",
 	"description": "Eneo AI-flöde för att tolka bilder",
-	"inputPrefix": "#####",
+	"helptext": "Ladda upp en eller flera bilder för att få en beskrivning av vad som finns på bilden.",
+	"space-id": "",
+	"visible": true,
 	"defaultTemplateId": null,
 	"ttlInMinutes": 180,
 	"input": [
@@ -21,15 +23,15 @@
 		{
 			"id": "tolka-bild",
 			"order": 1,
-			"name": "Bilden",
+			"use-as": "Bilden",
 			"description": "Bilden att tolka",
-			"intricEndpoint": {
+			"target": {
 				"type": "APP",
 				"id": "b5415f0f-06bf-42c3-b781-c803ed347e77"
 			},
 			"input": [
 				{
-					"flow-input-ref": "indata-bild"
+					"use-flow-input": "indata-bild"
 				}
 			]
 		}

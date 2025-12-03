@@ -53,7 +53,7 @@ class FlowLoader implements CommandLineRunner {
 				throw new FlowConfigurationException("The flow %s (%s) has a dependency cycle between steps".formatted(flow.getId(), flow.getName()));
 			}
 
-			if (flowRepository.existsById(flowId)) {
+			if (flowRepository.existsByIdAndVersion(flowId, flowVersion)) {
 				LOG.info("NOT loading flow '{}' (id: '{}') from '{}' as version(s) exist(s)", flowName, flowId, flowResource.getFilename());
 
 				continue;
@@ -61,7 +61,7 @@ class FlowLoader implements CommandLineRunner {
 
 			flowRepository.save(new FlowEntity()
 				.withId(flowId)
-				.withVersion(1)
+				.withVersion(flowVersion)
 				.withName(flowName)
 				.withDescription(flowDescription)
 				.withContent(flowResourceString));

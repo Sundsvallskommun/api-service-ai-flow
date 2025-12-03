@@ -3,6 +3,7 @@ package se.sundsvall.ai.flow.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -42,8 +43,8 @@ class FlowLoaderTest {
 
 		var flowId2 = "flow2";
 		var flowVersion2 = 456;
-		var flowName2 = "Flow 1";
-		var flowDescription2 = "Description 1";
+		var flowName2 = "Flow 2";
+		var flowDescription2 = "Description 2";
 		var flowContent2 = "mockContent2";
 
 		var mockFlowResource1 = mock(Resource.class);
@@ -71,8 +72,8 @@ class FlowLoaderTest {
 		when(mockObjectMapper.readValue(flowContent1, Flow.class)).thenReturn(mockFlow1);
 		when(mockObjectMapper.readValue(flowContent2, Flow.class)).thenReturn(mockFlow2);
 		// One flow that already exists and one that doesn't
-		when(mockFlowRepository.existsById(flowId1)).thenReturn(true);
-		when(mockFlowRepository.existsById(flowId2)).thenReturn(false);
+		when(mockFlowRepository.existsByIdAndVersion(flowId1, flowVersion1)).thenReturn(true);
+		when(mockFlowRepository.existsByIdAndVersion(flowId2, flowVersion2)).thenReturn(false);
 
 		flowLoader.run();
 
@@ -100,11 +101,11 @@ class FlowLoaderTest {
 
 		var flowEntityArgumentCaptor = ArgumentCaptor.forClass(FlowEntity.class);
 
-		verify(mockFlowRepository).save(flowEntityArgumentCaptor.capture());
+		verify(mockFlowRepository, times(1)).save(flowEntityArgumentCaptor.capture());
 
 		assertThat(flowEntityArgumentCaptor.getValue()).satisfies(flowEntity -> {
 			assertThat(flowEntity.getId()).isEqualTo(flowId2);
-			assertThat(flowEntity.getVersion()).isOne();
+			assertThat(flowEntity.getVersion()).isEqualTo(flowVersion2);
 			assertThat(flowEntity.getName()).isEqualTo(flowName2);
 			assertThat(flowEntity.getDescription()).isEqualTo(flowDescription2);
 		});
