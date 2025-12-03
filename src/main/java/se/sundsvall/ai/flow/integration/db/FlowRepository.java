@@ -14,6 +14,8 @@ public interface FlowRepository extends JpaRepository<FlowEntity, FlowEntity.IdA
 
 	boolean existsById(String id);
 
+	boolean existsByIdAndVersion(String id, Integer version);
+
 	void deleteById(String id);
 
 	Optional<FlowEntity> findTopByIdOrderByVersionDesc(String id);

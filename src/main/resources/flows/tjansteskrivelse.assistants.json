@@ -1,6 +1,6 @@
 {
 	"id": "tjansteskrivelse.assistants",
-	"version": 1,
+	"version": 2,
 	"name": "Tjänsteskrivelse (assistenter)",
 	"description": "Ett Intric AI-flöde för tjänsteskrivelser",
 	"helptext": "",

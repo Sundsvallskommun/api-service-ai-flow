@@ -36,3 +36,5 @@ logbook:
     jsonPath:
       - key: '$..data'
         value: '[base64]'
+      - key: '$..bytes'
+        value: '[base64]'

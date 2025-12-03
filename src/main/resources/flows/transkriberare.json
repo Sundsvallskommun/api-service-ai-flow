@@ -1,9 +1,11 @@
 {
 	"id": "ljud-tolkare",
-	"version": 1,
+	"version": 2,
 	"name": "Transkriberare",
 	"description": "Eneo AI-flöde för att transkribera ljud",
-	"inputPrefix": "#####",
+	"helptext": "Ladda upp en eller flera ljudfiler för att få en transkription av vad som sägs i ljudfilen.",
+	"space-id": "",
+	"visible": true,
 	"defaultTemplateId": null,
 	"ttlInMinutes": 180,
 	"input": [
@@ -21,15 +23,15 @@
 		{
 			"id": "transkribera-ljudfil",
 			"order": 1,
-			"name": "Transkribera ljudfil",
+			"use-as": "Transkribera ljudfil",
 			"description": "Ljudfil att transkribera",
-			"intricEndpoint": {
+			"target": {
 				"type": "APP",
 				"id": "2d859fc5-c313-4793-a8ef-3431536bae0e"
 			},
 			"input": [
 				{
-					"flow-input-ref": "indata-ljud"
+					"use-flow-input": "indata-ljud"
 				}
 			]
 		}
