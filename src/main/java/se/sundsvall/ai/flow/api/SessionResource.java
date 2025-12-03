@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
@@ -113,41 +114,41 @@ class SessionResource {
 		summary = "Run (all steps in) a session",
 		responses = {
 			@ApiResponse(
-				responseCode = "200",
-				description = "Ok",
+				responseCode = "204",
+				description = "No Content",
 				useReturnTypeSchema = true),
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
 				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/{sessionId}", produces = ALL_VALUE)
 	ResponseEntity<Void> runSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId) {
 		sessionService.executeSession(municipalityId, sessionId);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@Operation(
 		summary = "Delete a session",
 		responses = {
 			@ApiResponse(
-				responseCode = "200",
-				description = "Ok",
+				responseCode = "204",
+				description = "No Content",
 				useReturnTypeSchema = true),
 			@ApiResponse(
 				responseCode = "404",
 				description = "Not Found",
 				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@DeleteMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/{sessionId}", produces = ALL_VALUE)
 	ResponseEntity<Void> deleteSession(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId) {
 		sessionService.deleteSession(municipalityId, sessionId);
-		return ok().build();
+		return noContent().build();
 	}
 
 	@Operation(
@@ -175,7 +176,7 @@ class SessionResource {
 		responses = {
 			@ApiResponse(
 				responseCode = "201",
-				description = "Ok",
+				description = "Created",
 				useReturnTypeSchema = true),
 			@ApiResponse(
 				responseCode = "404",
@@ -271,7 +272,7 @@ class SessionResource {
 				description = "Not Found",
 				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 		})
-	@PostMapping(value = "/{sessionId}/generate", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
+	@PostMapping(value = "/{sessionId}/generate", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Output> generateSessionOutput(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
 		@PathVariable @Parameter(name = "sessionId", description = "Session id") final UUID sessionId,
