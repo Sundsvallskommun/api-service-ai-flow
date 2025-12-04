@@ -1,0 +1,13 @@
+{
+  "request": {
+	"urlPath": "/eneo/token",
+	"method": "POST"
+  },
+  "response": {
+	"headers": {
+	  "Content-Type": "application/json"
+	},
+	"status": 200,
+	"bodyFileName": "test8_runSession/responses/api-eneo-token-response.json"
+  }
+}

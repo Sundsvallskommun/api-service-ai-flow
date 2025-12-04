@@ -1,0 +1,222 @@
+{
+  "defaultTemplateId": "ai-mvp.tjansteskrivelse",
+  "description": "Ett Intric AI-flöde för tjänsteskrivelser",
+  "helptext": "",
+  "id": "tjansteskrivelse",
+  "input": [
+	{
+	  "id": "arendenummer",
+	  "multipleValued": false,
+	  "name": "Ärendenummer",
+	  "optional": false,
+	  "passthrough": true,
+	  "type": "STRING"
+	},
+	{
+	  "id": "uppdraget-till-tjansten",
+	  "multipleValued": false,
+	  "name": "Uppdrag",
+	  "optional": false,
+	  "passthrough": false,
+	  "type": "TEXT"
+	},
+	{
+	  "id": "forvaltningens-input",
+	  "multipleValued": false,
+	  "name": "Förvaltningens input",
+	  "optional": false,
+	  "passthrough": false,
+	  "type": "TEXT"
+	},
+	{
+	  "id": "bakgrundsmaterial",
+	  "multipleValued": false,
+	  "name": "Bakgrundsmaterial",
+	  "optional": false,
+	  "passthrough": false,
+	  "type": "FILE"
+	},
+	{
+	  "id": "relaterade-styrdokument",
+	  "multipleValued": false,
+	  "name": "Relaterade styrdokument",
+	  "optional": false,
+	  "passthrough": false,
+	  "type": "FILE"
+	}
+  ],
+  "name": "Tjänsteskrivelse",
+  "spaceId": "",
+  "steps": [
+	{
+	  "id": "arendet",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Ärendet",
+	  "order": 1,
+	  "target": {
+		"id": "9dda859f-f7cf-4961-9616-cdcb1c8b3d85",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "bakgrund",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Bakgrund",
+	  "order": 2,
+	  "target": {
+		"id": "127dd187-b010-42db-a0b4-f413de22963f",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "forvaltningens-overvaganden",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		},
+		{
+		  "use-as": "Bakgrund",
+		  "use-output-from-step": "bakgrund"
+		}
+	  ],
+	  "name": "Förvaltningens överväganden",
+	  "order": 3,
+	  "target": {
+		"id": "714e598a-7a73-4870-81e5-1b8c9e3897a3",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "styrdokument-och-juridik",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		},
+		{
+		  "use-flow-input": "relaterade-styrdokument"
+		}
+	  ],
+	  "name": "Styrdokument och juridik",
+	  "order": 4,
+	  "target": {
+		"id": "7b0aaa43-74e9-4b46-9546-eb29f6ee8419",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "ekonomisk-hallbarhet",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Ekonomisk hållbarhet",
+	  "order": 5,
+	  "target": {
+		"id": "4acb5405-3526-4c31-b7a7-c50d444c57f2",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "ekologisk-hallbarhet",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Ekologisk hållbarhet",
+	  "order": 6,
+	  "target": {
+		"id": "f646c831-8424-494f-a833-68d64f452c22",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "social-hallbarhet",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Social hållbarhet",
+	  "order": 7,
+	  "target": {
+		"id": "a9c350c9-0e63-4e57-bc6a-7cf6a2a5f8c7",
+		"type": "SERVICE"
+	  }
+	},
+	{
+	  "id": "landsbygdssakring",
+	  "input": [
+		{
+		  "use-flow-input": "uppdraget-till-tjansten"
+		},
+		{
+		  "use-flow-input": "forvaltningens-input"
+		},
+		{
+		  "use-flow-input": "bakgrundsmaterial"
+		}
+	  ],
+	  "name": "Landsbygdssäkring",
+	  "order": 8,
+	  "target": {
+		"id": "d5ac8806-1b72-41bd-9deb-f28f556e0e02",
+		"type": "ASSISTANT"
+	  }
+	}
+  ],
+  "ttlInMinutes": 180,
+  "version": 1,
+  "visible": true
+}

@@ -77,14 +77,14 @@ class SessionResourceTest {
 		webTestClient.post()
 			.uri(builder -> builder.path(PATH + "/{sessionId}").build(Map.of("municipalityId", "2281", "sessionId", session.getId())))
 			.exchange()
-			.expectStatus().isOk();
+			.expectStatus().isNoContent();
 
 		// Delete
 		doNothing().when(sessionService).deleteSession("2281", session.getId());
 		webTestClient.delete()
 			.uri(builder -> builder.path(PATH + "/{sessionId}").build(Map.of("municipalityId", "2281", "sessionId", session.getId())))
 			.exchange()
-			.expectStatus().isOk();
+			.expectStatus().isNoContent();
 
 		verify(sessionService).getSession(session.getId());
 		verify(flowService).getLatestFlowVersion("fid");

@@ -29,13 +29,13 @@ VALUES ('tjansteskrivelse', 1, 'Tjänsteskrivelse', 'Ett Intric AI-flöde för t
   }, {
     "id" : "bakgrundsmaterial",
     "name" : "Bakgrundsmaterial",
-    "type" : "DOCUMENT",
+    "type" : "FILE",
     "cardinality" : "MULTIPLE_VALUED",
     "passthrough" : false
   }, {
     "id" : "relaterade-styrdokument",
     "name" : "Relaterade styrdokument",
-    "type" : "DOCUMENT",
+    "type" : "FILE",
     "cardinality" : "MULTIPLE_VALUED",
     "passthrough" : false
   } ],
@@ -86,6 +86,7 @@ VALUES ('tjansteskrivelse', 1, 'Tjänsteskrivelse', 'Ett Intric AI-flöde för t
     "order" : 8,
     "name" : "Landsbygdssäkring",
     "intricServiceId" : "12b64b34-dec5-44d9-a758-beb55af81c56",
+    "target": {"type": "ASSISTANT","id": "d5ac8806-1b72-41bd-9deb-f28f556e0e02"},
     "input" : [ { "use-flow-input" : "uppdraget-till-tjansten"}, {  "use-flow-input" : "forvaltningens-input"}, {"use-flow-input" : "bakgrundsmaterial" } ]
   } ]
 }');

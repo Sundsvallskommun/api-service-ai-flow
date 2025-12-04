@@ -1,0 +1,39 @@
+{
+  "id": "test-flow",
+  "version": 1,
+  "name": "Test Flow",
+  "description": "A test flow for integration testing",
+  "helptext": "This is a test flow",
+  "spaceId": "",
+  "visible": true,
+  "ttlInMinutes": 60,
+  "defaultTemplateId": null,
+  "input": [
+	{
+	  "id": "test-input",
+	  "type": "TEXT",
+	  "name": "Test Input",
+	  "description": "A test input field",
+	  "optional": false,
+	  "passthrough": false,
+	  "multipleValued": false
+	}
+  ],
+  "steps": [
+	{
+	  "id": "test-step",
+	  "name": "Test Step",
+	  "order": 1,
+	  "description": "A test step",
+	  "target": {
+		"type": "ASSISTANT",
+		"id": "123e4567-e89b-12d3-a456-426614174000"
+	  },
+	  "input": [
+		{
+		  "use-flow-input": "test-input"
+		}
+	  ]
+	}
+  ]
+}

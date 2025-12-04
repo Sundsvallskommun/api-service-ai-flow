@@ -1,0 +1,13 @@
+{
+  "request": {
+	"urlPathPattern": "^/eneo/files/[0-9a-fA-F-]+/?$",
+	"method": "DELETE"
+  },
+  "response": {
+	"headers": {
+	  "Content-Type": "application/json"
+	},
+	"status": 200,
+	"bodyFileName": "test6_getStepExecution/responses/api-eneo-delete-files.txt"
+  }
+}
