@@ -117,17 +117,22 @@ class SessionResourceIT extends AbstractAppTest {
 			.withExpectedResponseStatus(NO_CONTENT)
 			.sendRequest();
 
+		// Wait for the session to complete
+		await().atMost(Duration.ofSeconds(30)).until(() ->
+			session.getState() == Session.State.FINISHED);
+
 		// Runs the step.
 		setupCall()
 			.withServicePath(PATH + "/" + session.getId() + "/step/arendet")
 			.withRequest("request2.json")
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(CREATED)
-			.sendRequestAndVerifyResponse();
+			.sendRequest();
 
 		final var stepExecution = session.getStepExecution("arendet");
 
 		await().atMost(Duration.ofSeconds(30)).until(() -> stepExecution.getState() == StepExecution.State.DONE);
+		verifyAllStubs();
 	}
 
 	@Test
@@ -145,6 +150,10 @@ class SessionResourceIT extends AbstractAppTest {
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(NO_CONTENT)
 			.sendRequest();
+
+		// Wait for the session to complete
+		await().atMost(Duration.ofSeconds(30)).until(() ->
+			session.getState() == Session.State.FINISHED);
 
 		// Runs the step.
 		setupCall()
@@ -192,11 +201,12 @@ class SessionResourceIT extends AbstractAppTest {
 			.withServicePath(PATH + "/" + session.getId())
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(NO_CONTENT)
-			.sendRequestAndVerifyResponse();
+			.sendRequest();
 
 		// Wait for the session to complete
 		await().atMost(Duration.ofSeconds(30)).until(() ->
-			session.getState() == Session.State.FINISHED || session.getState() == Session.State.ERROR);
+			session.getState() == Session.State.FINISHED);
+		verifyAllStubs();
 	}
 
 	@Test
