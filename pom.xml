@@ -121,7 +121,7 @@
 							Also, alongside the input spec below there is an unmodified version of it, to be able to
 							determine which changes have been done to make it play nice with the OpenAPI generator.
 						-->
-						<id>intric-api</id>
+						<id>eneo-api</id>
 						<goals>
 							<goal>generate</goal>
 						</goals>

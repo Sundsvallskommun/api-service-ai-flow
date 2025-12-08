@@ -50,11 +50,6 @@ class FlowResourceTest {
 	@Autowired
 	private WebTestClient webTestClient;
 
-	@AfterEach
-	void tearDown() {
-		verifyNoMoreInteractions(flowService);
-	}
-
 	private static Stream<Arguments> listFlowsArguments() {
 		return Stream.of(
 			Arguments.of("666", tuple("getFlows.municipalityId", "not a valid municipality ID")));
@@ -83,6 +78,11 @@ class FlowResourceTest {
 	private static Stream<Arguments> createArguments() {
 		return Stream.of(
 			Arguments.of("666", tuple("createFlow.municipalityId", "not a valid municipality ID")));
+	}
+
+	@AfterEach
+	void tearDown() {
+		verifyNoMoreInteractions(flowService);
 	}
 
 	@Test
