@@ -63,15 +63,15 @@ class EneoServiceTest {
 		final var askAssistantRequest = new AskAssistant()
 			.question(uploadedInputFilesInUseInfo)
 			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
-		final var intricSessionId = UUID.randomUUID();
+		final var sessionId = UUID.randomUUID();
 		final var answer = "someAnswer";
 
-		when(eneoIntegrationMock.askAssistant(eq(MUNICIPALITY_ID), eq(targetId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(eneoIntegrationMock.askAssistant(eq(MUNICIPALITY_ID), eq(targetId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(sessionId));
 
 		final var response = eneoService.askAssistant(MUNICIPALITY_ID, targetId, uploadedInputFilesInUse, uploadedInputFilesInUseInfo);
 
 		assertThat(response.answer()).isEqualTo(answer);
-		assertThat(response.sessionId()).isEqualTo(intricSessionId);
+		assertThat(response.sessionId()).isEqualTo(sessionId);
 
 		verify(eneoIntegrationMock).askAssistant(MUNICIPALITY_ID, targetId, askAssistantRequest);
 		verifyNoMoreInteractions(eneoIntegrationMock);
@@ -80,34 +80,34 @@ class EneoServiceTest {
 	@Test
 	void askAssistantFollowup() {
 		final var targetId = UUID.randomUUID();
-		final var intricSessionId = UUID.randomUUID();
+		final var sessionId = UUID.randomUUID();
 		final var uploadedFilesInfo = "someInfo";
 		final var question = "someQuestion";
 		final var askAssistantRequest = new AskAssistant().question(uploadedFilesInfo + INPUT_DELIMITER + question);
 		final var answer = "someAnswer";
 
-		when(eneoIntegrationMock.askAssistantFollowup(eq(MUNICIPALITY_ID), eq(targetId), eq(intricSessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(intricSessionId));
+		when(eneoIntegrationMock.askAssistantFollowup(eq(MUNICIPALITY_ID), eq(targetId), eq(sessionId), any(AskAssistant.class))).thenReturn(new AskResponse().answer(answer).sessionId(sessionId));
 
-		final var response = eneoService.askAssistantFollowup(MUNICIPALITY_ID, targetId, intricSessionId, List.of(), uploadedFilesInfo, question);
+		final var response = eneoService.askAssistantFollowup(MUNICIPALITY_ID, targetId, sessionId, List.of(), uploadedFilesInfo, question);
 
 		assertThat(response.answer()).isEqualTo(answer);
-		assertThat(response.sessionId()).isEqualTo(intricSessionId);
+		assertThat(response.sessionId()).isEqualTo(sessionId);
 
-		verify(eneoIntegrationMock).askAssistantFollowup(MUNICIPALITY_ID, targetId, intricSessionId, askAssistantRequest);
+		verify(eneoIntegrationMock).askAssistantFollowup(MUNICIPALITY_ID, targetId, sessionId, askAssistantRequest);
 		verifyNoMoreInteractions(eneoIntegrationMock);
 	}
 
 	@Test
 	void uploadFile() {
 		final var file = mock(MultipartFile.class);
-		final var intricFileId = UUID.randomUUID();
-		final var filePublicResponse = new FilePublic().id(intricFileId);
+		final var fileId = UUID.randomUUID();
+		final var filePublicResponse = new FilePublic().id(fileId);
 
 		when(eneoIntegrationMock.uploadFile(MUNICIPALITY_ID, file)).thenReturn(filePublicResponse);
 
 		final var uploadedFileId = eneoService.uploadFile(MUNICIPALITY_ID, file);
 
-		assertThat(uploadedFileId).isEqualTo(intricFileId);
+		assertThat(uploadedFileId).isEqualTo(fileId);
 
 		verify(eneoIntegrationMock).uploadFile(MUNICIPALITY_ID, file);
 		verifyNoMoreInteractions(eneoIntegrationMock);

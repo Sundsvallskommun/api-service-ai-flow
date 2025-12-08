@@ -33,7 +33,7 @@ class InputCollectorTest {
 		final var flow = new Flow().withFlowInputs(List.of(flowInputA, flowInputB)).withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
-		// Add A twice; set Intric ids
+		// Add A twice; set eneo ids
 		session.addSimpleInput("A", "text1");
 		session.addSimpleInput("A", "text2");
 		final var idsA = List.of(UUID.randomUUID(), UUID.randomUUID());

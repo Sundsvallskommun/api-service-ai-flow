@@ -34,7 +34,7 @@ class InputDescriptorTest {
 		session.addSimpleInput("A", "ignored-text-1");
 		session.addSimpleInput("A", "ignored-text-2");
 		final var idsA = List.of(UUID.randomUUID(), UUID.randomUUID());
-		// Mutate underlying Input to set Intric ids
+		// Mutate underlying Input to set eneo ids
 		final var listA = session.getInput().get("A");
 		listA.get(0).setEneoFileId(idsA.get(0));
 		listA.get(1).setEneoFileId(idsA.get(1));

@@ -21,7 +21,7 @@ class StepExecutionTest {
 		var state = StepExecution.State.CREATED;
 		final var output = "output";
 		final var errorMessage = "errorMessage";
-		final var intricSessionId = UUID.randomUUID();
+		final var sessionId = UUID.randomUUID();
 		var intricRunId = UUID.randomUUID();
 
 		final var stepExecution = new StepExecution(session, step, requiredStepExecutions);
@@ -29,7 +29,7 @@ class StepExecutionTest {
 
 		state = StepExecution.State.ERROR;
 		stepExecution.setState(state);
-		stepExecution.setEneoSessionId(intricSessionId);
+		stepExecution.setEneoSessionId(sessionId);
 		stepExecution.setEneoRunId(intricRunId);
 		stepExecution.setOutput(output);
 		stepExecution.setErrorMessage(errorMessage);
@@ -39,7 +39,7 @@ class StepExecutionTest {
 		assertThat(stepExecution.getStep()).isEqualTo(step);
 		assertThat(stepExecution.getRequiredStepExecutions()).isEqualTo(requiredStepExecutions);
 		assertThat(stepExecution.getState()).isEqualTo(state);
-		assertThat(stepExecution.getEneoSessionId()).isEqualTo(intricSessionId);
+		assertThat(stepExecution.getEneoSessionId()).isEqualTo(sessionId);
 		assertThat(stepExecution.getEneoRunId()).isEqualTo(intricRunId);
 		assertThat(stepExecution.getOutput()).isEqualTo(output);
 		assertThat(stepExecution.getErrorMessage()).isEqualTo(errorMessage);
