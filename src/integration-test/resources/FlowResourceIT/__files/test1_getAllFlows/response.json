@@ -1,8 +1,26 @@
 [
-  {
-    "id": "tjansteskrivelse",
-    "version": 1,
-    "name": "Tjänsteskrivelse",
-    "description": "Ett Intric AI-flöde för tjänsteskrivelser"
-  }
+	{
+		"id": "bild-tolkare",
+		"version": 2,
+		"name": "Bildtolkare",
+		"description": "Eneo AI-flöde för att tolka bilder"
+	},
+	{
+		"id": "ljud-tolkare",
+		"version": 2,
+		"name": "Transkriberare",
+		"description": "Eneo AI-flöde för att transkribera ljud"
+	},
+	{
+		"id": "tjansteskrivelse",
+		"version": 2,
+		"name": "Tjänsteskrivelse",
+		"description": "Ett Intric AI-flöde för tjänsteskrivelser"
+	},
+	{
+		"id": "tjansteskrivelse.assistants",
+		"version": 2,
+		"name": "Tjänsteskrivelse (assistenter)",
+		"description": "Ett Intric AI-flöde för tjänsteskrivelser"
+	}
 ]

@@ -12,7 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class Input {
 
+	// Tell Jackson to ignore this field during serialization/deserialization
+	@JsonIgnore
 	private final MultipartFile file;
+
 	@JsonIgnore
 	private UUID eneoFileId;
 

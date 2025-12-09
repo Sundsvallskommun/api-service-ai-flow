@@ -12,7 +12,9 @@ import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 
-/** Ensures session inputs are uploaded to Eneo, handling redirected outputs as well. */
+/**
+ * Ensures session inputs are uploaded to Eneo, handling redirected outputs as well.
+ */
 @Component
 public class FileUploadManager {
 	private static final Logger LOG = LoggerFactory.getLogger(FileUploadManager.class);
@@ -31,6 +33,7 @@ public class FileUploadManager {
 			.forEach(input -> {
 				LOG.info("Uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
 				final var eneoFileId = eneoService.uploadFile(municipalityId, input.getFile());
+				LOG.info("Done uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
 				input.setEneoFileId(eneoFileId);
 			});
 

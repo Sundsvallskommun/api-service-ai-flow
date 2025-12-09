@@ -1,0 +1,7 @@
+{
+	"state": "DONE",
+	"startedAt": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}$",
+	"finishedAt": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}$",
+	"lastUpdatedAt": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}$",
+	"output": "Denna bild visar en person i en avslappnad sittposition pekande mot kameran. Personen har på sig en gul tröja och har en cigarett i ena handen och en burk öl i den andra. Den sitter i vad som kan misstänkas vara ett vardagsrum, baserat på inredningen och den bekväma fåtöljen. Bilden ger intryck av en avslappnad och informell miljö, där personen verkar vara mitt uppe i en konversation eller reaktion på något. Den suddiga delen av ansiktet antyder att bilden kan ha tagits ur en film eller en TV-serie där identiteten för personen är känd men inte direkt synlig för betraktaren."
+}

@@ -1,0 +1,15 @@
+{
+	"created_at": "2025-12-08T10:00:00.000000Z",
+	"updated_at": "2025-12-08T10:00:05.000000Z",
+	"id": "12345678-1234-1234-1234-123456789abc",
+	"input": {
+		"files": []
+	},
+	"status": "complete",
+	"finished_at": "2025-12-08T10:00:05.000000Z",
+	"user": {
+		"id": "00000000-0000-0000-0000-000000000000",
+		"email": "test@example.com"
+	},
+	"output": "Denna bild visar en person i en avslappnad sittposition pekande mot kameran. Personen har på sig en gul tröja och har en cigarett i ena handen och en burk öl i den andra. Den sitter i vad som kan misstänkas vara ett vardagsrum, baserat på inredningen och den bekväma fåtöljen. Bilden ger intryck av en avslappnad och informell miljö, där personen verkar vara mitt uppe i en konversation eller reaktion på något. Den suddiga delen av ansiktet antyder att bilden kan ha tagits ur en film eller en TV-serie där identiteten för personen är känd men inte direkt synlig för betraktaren."
+}
