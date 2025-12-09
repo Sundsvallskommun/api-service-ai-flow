@@ -54,7 +54,7 @@ class AppSessionResourceIT extends AbstractAppTest {
 				.pathSegment(sessionId, "input", inputId, "file")
 				.toUriString())
 			.withContentType(MediaType.MULTIPART_FORM_DATA)
-			.withRequestFile("file", "picture1.jpg")
+			.withRequestFile("file", "picture1.jpeg")
 			.withHttpMethod(POST)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse("add-file-response.json")
