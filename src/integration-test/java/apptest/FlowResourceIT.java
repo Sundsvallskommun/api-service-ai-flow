@@ -7,16 +7,12 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
+
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 
 @WireMockAppTestSuite(files = "classpath:/FlowResourceIT/", classes = Application.class)
-@Sql(scripts = {
-	"/db/scripts/truncate.sql",
-	"/db/scripts/testdata.sql"
-})
 class FlowResourceIT extends AbstractAppTest {
 
 	private static final String MUNICIPALITY_ID = "2281";
@@ -36,7 +32,7 @@ class FlowResourceIT extends AbstractAppTest {
 	@Test
 	void test2_getFlowByIdAndVersion() {
 		setupCall()
-			.withServicePath(PATH + "/tjansteskrivelse/1")
+			.withServicePath(PATH + "/tjansteskrivelse/2")
 			.withHttpMethod(GET)
 			.withExpectedResponseStatus(OK)
 			.withExpectedResponse(RESPONSE_FILE)
@@ -75,10 +71,9 @@ class FlowResourceIT extends AbstractAppTest {
 	@Test
 	void test6_deleteFlowVersion() {
 		setupCall()
-			.withServicePath(PATH + "/tjansteskrivelse/1")
+			.withServicePath(PATH + "/bild-tolkare/2")
 			.withHttpMethod(DELETE)
 			.withExpectedResponseStatus(OK)
 			.sendRequestAndVerifyResponse();
 	}
-
 }

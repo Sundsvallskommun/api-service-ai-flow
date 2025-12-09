@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
   title: ai-flow
-  contact: { }
+  contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-  - url: http://localhost:64579
+  - url: http://localhost:51728
     description: Generated server url
 tags:
   - name: Sessions
@@ -42,12 +42,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Session"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -56,6 +50,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -90,12 +90,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Session"
-        "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -104,6 +98,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -133,12 +133,6 @@ paths:
       responses:
         "204":
           description: No Content
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -147,6 +141,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -176,12 +176,6 @@ paths:
       responses:
         "204":
           description: No Content
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -190,6 +184,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -230,12 +230,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StepExecution"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -244,6 +238,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -285,12 +285,6 @@ paths:
       responses:
         "201":
           description: Created
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -299,6 +293,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -346,12 +346,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Session"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -360,6 +354,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -412,12 +412,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Session"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -426,6 +420,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -465,12 +465,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Output"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -479,6 +473,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -802,12 +802,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Session"
-        "404":
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Problem"
         "400":
           description: Bad Request
           content:
@@ -816,6 +810,12 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/Problem"
                   - $ref: "#/components/schemas/ConstraintViolationProblem"
+        "404":
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
         "500":
           description: Internal Server Error
           content:
@@ -824,13 +824,28 @@ paths:
                 $ref: "#/components/schemas/Problem"
 components:
   schemas:
+    CreateSessionRequest:
+      required:
+        - flowId
+      type: object
+      properties:
+        flowId:
+          minLength: 1
+          type: string
+          description: Flow id
+          example: tjansteskrivelse
+        version:
+          type: integer
+          description: Flow version
+          format: int32
+          example: 1
     Problem:
       type: object
       properties:
-        title:
-          type: string
         status:
           $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
         detail:
           type: string
         instance:
@@ -851,21 +866,6 @@ components:
           format: int32
         reasonPhrase:
           type: string
-    CreateSessionRequest:
-      required:
-        - flowId
-      type: object
-      properties:
-        flowId:
-          minLength: 1
-          type: string
-          description: Flow id
-          example: tjansteskrivelse
-        version:
-          type: integer
-          description: Flow version
-          format: int32
-          example: 1
     ConstraintViolationProblem:
       type: object
       properties:
@@ -977,10 +977,10 @@ components:
                 type: boolean
         message:
           type: string
-        title:
-          type: string
         status:
           $ref: "#/components/schemas/StatusType"
+        title:
+          type: string
         detail:
           type: string
         instance:
@@ -1036,9 +1036,6 @@ components:
     Input:
       type: object
       properties:
-        file:
-          type: string
-          format: binary
         uploadedToEneo:
           type: boolean
     Session:
@@ -1224,4 +1221,4 @@ components:
         description:
           type: string
           description: The flow description
-  securitySchemes: { }
+  securitySchemes: {}

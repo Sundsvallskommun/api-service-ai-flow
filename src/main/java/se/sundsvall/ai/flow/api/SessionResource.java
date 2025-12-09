@@ -53,6 +53,10 @@ import se.sundsvall.dept44.common.validators.annotation.ValidMunicipalityId;
 		Problem.class, ConstraintViolationProblem.class
 	})))
 @ApiResponse(
+	responseCode = "404",
+	description = "Not Found",
+	content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+@ApiResponse(
 	responseCode = "500",
 	description = "Internal Server Error",
 	content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
@@ -72,11 +76,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@GetMapping(value = "/{sessionId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> getSession(
@@ -91,11 +91,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "201",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> createSession(
@@ -116,11 +112,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "204",
 				description = "No Content",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(value = "/{sessionId}", produces = ALL_VALUE)
 	ResponseEntity<Void> runSession(
@@ -137,11 +129,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "204",
 				description = "No Content",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@DeleteMapping(value = "/{sessionId}", produces = ALL_VALUE)
 	ResponseEntity<Void> deleteSession(
@@ -157,11 +145,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@GetMapping(value = "/{sessionId}/step/{stepId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<StepExecution> getStep(
@@ -177,11 +161,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "201",
 				description = "Created",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(value = "/{sessionId}/step/{stepId}", consumes = APPLICATION_JSON_VALUE, produces = ALL_VALUE)
 	ResponseEntity<Void> runStep(
@@ -203,11 +183,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(value = "/{sessionId}/input/{inputId}/simple", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addSimpleInputToSession(
@@ -225,11 +201,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(value = "/{sessionId}/input/{inputId}/file", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> addFileInputToSession(
@@ -246,11 +218,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@DeleteMapping(value = "/{sessionId}/input/{inputId}", produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Session> clearInputInSession(
@@ -266,11 +234,7 @@ class SessionResource {
 			@ApiResponse(
 				responseCode = "200",
 				description = "Ok",
-				useReturnTypeSchema = true),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Not Found",
-				content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+				useReturnTypeSchema = true)
 		})
 	@PostMapping(value = "/{sessionId}/generate", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	ResponseEntity<Output> generateSessionOutput(

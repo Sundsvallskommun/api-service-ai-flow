@@ -1,0 +1,18 @@
+{
+	"id": "${json-unit.regex}^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$",
+	"municipalityId": "2281",
+	"input": {
+		"indata-bild": [
+			{
+				"uploadedToEneo": false
+			}
+		]
+	},
+	"stepExecutions": {
+		"tolka-bild": {
+			"state": "CREATED",
+			"lastUpdatedAt": "${json-unit.regex}^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d{0,10}(Z|[+-]\\d{2}:\\d{2})?$"
+		}
+	},
+	"state": "CREATED"
+}

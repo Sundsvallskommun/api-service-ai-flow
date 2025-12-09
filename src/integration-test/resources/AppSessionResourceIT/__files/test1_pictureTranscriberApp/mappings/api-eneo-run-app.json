@@ -1,0 +1,13 @@
+{
+	"request": {
+		"urlPathPattern": "^/eneo/apps/[0-9a-fA-F\\-]+/runs/?$",
+		"method": "POST"
+	},
+	"response": {
+		"headers": {
+			"Content-Type": "application/json"
+		},
+		"status": 200,
+		"bodyFileName": "test1_pictureTranscriberApp/responses/api-eneo-run-app-response.json"
+	}
+}

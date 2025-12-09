@@ -5,17 +5,16 @@ import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
 
 import java.time.Duration;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
+
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
@@ -26,10 +25,6 @@ import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
 
 @WireMockAppTestSuite(files = "classpath:/SessionResourceIT/", classes = Application.class)
-@Sql(scripts = {
-	"/db/scripts/truncate.sql",
-	"/db/scripts/testdata.sql"
-})
 class SessionResourceIT extends AbstractAppTest {
 
 	private static final String MUNICIPALITY_ID = "2281";
@@ -52,7 +47,7 @@ class SessionResourceIT extends AbstractAppTest {
 
 	@BeforeEach
 	void setup() {
-		final var flow = flowService.getFlowVersion("tjansteskrivelse", 1);
+		final var flow = flowService.getFlowVersion("tjansteskrivelse", 2);
 		session = sessionService.createSession(MUNICIPALITY_ID, flow);
 	}
 
@@ -221,21 +216,7 @@ class SessionResourceIT extends AbstractAppTest {
 	}
 
 	@Test
-	void test10_addFileInputToSession() throws Exception {
-
-		setupCall()
-			.withServicePath(PATH + "/" + session.getId() + "/input/bakgrundsmaterial/file")
-			.withHttpMethod(POST)
-			.withContentType(MULTIPART_FORM_DATA)
-			.withRequestFile("file", "test-file.txt")
-			.withExpectedResponseStatus(INTERNAL_SERVER_ERROR) // because of a JSON serialization bug when the Session tries to serialize a MultipartFile. Not sure what to do
-			//.withExpectedResponse(RESPONSE_FILE)
-			.sendRequestAndVerifyResponse();
-
-	}
-
-	@Test
-	void test11_clearInputInSession() {
+	void test10_clearInputInSession() {
 		session.addSimpleInput("arendenummer", "12345");
 
 		setupCall()
@@ -246,5 +227,4 @@ class SessionResourceIT extends AbstractAppTest {
 			.sendRequestAndVerifyResponse();
 
 	}
-
 }

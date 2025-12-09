@@ -1,3 +1,6 @@
+flow-loader:
+  enabled: true
+  
 integration:
   eneo:
     oauth2:
@@ -23,12 +26,14 @@ integration:
       token-url: http://localhost:${wiremock.server.port}/token
     read-timeout-in-seconds: 15
     connect-timeout-in-seconds: 5
+
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:mariadb:10.6.14:///
   flyway:
     enabled: true
+
 scheduler:
   stale-session-reaper:
     name: stale-session-reaper
