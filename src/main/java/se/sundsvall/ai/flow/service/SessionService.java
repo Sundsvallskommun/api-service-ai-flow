@@ -3,7 +3,6 @@ package se.sundsvall.ai.flow.service;
 import static java.util.Optional.ofNullable;
 import static org.zalando.problem.Status.NOT_FOUND;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import se.sundsvall.ai.flow.model.session.FileInputValue;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
+import se.sundsvall.ai.flow.util.DocumentUtil;
 import se.sundsvall.dept44.requestid.RequestId;
 
 @Service
@@ -101,16 +101,16 @@ public class SessionService {
 
 	public Session addInput(final UUID sessionId, final String inputId, final MultipartFile inputMultipartFile) {
 		final var session = getSession(sessionId);
-		try {
-			final var value = new FileInputValue(
-				inputMultipartFile.getOriginalFilename(),
-				inputMultipartFile.getBytes(),
-				inputMultipartFile.getContentType());
-			session.addInput(inputId, value);
-			return session;
-		} catch (final IOException e) {
-			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to read uploaded file for input '" + inputId + "'");
-		}
+
+		// Only removes images from PDF and DOCX files, other file types are returned as-is
+		var documentBytes = DocumentUtil.removeImages(inputMultipartFile);
+
+		final var value = new FileInputValue(
+			inputMultipartFile.getOriginalFilename(),
+			documentBytes,
+			inputMultipartFile.getContentType());
+		session.addInput(inputId, value);
+		return session;
 	}
 
 	public Session clearInput(final UUID sessionId, final String inputId) {
