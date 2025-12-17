@@ -17,7 +17,6 @@ public class Flow {
 	private String description;
 	private String helptext;
 	private String spaceId;
-	private boolean visible = true;
 	private String defaultTemplateId;
 	private int ttlInMinutes = 180;
 
@@ -101,19 +100,6 @@ public class Flow {
 
 	public Flow withSpaceId(final String spaceId) {
 		this.spaceId = spaceId;
-		return this;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(final boolean visible) {
-		this.visible = visible;
-	}
-
-	public Flow withVisible(final boolean visible) {
-		this.visible = visible;
 		return this;
 	}
 

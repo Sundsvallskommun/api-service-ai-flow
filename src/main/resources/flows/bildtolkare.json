@@ -1,39 +1,39 @@
 {
-	"id": "bild-tolkare",
-	"version": 2,
-	"name": "Bildtolkare",
-	"description": "Eneo AI-flöde för att tolka bilder",
-	"helptext": "Ladda upp en eller flera bilder för att få en beskrivning av vad som finns på bilden.",
-	"space-id": "",
-	"visible": true,
-	"defaultTemplateId": null,
-	"ttlInMinutes": 180,
-	"input": [
+  "id": "bild-tolkare",
+  "version": 2,
+  "name": "Bildtolkare",
+  "description": "Eneo AI-flöde för att tolka bilder",
+  "helptext": "Ladda upp en eller flera bilder för att få en beskrivning av vad som finns på bilden.",
+  "space-id": "",
+  "defaultTemplateId": null,
+  "ttlInMinutes": 180,
+  "input": [
+	{
+	  "id": "indata-bild",
+	  "name": "Bild",
+	  "description": "Lägg till bild som skall tolkas",
+	  "type": "FILE",
+	  "optional": false,
+	  "multipleValued": true,
+	  "passthrough": false
+	}
+  ],
+  "steps": [
+	{
+	  "id": "tolka-bild",
+	  "order": 1,
+	  "use-as": "Bilden",
+	  "description": "Bilden att tolka",
+	  "visible": true,
+	  "target": {
+		"type": "APP",
+		"id": "b5415f0f-06bf-42c3-b781-c803ed347e77"
+	  },
+	  "input": [
 		{
-			"id": "indata-bild",
-			"name": "Bild",
-			"description": "Lägg till bild som skall tolkas",
-			"type": "FILE",
-			"optional": false,
-			"multipleValued": true,
-			"passthrough": false
+		  "use-flow-input": "indata-bild"
 		}
-	],
-	"steps": [
-		{
-			"id": "tolka-bild",
-			"order": 1,
-			"use-as": "Bilden",
-			"description": "Bilden att tolka",
-			"target": {
-				"type": "APP",
-				"id": "b5415f0f-06bf-42c3-b781-c803ed347e77"
-			},
-			"input": [
-				{
-					"use-flow-input": "indata-bild"
-				}
-			]
-		}
-	]
+	  ]
+	}
+  ]
 }

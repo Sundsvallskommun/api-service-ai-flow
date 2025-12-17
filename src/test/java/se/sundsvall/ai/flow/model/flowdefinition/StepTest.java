@@ -22,6 +22,7 @@ class StepTest {
 		final var description = "description";
 		final var target = new Step.Target(Step.Target.Type.ASSISTANT, UUID.randomUUID());
 		final var inputs = List.of(createFlowInputRef("value"));
+		final var visible = false;
 
 		final var step = new Step();
 
@@ -31,6 +32,7 @@ class StepTest {
 		step.setDescription(description);
 		step.setTarget(target);
 		step.setInputs(inputs);
+		step.setVisible(visible);
 
 		assertThat(step.getId()).isEqualTo(id);
 		assertThat(step.getOrder()).isEqualTo(order);
@@ -38,6 +40,7 @@ class StepTest {
 		assertThat(step.getDescription()).isEqualTo(description);
 		assertThat(step.getTarget()).isEqualTo(target);
 		assertThat(step.getInputs()).isEqualTo(inputs);
+		assertThat(step.isVisible()).isEqualTo(visible);
 	}
 
 	@Test
@@ -49,6 +52,7 @@ class StepTest {
 		final var targetType = Step.Target.Type.ASSISTANT;
 		final var targetId = UUID.randomUUID();
 		final var inputs = List.of(createFlowInputRef("value"));
+		final var visible = true;
 
 		final var step = new Step()
 			.withId(id)
@@ -56,7 +60,8 @@ class StepTest {
 			.withName(name)
 			.withDescription(description)
 			.withTarget(new Step.Target(targetType, targetId))
-			.withInputs(inputs);
+			.withInputs(inputs)
+			.withVisible(visible);
 
 		assertThat(step.getId()).isEqualTo(id);
 		assertThat(step.getOrder()).isEqualTo(order);
@@ -67,6 +72,7 @@ class StepTest {
 			assertThat(target.id()).isEqualTo(targetId);
 		});
 		assertThat(step.getInputs()).isEqualTo(inputs);
+		assertThat(step.isVisible()).isEqualTo(visible);
 	}
 
 	@Test
