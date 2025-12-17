@@ -1,13 +1,13 @@
 openapi: 3.1.0
 info:
   title: ai-flow
-  contact: {}
+  contact: { }
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-  - url: http://localhost:53167
+  - url: http://localhost:63801
     description: Generated server url
 tags:
   - name: Sessions
@@ -846,9 +846,9 @@ components:
       properties:
         status:
           $ref: "#/components/schemas/StatusType"
-        detail:
-          type: string
         title:
+          type: string
+        detail:
           type: string
         instance:
           type: string
@@ -858,15 +858,15 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: {}
+          additionalProperties: { }
     StatusType:
       type: object
       properties:
-        reasonPhrase:
-          type: string
         statusCode:
           type: integer
           format: int32
+        reasonPhrase:
+          type: string
     ConstraintViolationProblem:
       type: object
       properties:
@@ -914,7 +914,7 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: {}
+          additionalProperties: { }
         suppressed:
           type: array
           items:
@@ -951,7 +951,7 @@ components:
     ThrowableProblem:
       type: object
       properties:
-        cause: {}
+        cause: { }
         stackTrace:
           type: array
           items:
@@ -978,9 +978,9 @@ components:
           type: string
         status:
           $ref: "#/components/schemas/StatusType"
-        detail:
-          type: string
         title:
+          type: string
+        detail:
           type: string
         instance:
           type: string
@@ -990,7 +990,7 @@ components:
           format: uri
         parameters:
           type: object
-          additionalProperties: {}
+          additionalProperties: { }
         suppressed:
           type: array
           items:
@@ -1135,8 +1135,6 @@ components:
           type: string
         spaceId:
           type: string
-        visible:
-          type: boolean
         defaultTemplateId:
           type: string
         ttlInMinutes:
@@ -1185,11 +1183,13 @@ components:
           type: string
         target:
           $ref: "#/components/schemas/Target"
+        visible:
+          type: boolean
         input:
           type: array
           items:
             $ref: "#/components/schemas/StepInput"
-    StepInput: {}
+    StepInput: { }
     Target:
       type: object
       properties:
@@ -1218,4 +1218,4 @@ components:
         description:
           type: string
           description: The flow description
-  securitySchemes: {}
+  securitySchemes: { }

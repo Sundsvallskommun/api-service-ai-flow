@@ -16,6 +16,7 @@ public class Step implements Comparable<Step> {
 	private Target target;
 	@JsonProperty("input")
 	private List<StepInput> inputs = new LinkedList<>();
+	private boolean visible = true;
 
 	public String getId() {
 		return id;
@@ -95,6 +96,19 @@ public class Step implements Comparable<Step> {
 		return this;
 	}
 
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(final boolean visible) {
+		this.visible = visible;
+	}
+
+	public Step withVisible(final boolean visible) {
+		this.visible = visible;
+		return this;
+	}
+
 	@Override
 	public int compareTo(@NotNull final Step other) {
 		return Integer.compare(order, other.order);
@@ -105,13 +119,12 @@ public class Step implements Comparable<Step> {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		final Step step = (Step) o;
-		return order == step.order && Objects.equals(id, step.id) && Objects.equals(name, step.name) && Objects.equals(description, step.description) && Objects.equals(target, step.target) && Objects.equals(
-			inputs, step.inputs);
+		return order == step.order && visible == step.visible && Objects.equals(id, step.id) && Objects.equals(name, step.name) && Objects.equals(description, step.description) && Objects.equals(target, step.target) && Objects.equals(inputs, step.inputs);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, order, name, description, target, inputs);
+		return Objects.hash(id, order, name, description, target, inputs, visible);
 	}
 
 	public record Target(Type type, UUID id) {

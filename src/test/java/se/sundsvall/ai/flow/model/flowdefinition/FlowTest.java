@@ -21,7 +21,9 @@ class FlowTest {
 		final var spaceId = "space-123";
 		final var visible = false;
 		final var inputs = List.of(new FlowInput());
-		final var steps = List.of(new Step());
+		final var step = new Step();
+		step.setVisible(visible);
+		final var steps = List.of(step);
 		final var ttlInMinutes = 456;
 
 		final var flow = new Flow();
@@ -33,7 +35,6 @@ class FlowTest {
 		flow.setTtlInMinutes(ttlInMinutes);
 		flow.setHelptext(helptext);
 		flow.setSpaceId(spaceId);
-		flow.setVisible(visible);
 		flow.setFlowInputs(inputs);
 		flow.setSteps(steps);
 
@@ -47,7 +48,7 @@ class FlowTest {
 		assertThat(flow.getSteps()).isEqualTo(steps);
 		assertThat(flow.getHelptext()).isEqualTo(helptext);
 		assertThat(flow.getSpaceId()).isEqualTo(spaceId);
-		assertThat(flow.isVisible()).isEqualTo(visible);
+		assertThat(flow.getSteps().get(0).isVisible()).isEqualTo(visible);
 	}
 
 	@Test
@@ -60,7 +61,6 @@ class FlowTest {
 		final var defaultTemplateId = "defaultTemplateId";
 		final var helptext = "help text";
 		final var spaceId = "space-123";
-		final var visible = true;
 		final var inputs = List.of(new FlowInput());
 		final var steps = List.of(new Step());
 
@@ -74,8 +74,7 @@ class FlowTest {
 			.withFlowInputs(inputs)
 			.withSteps(steps)
 			.withHelptext(helptext)
-			.withSpaceId(spaceId)
-			.withVisible(visible);
+			.withSpaceId(spaceId);
 
 		assertThat(flow.getId()).isEqualTo(id);
 		assertThat(flow.getName()).isEqualTo(name);
@@ -87,7 +86,6 @@ class FlowTest {
 		assertThat(flow.getSteps()).isEqualTo(steps);
 		assertThat(flow.getHelptext()).isEqualTo(helptext);
 		assertThat(flow.getSpaceId()).isEqualTo(spaceId);
-		assertThat(flow.isVisible()).isEqualTo(visible);
 	}
 
 	@Test
