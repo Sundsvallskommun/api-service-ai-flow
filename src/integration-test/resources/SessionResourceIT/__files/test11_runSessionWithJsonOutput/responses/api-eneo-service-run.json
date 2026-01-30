@@ -1,0 +1,8 @@
+{
+  "output": {
+    "summary": "This is a JSON response",
+    "count": 42,
+    "success": true
+  },
+  "files": []
+}

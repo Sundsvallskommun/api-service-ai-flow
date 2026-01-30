@@ -1,0 +1,46 @@
+{
+  "id": "${json-unit.any-string}",
+  "municipalityId": "2281",
+  "input": {
+	"arendenummer": [],
+	"uppdraget-till-tjansten": [],
+	"forvaltningens-input": [],
+	"bakgrundsmaterial": [],
+	"relaterade-styrdokument": []
+  },
+  "stepExecutions": {
+	"arendet": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"bakgrund": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"ekologisk-hallbarhet": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"ekonomisk-hallbarhet": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"forvaltningens-overvaganden": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"landsbygdssakring": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"social-hallbarhet": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	},
+	"styrdokument-och-juridik": {
+	  "state": "CREATED",
+	  "lastUpdatedAt": "${json-unit.any-string}"
+	}
+  },
+  "state": "CREATED"
+}

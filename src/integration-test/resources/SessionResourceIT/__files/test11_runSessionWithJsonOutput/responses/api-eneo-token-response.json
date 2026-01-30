@@ -1,0 +1,6 @@
+{
+  "access_token": "mock-eneo-access-token",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "device_54191ed6-94b9-461e-843f-c7b943e6cfc5"
+}

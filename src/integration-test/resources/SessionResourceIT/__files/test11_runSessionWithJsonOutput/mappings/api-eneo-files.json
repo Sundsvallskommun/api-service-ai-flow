@@ -1,0 +1,13 @@
+{
+  "request": {
+	"urlPath": "/eneo/files/",
+	"method": "POST"
+  },
+  "response": {
+	"headers": {
+	  "Content-Type": "application/json"
+	},
+	"status": 200,
+	"bodyFileName": "test11_runSessionWithJsonOutput/responses/api-eneo-upload-files.json"
+  }
+}

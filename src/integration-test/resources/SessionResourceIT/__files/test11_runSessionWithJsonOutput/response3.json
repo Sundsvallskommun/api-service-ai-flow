@@ -1,0 +1,7 @@
+{
+  "state": "DONE",
+  "startedAt": "${json-unit.any-string}",
+  "lastUpdatedAt": "${json-unit.any-string}",
+  "finishedAt": "${json-unit.any-string}",
+  "output": "{\"summary\":\"This is a JSON response\",\"count\":42,\"success\":true}"
+}

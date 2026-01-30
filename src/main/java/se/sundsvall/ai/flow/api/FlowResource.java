@@ -123,7 +123,7 @@ class FlowResource {
 	@DeleteMapping("/{flowId}")
 	ResponseEntity<Void> deleteFlow(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@PathVariable("flowId") final String flowId) {
+		@PathVariable final String flowId) {
 		flowService.deleteFlow(flowId);
 		return ok().build();
 	}
@@ -143,8 +143,8 @@ class FlowResource {
 	@DeleteMapping("/{flowId}/{version}")
 	ResponseEntity<Void> deleteFlowVersion(
 		@Parameter(name = "municipalityId", description = "Municipality id", example = "2281") @ValidMunicipalityId @PathVariable final String municipalityId,
-		@PathVariable("flowId") final String flowId,
-		@PathVariable("version") final Integer version) {
+		@PathVariable final String flowId,
+		@PathVariable final Integer version) {
 		flowService.deleteFlowVersion(flowId, version);
 		return ok().build();
 	}

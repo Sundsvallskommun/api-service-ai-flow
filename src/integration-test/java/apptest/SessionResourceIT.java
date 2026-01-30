@@ -227,4 +227,34 @@ class SessionResourceIT extends AbstractAppTest {
 			.sendRequestAndVerifyResponse();
 
 	}
+
+	@Test
+	@DirtiesContext
+	void test11_runSessionWithJsonOutput() {
+		// Add all required inputs for the session to be executable
+		session.addSimpleInput("arendenummer", "12345");
+		session.addSimpleInput("uppdraget-till-tjansten", "VGhpcyBpcyBhIGFyZW5kZW51bW1lciB2YWx1ZQ==");
+		session.addSimpleInput("forvaltningens-input", "VGhpcyBpcyBhIGFyZW5kZW51bW1lciB2YWx1ZQ==");
+		session.addSimpleInput("bakgrundsmaterial", TEST_PDF_BASE64);
+		session.addSimpleInput("relaterade-styrdokument", TEST_PDF_BASE64);
+
+		// Run the entire session - WireMock returns a JSON object as output for each step
+		setupCall()
+			.withServicePath(PATH + "/" + session.getId())
+			.withHttpMethod(POST)
+			.withExpectedResponseStatus(NO_CONTENT)
+			.sendRequest();
+
+		// Wait for the session to complete
+		await().atMost(Duration.ofSeconds(30)).until(() ->
+			session.getState() == Session.State.FINISHED);
+
+		// Verify the step output is the JSON object serialized as a string
+		setupCall()
+			.withServicePath(PATH + "/" + session.getId() + "/step/arendet")
+			.withHttpMethod(GET)
+			.withExpectedResponseStatus(OK)
+			.withExpectedResponse("response3.json")
+			.sendRequestAndVerifyResponse();
+	}
 }

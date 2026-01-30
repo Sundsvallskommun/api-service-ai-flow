@@ -19,5 +19,5 @@ import static se.sundsvall.ai.flow.integration.templating.TemplatingIntegration.
 interface TemplatingClient {
 
 	@PostMapping(path = "/{municipalityId}/render", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-	RenderResponse render(@PathVariable(name = "municipalityId") String municipalityId, @RequestBody RenderRequest renderRequest);
+	RenderResponse render(@PathVariable String municipalityId, @RequestBody RenderRequest renderRequest);
 }
