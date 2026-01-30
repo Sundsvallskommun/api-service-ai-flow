@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>se.sundsvall.dept44</groupId>
 		<artifactId>dept44-service-parent</artifactId>
-		<version>6.0.14</version>
+		<version>7.0.0</version>
 		<relativePath />
 		<!-- lookup parent from repository -->
 	</parent>
@@ -13,7 +13,7 @@
 	<version>2.0</version>
 	<properties>
 		<auth0.java-jwt.version>4.5.0</auth0.java-jwt.version>
-		<poi.version>5.5.0</poi.version>
+		<poi.version>5.5.1</poi.version>
 		<pdfbox.version>3.0.6</pdfbox.version>
 		<jtokkit.version>1.1.0</jtokkit.version>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
@@ -86,6 +86,15 @@
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
