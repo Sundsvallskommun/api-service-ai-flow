@@ -136,6 +136,7 @@
 						</goals>
 						<configuration>
 							<inputSpec>src/main/resources/integrations/eneo.yml</inputSpec>
+							<typeMappings>Family=String,Stability=String,Hosting=String,Org=String</typeMappings>
 							<configOptions>
 								<modelPackage>generated.eneo.ai</modelPackage>
 								<!--
