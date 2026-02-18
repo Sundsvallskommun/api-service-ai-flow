@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static generated.eneo.ai.Status.COMPLETE;
-import static generated.eneo.ai.Status.FAILED;
-import static generated.eneo.ai.Status.NOT_FOUND;
-
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -13,6 +9,10 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
+
+import static generated.eneo.ai.Status.COMPLETE;
+import static generated.eneo.ai.Status.FAILED;
+import static generated.eneo.ai.Status.NOT_FOUND;
 
 @Component
 public class AppRunPoller {

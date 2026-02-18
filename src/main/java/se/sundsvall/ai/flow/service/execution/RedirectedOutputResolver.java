@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static java.util.Objects.requireNonNull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -9,6 +7,8 @@ import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.TextInputValue;
+
+import static java.util.Objects.requireNonNull;
 
 /** Adds redirected outputs from required steps as inputs to the session. */
 @Component

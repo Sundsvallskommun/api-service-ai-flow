@@ -1,9 +1,9 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StepExecutionResultTest {
 

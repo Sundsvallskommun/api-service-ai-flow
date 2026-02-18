@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +7,8 @@ import java.util.Map;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Default implementation that mirrors the previous wiring behavior in Session.

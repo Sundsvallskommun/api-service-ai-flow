@@ -9314,7 +9314,6 @@ components:
           anyOf:
             - type: integer
             - type: 'null'
-          default: NOT_PROVIDED
           title: Data Retention Days
       title: AppUpdateRequest
     Applications:
@@ -9530,7 +9529,6 @@ components:
         completion_model_kwargs:
           type: object
           additionalProperties: true
-          default: {}
           title: Completion Model Kwargs
         prompt:
           anyOf:
@@ -9698,7 +9696,6 @@ components:
           title: Name
         completion_model_kwargs:
           "$ref": "#/components/schemas/ModelKwargs"
-          default: {}
         logging_enabled:
           type: boolean
           default: false
@@ -10447,7 +10444,6 @@ components:
           anyOf:
             - "$ref": "#/components/schemas/ModelId"
             - type: 'null'
-          default: NOT_PROVIDED
           title: Security Classification
       title: CompletionModelUpdateFlags
     ContentDisposition:
@@ -11269,13 +11265,11 @@ components:
       properties:
         is_org_enabled:
           type: boolean
-          default: NOT_PROVIDED
           title: Is Org Enabled
         security_classification:
           anyOf:
             - "$ref": "#/components/schemas/ModelId"
             - type: 'null'
-          default: NOT_PROVIDED
           title: Security Classification
       title: EmbeddingModelUpdate
     EmbeddingModelUpdateFlags:
@@ -11681,7 +11675,6 @@ components:
             - type: object
               additionalProperties: true
             - type: 'null'
-          default: NOT_PROVIDED
           description: Metadata for the group chat.
           title: Metadata Json
       title: GroupChatUpdateSchema
@@ -14156,14 +14149,12 @@ components:
       properties:
         name:
           type: string
-          default: NOT_PROVIDED
           description: Name of the security classification
           title: Name
         description:
           anyOf:
             - type: string
             - type: 'null'
-          default: NOT_PROVIDED
           description: Description of the security classification
           title: Description
       title: SecurityClassificationSingleUpdate
@@ -14285,7 +14276,6 @@ components:
           anyOf:
             - "$ref": "#/components/schemas/ModelKwargs"
             - type: 'null'
-          default: {}
         groups:
           type: array
           default: []
@@ -14463,7 +14453,6 @@ components:
           anyOf:
             - "$ref": "#/components/schemas/ModelKwargs"
             - type: 'null'
-          default: {}
         permissions:
           type: array
           default: []
@@ -14592,7 +14581,6 @@ components:
         chatbot_widget:
           type: object
           additionalProperties: true
-          default: {}
           title: Chatbot Widget
       title: SettingsPublic
     SignedURLRequest:
@@ -15485,7 +15473,6 @@ components:
           anyOf:
             - "$ref": "#/components/schemas/ModelId"
             - type: 'null'
-          default: NOT_PROVIDED
           title: Security Classification
       title: TranscriptionModelUpdate
     TransferApplicationRequest:
@@ -16886,25 +16873,20 @@ components:
       properties:
         url:
           type: string
-          default: NOT_PROVIDED
           title: Url
         name:
           anyOf:
             - type: string
             - type: 'null'
-          default: NOT_PROVIDED
           title: Name
         download_files:
           type: boolean
-          default: NOT_PROVIDED
           title: Download Files
         crawl_type:
           "$ref": "#/components/schemas/CrawlType"
-          default: NOT_PROVIDED
           title: Crawl Type
         update_interval:
           "$ref": "#/components/schemas/UpdateInterval"
-          default: NOT_PROVIDED
           title: Update Interval
       title: WebsiteUpdate
     WizardType:

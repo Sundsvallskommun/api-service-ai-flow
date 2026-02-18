@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static java.util.Optional.of;
-import static java.util.stream.Collectors.toMap;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -19,6 +16,9 @@ import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.support.ByteArrayMultipartFile;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toMap;
 
 public class Session {
 

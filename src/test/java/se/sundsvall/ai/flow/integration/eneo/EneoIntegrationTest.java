@@ -1,12 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.TestDataFactory.MUNICIPALITY_ID;
-
 import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
@@ -28,6 +21,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.ThrowableProblem;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.TestDataFactory.MUNICIPALITY_ID;
 
 @ExtendWith(MockitoExtension.class)
 class EneoIntegrationTest {

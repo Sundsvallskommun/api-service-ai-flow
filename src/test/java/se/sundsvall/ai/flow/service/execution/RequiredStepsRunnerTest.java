@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
@@ -11,6 +9,8 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class RequiredStepsRunnerTest {
 

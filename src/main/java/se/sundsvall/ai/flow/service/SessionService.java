@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.NOT_FOUND;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +20,9 @@ import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.util.DocumentUtil;
 import se.sundsvall.dept44.requestid.RequestId;
+
+import static java.util.Optional.ofNullable;
+import static org.zalando.problem.Status.NOT_FOUND;
 
 @Service
 public class SessionService {

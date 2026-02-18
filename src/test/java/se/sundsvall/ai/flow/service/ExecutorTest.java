@@ -1,10 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
-
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -19,6 +14,11 @@ import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
 import se.sundsvall.ai.flow.service.execution.StepRunner;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
 
 @ExtendWith(MockitoExtension.class)
 class ExecutorTest {

@@ -1,13 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.model.session.Session.State.ERROR;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,6 +15,14 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.model.session.Session.State.ERROR;
 
 @ExtendWith(MockitoExtension.class)
 class SessionOrchestratorTest {

@@ -1,9 +1,9 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class FileInputValueTest {
 

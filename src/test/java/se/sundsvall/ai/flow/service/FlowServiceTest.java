@@ -1,13 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.TestDataFactory.createFlowEntity;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -24,6 +16,14 @@ import se.sundsvall.ai.flow.integration.db.FlowRepository;
 import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.TestDataFactory.createFlowEntity;
 
 @ExtendWith(MockitoExtension.class)
 class FlowServiceTest {

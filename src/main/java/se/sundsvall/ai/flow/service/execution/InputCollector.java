@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.joining;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -13,6 +10,9 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.service.InputDescriptor;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.joining;
 
 /** Resolves which inputs are in use for a given step and collects ids and a human-readable descriptor. */
 @Component

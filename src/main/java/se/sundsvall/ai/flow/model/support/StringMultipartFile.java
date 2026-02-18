@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.model.support;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serial;
 import org.springframework.web.multipart.MultipartFile;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
 @JsonSerialize(using = StringMultipartFile.Serializer.class)
 public class StringMultipartFile implements MultipartFile {
