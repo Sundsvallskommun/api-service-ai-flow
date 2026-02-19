@@ -1,13 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static generated.eneo.ai.Status.COMPLETE;
-import static generated.eneo.ai.Status.FAILED;
-import static generated.eneo.ai.Status.IN_PROGRESS;
-import static generated.eneo.ai.Status.NOT_FOUND;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import java.time.Duration;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -16,6 +8,14 @@ import org.zalando.problem.Problem;
 import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+
+import static generated.eneo.ai.Status.COMPLETE;
+import static generated.eneo.ai.Status.FAILED;
+import static generated.eneo.ai.Status.IN_PROGRESS;
+import static generated.eneo.ai.Status.NOT_FOUND;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 class AppRunPollerTest {
 

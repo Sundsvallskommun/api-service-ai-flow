@@ -1,12 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toAskAssistant;
-import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toResponse;
-import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunAppRequest;
-import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunService;
-
 import generated.eneo.ai.FilePublic;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +8,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toAskAssistant;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toResponse;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunAppRequest;
+import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunService;
 
 @Service
 public class EneoService {

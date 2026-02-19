@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.NOT_FOUND;
-import static se.sundsvall.ai.flow.model.flowdefinition.validation.FlowValidator.hasStepDependencyCycle;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -16,6 +12,10 @@ import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowConfigurationException;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+
+import static java.util.Optional.ofNullable;
+import static org.zalando.problem.Status.NOT_FOUND;
+import static se.sundsvall.ai.flow.model.flowdefinition.validation.FlowValidator.hasStepDependencyCycle;
 
 @Service
 @Transactional

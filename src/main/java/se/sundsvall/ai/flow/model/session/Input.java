@@ -1,11 +1,11 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static java.util.Objects.nonNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
+
+import static java.util.Objects.nonNull;
 
 /*
  * "Mapping" between locally uploaded files and Eneo file uploads

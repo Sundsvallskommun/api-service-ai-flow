@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static java.util.stream.Collectors.toMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -10,6 +8,8 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
+
+import static java.util.stream.Collectors.toMap;
 
 @Service
 public class InputDescriptor {

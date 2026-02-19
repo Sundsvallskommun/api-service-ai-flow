@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.util;
 
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.joining;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.joining;
 
 public final class DocumentUtil {
 

@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,6 +13,10 @@ import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
 import se.sundsvall.ai.flow.model.session.TextInputValue;
 import se.sundsvall.ai.flow.service.InputDescriptor;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class InputCollectorTest {
 

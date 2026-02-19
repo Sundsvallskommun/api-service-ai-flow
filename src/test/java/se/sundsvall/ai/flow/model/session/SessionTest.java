@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.type;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -14,6 +11,9 @@ import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.support.ByteArrayMultipartFile;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 @ExtendWith(MockitoExtension.class)
 class SessionTest {

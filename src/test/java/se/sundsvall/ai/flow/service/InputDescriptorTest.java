@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +10,8 @@ import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecutionFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class InputDescriptorTest {
 

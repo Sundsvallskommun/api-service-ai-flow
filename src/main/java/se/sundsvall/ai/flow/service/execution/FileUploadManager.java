@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.service.execution;
 
-import static java.util.function.Predicate.not;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
-
 import java.util.Collection;
 import java.util.HashMap;
 import org.slf4j.Logger;
@@ -11,6 +8,9 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
+
+import static java.util.function.Predicate.not;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 /**
  * Ensures session inputs are uploaded to Eneo, handling redirected outputs as well.

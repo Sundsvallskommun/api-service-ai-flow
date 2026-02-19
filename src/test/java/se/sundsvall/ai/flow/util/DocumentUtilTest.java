@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.util;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.apache.pdfbox.Loader;
@@ -13,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DocumentUtilTest {
 

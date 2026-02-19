@@ -1,10 +1,10 @@
 package se.sundsvall.ai.flow.integration.templating;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.sundsvall.ai.flow.test.annotation.PropertiesTest;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @PropertiesTest(value = TemplatingProperties.class)
 class TemplatingPropertiesTest {
