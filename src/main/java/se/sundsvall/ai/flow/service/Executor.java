@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.joining;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +18,10 @@ import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
 import se.sundsvall.dept44.requestid.RequestId;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.joining;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 @Service
 public class Executor {

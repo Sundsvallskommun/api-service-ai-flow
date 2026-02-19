@@ -1,12 +1,12 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static se.sundsvall.ai.flow.TestDataFactory.createFlowInputRef;
-
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static se.sundsvall.ai.flow.TestDataFactory.createFlowInputRef;
 
 class StepTest {
 

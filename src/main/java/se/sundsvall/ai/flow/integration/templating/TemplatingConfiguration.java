@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.integration.templating;
 
-import static se.sundsvall.ai.flow.integration.templating.TemplatingIntegration.CLIENT_ID;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +9,8 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
+
+import static se.sundsvall.ai.flow.integration.templating.TemplatingIntegration.CLIENT_ID;
 
 @Import(FeignConfiguration.class)
 @EnableConfigurationProperties(TemplatingProperties.class)

@@ -1,12 +1,12 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StepExecutionTest {
 

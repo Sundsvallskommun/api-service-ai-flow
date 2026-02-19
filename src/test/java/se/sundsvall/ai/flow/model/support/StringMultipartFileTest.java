@@ -1,5 +1,12 @@
 package se.sundsvall.ai.flow.model.support;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -7,13 +14,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 
 class StringMultipartFileTest {
 

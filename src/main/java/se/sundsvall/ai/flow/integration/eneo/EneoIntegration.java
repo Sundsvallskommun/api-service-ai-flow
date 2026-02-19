@@ -1,10 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.BAD_GATEWAY;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
-import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import generated.eneo.ai.AskAssistant;
@@ -19,6 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.zalando.problem.Problem;
+
+import static java.util.Optional.ofNullable;
+import static org.zalando.problem.Status.BAD_GATEWAY;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 @Component
 public class EneoIntegration {

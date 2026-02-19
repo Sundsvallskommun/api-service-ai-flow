@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
-import static se.sundsvall.ai.flow.integration.eneo.EneoIntegration.CLIENT_ID;
-
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.FilePublic;
@@ -18,6 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static se.sundsvall.ai.flow.integration.eneo.EneoIntegration.CLIENT_ID;
 
 @CircuitBreaker(name = CLIENT_ID)
 public interface EneoClient {

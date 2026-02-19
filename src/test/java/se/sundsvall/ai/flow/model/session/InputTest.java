@@ -1,11 +1,11 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.web.multipart.MultipartFile;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class InputTest {
 

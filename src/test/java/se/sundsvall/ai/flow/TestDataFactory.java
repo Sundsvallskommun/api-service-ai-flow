@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow;
 
-import static se.sundsvall.ai.flow.model.flowdefinition.InputType.TEXT;
-
 import java.util.List;
 import java.util.UUID;
 import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
@@ -12,6 +10,8 @@ import se.sundsvall.ai.flow.model.flowdefinition.RedirectedOutput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.flowdefinition.StepInput;
 import se.sundsvall.ai.flow.model.session.Session;
+
+import static se.sundsvall.ai.flow.model.flowdefinition.InputType.TEXT;
 
 public final class TestDataFactory {
 

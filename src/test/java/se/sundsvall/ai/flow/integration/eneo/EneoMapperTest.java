@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.ServiceOutput;
 import java.util.Collections;
@@ -10,6 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class EneoMapperTest {
 

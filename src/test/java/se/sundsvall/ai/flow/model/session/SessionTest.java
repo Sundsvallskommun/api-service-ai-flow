@@ -1,12 +1,5 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.type;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.model.session.Session.FILE_INFO_TEMPLATE;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +14,13 @@ import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
 import se.sundsvall.ai.flow.model.support.UploadedMultipartFile;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.model.session.Session.FILE_INFO_TEMPLATE;
 
 @ExtendWith(MockitoExtension.class)
 class SessionTest {

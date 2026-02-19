@@ -1,11 +1,11 @@
 package se.sundsvall.ai.flow.util;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 import static java.util.Spliterator.NONNULL;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
-
-import java.util.Iterator;
-import java.util.stream.Stream;
 
 public final class StreamUtil {
 

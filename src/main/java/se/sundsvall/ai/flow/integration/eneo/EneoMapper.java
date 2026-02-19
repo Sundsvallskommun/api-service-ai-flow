@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generated.eneo.ai.AskAssistant;
@@ -15,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
 public final class EneoMapper {
 
