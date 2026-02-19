@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: Eneo-Sundsvall
   description: General AI framework
-  version: '1.1'
+  version: '1.2'
 servers:
   - url: 'https://eneo-test.sundsvall.se/api/v1'
 tags:
@@ -70,7 +70,7 @@ tags:
       Module operations. These endpoints are used to handle module access for
       tenants. Requires elevated privileges.
 paths:
-  '/crawl-runs/{id}/':
+  '/api/v1/crawl-runs/{id}/':
     get:
       tags:
         - crawl-runs
@@ -118,7 +118,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/apps/{id}/':
+  '/api/v1/apps/{id}/':
     get:
       tags:
         - apps
@@ -277,7 +277,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/apps/{id}/runs/':
+  '/api/v1/apps/{id}/runs/':
     get:
       tags:
         - apps
@@ -390,7 +390,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/apps/{id}/prompts/':
+  '/api/v1/apps/{id}/prompts/':
     get:
       tags:
         - apps
@@ -441,7 +441,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/apps/{id}/publish/':
+  '/api/v1/apps/{id}/publish/':
     post:
       tags:
         - apps
@@ -500,7 +500,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/app-runs/{id}/':
+  '/api/v1/app-runs/{id}/':
     get:
       tags:
         - app-runs
@@ -597,7 +597,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/login/token/:
+  /api/v1/users/login/token/:
     post:
       tags:
         - users
@@ -637,7 +637,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/login/openid-connect/mobilityguard/:
+  /api/v1/users/login/openid-connect/mobilityguard/:
     post:
       tags:
         - users
@@ -672,7 +672,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/:
+  /api/v1/users/:
     get:
       tags:
         - users
@@ -750,7 +750,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/me/:
+  /api/v1/users/me/:
     get:
       tags:
         - users
@@ -778,7 +778,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/api-keys/:
+  /api/v1/users/api-keys/:
     get:
       tags:
         - users
@@ -804,7 +804,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/tenant/:
+  /api/v1/users/tenant/:
     get:
       tags:
         - users
@@ -832,7 +832,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/admin/invite/:
+  /api/v1/users/admin/invite/:
     post:
       tags:
         - users
@@ -867,7 +867,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/users/admin/{id}/':
+  '/api/v1/users/admin/{id}/':
     delete:
       tags:
         - users
@@ -946,7 +946,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /users/provision/:
+  /api/v1/users/provision/:
     post:
       tags:
         - users
@@ -984,7 +984,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /info-blobs/:
+  /api/v1/info-blobs/:
     get:
       tags:
         - info-blobs
@@ -1011,7 +1011,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/info-blobs/{id}/':
+  '/api/v1/info-blobs/{id}/':
     get:
       tags:
         - info-blobs
@@ -1149,7 +1149,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/info-blobs/spaces/{space_id}/info-blobs/':
+  '/api/v1/info-blobs/spaces/{space_id}/info-blobs/':
     get:
       tags:
         - info-blobs
@@ -1187,7 +1187,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /groups/:
+  /api/v1/groups/:
     get:
       tags:
         - groups
@@ -1252,7 +1252,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/groups/{id}/':
+  '/api/v1/groups/{id}/':
     get:
       tags:
         - groups
@@ -1390,7 +1390,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/groups/{id}/info-blobs/':
+  '/api/v1/groups/{id}/info-blobs/':
     get:
       tags:
         - groups
@@ -1513,7 +1513,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/groups/{id}/info-blobs/upload/':
+  '/api/v1/groups/{id}/info-blobs/upload/':
     post:
       tags:
         - groups
@@ -1560,7 +1560,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/groups/{id}/searches/':
+  '/api/v1/groups/{id}/searches/':
     post:
       tags:
         - groups
@@ -1605,7 +1605,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/groups/{id}/transfer/':
+  '/api/v1/groups/{id}/transfer/':
     post:
       tags:
         - groups
@@ -1646,7 +1646,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/:
+  /api/v1/settings/:
     get:
       tags:
         - settings
@@ -1704,7 +1704,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/models/:
+  /api/v1/settings/models/:
     get:
       tags:
         - settings
@@ -1733,7 +1733,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/formats/:
+  /api/v1/settings/formats/:
     get:
       tags:
         - settings
@@ -1755,7 +1755,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/templates:
+  /api/v1/settings/templates:
     patch:
       tags:
         - settings
@@ -1815,7 +1815,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/audit-logging:
+  /api/v1/settings/audit-logging:
     patch:
       tags:
         - settings
@@ -1894,7 +1894,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /settings/provisioning:
+  /api/v1/settings/provisioning:
     patch:
       tags:
         - settings
@@ -1956,7 +1956,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /assistants/:
+  /api/v1/assistants/:
     get:
       tags:
         - assistants
@@ -2045,7 +2045,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/':
+  '/api/v1/assistants/{id}/':
     get:
       tags:
         - assistants
@@ -2199,7 +2199,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/sessions/':
+  '/api/v1/assistants/{id}/sessions/':
     get:
       tags:
         - assistants
@@ -2780,7 +2780,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/sessions/{session_id}/':
+  '/api/v1/assistants/{id}/sessions/{session_id}/':
     get:
       tags:
         - assistants
@@ -3411,7 +3411,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/sessions/{session_id}/feedback/':
+  '/api/v1/assistants/{id}/sessions/{session_id}/feedback/':
     post:
       tags:
         - assistants
@@ -3478,7 +3478,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/api-keys/':
+  '/api/v1/assistants/{id}/api-keys/':
     get:
       tags:
         - assistants
@@ -3525,7 +3525,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/transfer/':
+  '/api/v1/assistants/{id}/transfer/':
     post:
       tags:
         - assistants
@@ -3566,7 +3566,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/publish/':
+  '/api/v1/assistants/{id}/publish/':
     post:
       tags:
         - assistants
@@ -3625,7 +3625,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/assistants/{id}/token-estimate':
+  '/api/v1/assistants/{id}/token-estimate':
     post:
       tags:
         - assistants
@@ -3693,7 +3693,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/group-chats/{id}/':
+  '/api/v1/group-chats/{id}/':
     get:
       tags:
         - group-chats
@@ -3849,7 +3849,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/group-chats/{id}/publish/':
+  '/api/v1/group-chats/{id}/publish/':
     post:
       tags:
         - group-chats
@@ -3908,7 +3908,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /conversations/:
+  /api/v1/conversations/:
     get:
       tags:
         - conversations
@@ -4498,7 +4498,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/conversations/{session_id}/':
+  '/api/v1/conversations/{session_id}/':
     get:
       tags:
         - conversations
@@ -4601,7 +4601,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/conversations/{session_id}/feedback/':
+  '/api/v1/conversations/{session_id}/feedback/':
     post:
       tags:
         - conversations
@@ -4661,7 +4661,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/conversations/{session_id}/title/':
+  '/api/v1/conversations/{session_id}/title/':
     post:
       tags:
         - conversations
@@ -4713,7 +4713,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /services/:
+  /api/v1/services/:
     get:
       tags:
         - services
@@ -4810,7 +4810,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/services/{id}/':
+  '/api/v1/services/{id}/':
     get:
       tags:
         - services
@@ -4952,7 +4952,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/services/{id}/run/':
+  '/api/v1/services/{id}/run/':
     get:
       tags:
         - services
@@ -5056,7 +5056,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/services/{id}/transfer/':
+  '/api/v1/services/{id}/transfer/':
     post:
       tags:
         - services
@@ -5097,7 +5097,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/logging/{message_id}/':
+  '/api/v1/logging/{message_id}/':
     get:
       tags:
         - logging
@@ -5135,7 +5135,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /analysis/counts/:
+  /api/v1/analysis/counts/:
     get:
       tags:
         - analysis
@@ -5159,7 +5159,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /analysis/metadata-statistics/:
+  /api/v1/analysis/metadata-statistics/:
     get:
       tags:
         - analysis
@@ -5182,7 +5182,7 @@ paths:
           schema:
             type: string
             format: date-time
-            default: '2026-01-10T09:39:38.915890Z'
+            default: '2026-01-13T08:15:34.279393Z'
             title: Start Date
         - name: end_date
           in: query
@@ -5192,7 +5192,7 @@ paths:
           schema:
             type: string
             format: date-time
-            default: '2026-02-09T10:40:38.915897Z'
+            default: '2026-02-12T09:16:34.279400Z'
             title: End Date
       responses:
         '200':
@@ -5217,7 +5217,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/analysis/assistants/{assistant_id}/':
+  '/api/v1/analysis/assistants/{assistant_id}/':
     get:
       tags:
         - analysis
@@ -5419,7 +5419,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /analysis/conversation-insights/:
+  /api/v1/analysis/conversation-insights/:
     get:
       tags:
         - analysis
@@ -5626,7 +5626,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /analysis/conversation-insights/sessions/:
+  /api/v1/analysis/conversation-insights/sessions/:
     get:
       tags:
         - analysis
@@ -5769,7 +5769,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/analysis/conversation-insights/sessions/{session_id}/':
+  '/api/v1/analysis/conversation-insights/sessions/{session_id}/':
     get:
       tags:
         - analysis
@@ -5830,7 +5830,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/users/:
+  /api/v1/admin/users/:
     get:
       tags:
         - admin
@@ -6156,7 +6156,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/users/{username}/':
+  '/api/v1/admin/users/{username}/':
     get:
       tags:
         - admin
@@ -6265,7 +6265,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/users/{username}':
+  '/api/v1/admin/users/{username}':
     delete:
       tags:
         - admin
@@ -6316,7 +6316,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/users/{username}/deactivate':
+  '/api/v1/admin/users/{username}/deactivate':
     post:
       tags:
         - admin
@@ -6366,7 +6366,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/users/{username}/reactivate':
+  '/api/v1/admin/users/{username}/reactivate':
     post:
       tags:
         - admin
@@ -6416,7 +6416,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/users/inactive:
+  /api/v1/admin/users/inactive:
     get:
       tags:
         - admin
@@ -6450,7 +6450,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/users/deleted:
+  /api/v1/admin/users/deleted:
     get:
       tags:
         - admin
@@ -6484,7 +6484,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/predefined-roles/:
+  /api/v1/admin/predefined-roles/:
     get:
       tags:
         - admin
@@ -6539,7 +6539,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/privacy-policy/:
+  /api/v1/admin/privacy-policy/:
     post:
       tags:
         - admin
@@ -6574,7 +6574,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/credentials/{provider}':
+  '/api/v1/admin/credentials/{provider}':
     put:
       tags:
         - admin
@@ -6633,7 +6633,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/credentials/:
+  /api/v1/admin/credentials/:
     get:
       tags:
         - admin
@@ -6660,7 +6660,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/templates/assistants/:
+  /api/v1/admin/templates/assistants/:
     get:
       tags:
         - admin-templates
@@ -6800,7 +6800,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/assistants/{template_id}':
+  '/api/v1/admin/templates/assistants/{template_id}':
     delete:
       tags:
         - admin-templates
@@ -6965,7 +6965,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/assistants/{template_id}/default':
+  '/api/v1/admin/templates/assistants/{template_id}/default':
     patch:
       tags:
         - admin-templates
@@ -7057,7 +7057,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/assistants/{template_id}/rollback':
+  '/api/v1/admin/templates/assistants/{template_id}/rollback':
     post:
       tags:
         - admin-templates
@@ -7123,7 +7123,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/assistants/{template_id}/restore':
+  '/api/v1/admin/templates/assistants/{template_id}/restore':
     post:
       tags:
         - admin-templates
@@ -7189,7 +7189,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/assistants/{template_id}/permanent':
+  '/api/v1/admin/templates/assistants/{template_id}/permanent':
     delete:
       tags:
         - admin-templates
@@ -7245,7 +7245,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/templates/assistants/deleted:
+  /api/v1/admin/templates/assistants/deleted:
     get:
       tags:
         - admin-templates
@@ -7282,7 +7282,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/templates/apps/:
+  /api/v1/admin/templates/apps/:
     get:
       tags:
         - admin-templates
@@ -7414,7 +7414,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/apps/{template_id}':
+  '/api/v1/admin/templates/apps/{template_id}':
     delete:
       tags:
         - admin-templates
@@ -7557,7 +7557,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/apps/{template_id}/default':
+  '/api/v1/admin/templates/apps/{template_id}/default':
     patch:
       tags:
         - admin-templates
@@ -7648,7 +7648,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/apps/{template_id}/rollback':
+  '/api/v1/admin/templates/apps/{template_id}/rollback':
     post:
       tags:
         - admin-templates
@@ -7714,7 +7714,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/apps/{template_id}/restore':
+  '/api/v1/admin/templates/apps/{template_id}/restore':
     post:
       tags:
         - admin-templates
@@ -7779,7 +7779,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/templates/apps/{template_id}/permanent':
+  '/api/v1/admin/templates/apps/{template_id}/permanent':
     delete:
       tags:
         - admin-templates
@@ -7835,7 +7835,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/templates/apps/deleted:
+  /api/v1/admin/templates/apps/deleted:
     get:
       tags:
         - admin-templates
@@ -7872,7 +7872,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /jobs/:
+  /api/v1/jobs/:
     get:
       tags:
         - jobs
@@ -7895,7 +7895,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/jobs/{id}/':
+  '/api/v1/jobs/{id}/':
     get:
       tags:
         - jobs
@@ -7934,7 +7934,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /user-groups/:
+  /api/v1/user-groups/:
     get:
       tags:
         - user-groups
@@ -7991,7 +7991,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/user-groups/{id}/':
+  '/api/v1/user-groups/{id}/':
     get:
       tags:
         - user-groups
@@ -8130,7 +8130,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/user-groups/{id}/users/{user_id}/':
+  '/api/v1/user-groups/{id}/users/{user_id}/':
     post:
       tags:
         - user-groups
@@ -8238,7 +8238,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /allowed-origins/:
+  /api/v1/allowed-origins/:
     get:
       tags:
         - allowed-origins
@@ -8261,7 +8261,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /completion-models/:
+  /api/v1/completion-models/:
     get:
       tags:
         - completion-models
@@ -8284,7 +8284,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/{id}/':
+  '/api/v1/completion-models/{id}/':
     post:
       tags:
         - completion-models
@@ -8335,7 +8335,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/{model_id}/usage':
+  '/api/v1/completion-models/{model_id}/usage':
     get:
       tags:
         - completion-models
@@ -8383,7 +8383,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/{model_id}/usage/details':
+  '/api/v1/completion-models/{model_id}/usage/details':
     get:
       tags:
         - completion-models
@@ -8466,7 +8466,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/{model_id}/migrate':
+  '/api/v1/completion-models/{model_id}/migrate':
     post:
       tags:
         - completion-models
@@ -8530,7 +8530,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /completion-models/usage-summary:
+  /api/v1/completion-models/usage-summary:
     get:
       tags:
         - completion-models
@@ -8559,7 +8559,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/{model_id}/migration-history':
+  '/api/v1/completion-models/{model_id}/migration-history':
     get:
       tags:
         - completion-models
@@ -8635,7 +8635,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /completion-models/migration-history:
+  /api/v1/completion-models/migration-history:
     get:
       tags:
         - completion-models
@@ -8695,7 +8695,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/completion-models/migration-history/{migration_id}':
+  '/api/v1/completion-models/migration-history/{migration_id}':
     get:
       tags:
         - completion-models
@@ -8742,7 +8742,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /embedding-models/:
+  /api/v1/embedding-models/:
     get:
       tags:
         - embedding-models
@@ -8765,7 +8765,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/embedding-models/{id}/':
+  '/api/v1/embedding-models/{id}/':
     get:
       tags:
         - embedding-models
@@ -8860,7 +8860,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /transcription-models/:
+  /api/v1/transcription-models/:
     get:
       tags:
         - transcription-models
@@ -8884,7 +8884,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/transcription-models/{id}/':
+  '/api/v1/transcription-models/{id}/':
     post:
       tags:
         - transcription-models
@@ -8935,7 +8935,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/model-providers/:
+  /api/v1/admin/model-providers/:
     get:
       tags:
         - admin
@@ -9003,7 +9003,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/model-providers/{provider_id}/':
+  '/api/v1/admin/model-providers/{provider_id}/':
     get:
       tags:
         - admin
@@ -9153,7 +9153,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/tenant-models/completion/:
+  /api/v1/admin/tenant-models/completion/:
     post:
       tags:
         - admin
@@ -9203,7 +9203,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/tenant-models/completion/{model_id}/':
+  '/api/v1/admin/tenant-models/completion/{model_id}/':
     put:
       tags:
         - admin
@@ -9314,7 +9314,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/tenant-models/embedding/:
+  /api/v1/admin/tenant-models/embedding/:
     post:
       tags:
         - admin
@@ -9362,7 +9362,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/tenant-models/embedding/{model_id}/':
+  '/api/v1/admin/tenant-models/embedding/{model_id}/':
     put:
       tags:
         - admin
@@ -9472,7 +9472,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/tenant-models/transcription/:
+  /api/v1/admin/tenant-models/transcription/:
     post:
       tags:
         - admin
@@ -9521,7 +9521,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/tenant-models/transcription/{model_id}/':
+  '/api/v1/admin/tenant-models/transcription/{model_id}/':
     put:
       tags:
         - admin
@@ -9631,7 +9631,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /files/:
+  /api/v1/files/:
     get:
       tags:
         - files
@@ -9700,7 +9700,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/files/{id}/':
+  '/api/v1/files/{id}/':
     get:
       tags:
         - files
@@ -9773,7 +9773,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/files/{id}/signed-url/':
+  '/api/v1/files/{id}/signed-url/':
     post:
       tags:
         - files
@@ -9824,7 +9824,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/files/{id}/download/':
+  '/api/v1/files/{id}/download/':
     get:
       tags:
         - files
@@ -9892,7 +9892,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/icons/{id}/':
+  '/api/v1/icons/{id}/':
     get:
       tags:
         - icons
@@ -9971,7 +9971,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /icons/:
+  /api/v1/icons/:
     post:
       tags:
         - icons
@@ -10019,7 +10019,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /limits/:
+  /api/v1/limits/:
     get:
       tags:
         - limits
@@ -10040,7 +10040,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /spaces/:
+  /api/v1/spaces/:
     get:
       tags:
         - spaces
@@ -10126,7 +10126,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/':
+  '/api/v1/spaces/{id}/':
     get:
       tags:
         - spaces
@@ -10279,7 +10279,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/security_classification/{security_classification_id}/impact-analysis/':
+  '/api/v1/spaces/{id}/security_classification/{security_classification_id}/impact-analysis/':
     get:
       tags:
         - spaces
@@ -10331,7 +10331,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/applications/':
+  '/api/v1/spaces/{id}/applications/':
     get:
       tags:
         - spaces
@@ -10376,7 +10376,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/applications/assistants/':
+  '/api/v1/spaces/{id}/applications/assistants/':
     post:
       tags:
         - spaces
@@ -10439,7 +10439,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/applications/group-chats/':
+  '/api/v1/spaces/{id}/applications/group-chats/':
     post:
       tags:
         - spaces
@@ -10503,7 +10503,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/applications/apps/':
+  '/api/v1/spaces/{id}/applications/apps/':
     post:
       tags:
         - spaces
@@ -10566,7 +10566,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/applications/services/':
+  '/api/v1/spaces/{id}/applications/services/':
     post:
       tags:
         - spaces
@@ -10629,7 +10629,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/':
+  '/api/v1/spaces/{id}/knowledge/':
     get:
       tags:
         - spaces
@@ -10674,7 +10674,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/groups/':
+  '/api/v1/spaces/{id}/knowledge/groups/':
     post:
       tags:
         - spaces
@@ -10737,7 +10737,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/websites/':
+  '/api/v1/spaces/{id}/knowledge/websites/':
     post:
       tags:
         - spaces
@@ -10822,7 +10822,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/add/{user_integration_id}/':
+  '/api/v1/spaces/{id}/knowledge/integrations/add/{user_integration_id}/':
     post:
       tags:
         - spaces
@@ -10877,7 +10877,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/add/{user_integration_id}/batch/':
+  '/api/v1/spaces/{id}/knowledge/integrations/add/{user_integration_id}/batch/':
     post:
       tags:
         - spaces
@@ -10933,7 +10933,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/remove/{integration_knowledge_id}/':
+  '/api/v1/spaces/{id}/knowledge/integrations/remove/{integration_knowledge_id}/':
     delete:
       tags:
         - spaces
@@ -10978,7 +10978,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/wrappers/{wrapper_id}/':
+  '/api/v1/spaces/{id}/knowledge/integrations/wrappers/{wrapper_id}/':
     delete:
       tags:
         - spaces
@@ -11082,7 +11082,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/':
+  '/api/v1/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/':
     patch:
       tags:
         - spaces
@@ -11137,7 +11137,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/sync/':
+  '/api/v1/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/sync/':
     post:
       tags:
         - spaces
@@ -11186,7 +11186,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/members/':
+  '/api/v1/spaces/{id}/members/':
     post:
       tags:
         - spaces
@@ -11243,7 +11243,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/members/{user_id}/':
+  '/api/v1/spaces/{id}/members/{user_id}/':
     delete:
       tags:
         - spaces
@@ -11376,7 +11376,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/group-members/':
+  '/api/v1/spaces/{id}/group-members/':
     get:
       tags:
         - spaces
@@ -11498,7 +11498,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/spaces/{id}/group-members/{group_id}/':
+  '/api/v1/spaces/{id}/group-members/{group_id}/':
     delete:
       tags:
         - spaces
@@ -11642,7 +11642,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /spaces/type/personal/:
+  /api/v1/spaces/type/personal/:
     get:
       tags:
         - spaces
@@ -11665,7 +11665,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /spaces/type/organization/:
+  /api/v1/spaces/type/organization/:
     get:
       tags:
         - spaces
@@ -11688,7 +11688,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /dashboard/:
+  /api/v1/dashboard/:
     get:
       tags:
         - dashboard
@@ -11727,7 +11727,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /websites/:
+  /api/v1/websites/:
     get:
       tags:
         - websites
@@ -11804,7 +11804,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /websites/check-url/:
+  /api/v1/websites/check-url/:
     get:
       tags:
         - websites
@@ -11863,7 +11863,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /websites/bulk/run/:
+  /api/v1/websites/bulk/run/:
     post:
       tags:
         - websites
@@ -11946,7 +11946,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/websites/{id}/':
+  '/api/v1/websites/{id}/':
     get:
       tags:
         - websites
@@ -12090,7 +12090,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/websites/{id}/run/':
+  '/api/v1/websites/{id}/run/':
     post:
       tags:
         - websites
@@ -12159,7 +12159,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/websites/{id}/runs/':
+  '/api/v1/websites/{id}/runs/':
     get:
       tags:
         - websites
@@ -12200,7 +12200,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/websites/{id}/transfer/':
+  '/api/v1/websites/{id}/transfer/':
     post:
       tags:
         - websites
@@ -12243,7 +12243,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/websites/{id}/info-blobs/':
+  '/api/v1/websites/{id}/info-blobs/':
     get:
       tags:
         - websites
@@ -12296,7 +12296,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/prompts/{id}/':
+  '/api/v1/prompts/{id}/':
     get:
       tags:
         - prompts
@@ -12461,7 +12461,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /templates/apps/:
+  /api/v1/templates/apps/:
     get:
       tags:
         - apps-templates
@@ -12514,7 +12514,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /templates/assistants/:
+  /api/v1/templates/assistants/:
     get:
       tags:
         - assistants-templates
@@ -12567,7 +12567,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /templates/:
+  /api/v1/templates/:
     get:
       tags:
         - templates
@@ -12591,7 +12591,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /storage/:
+  /api/v1/storage/:
     get:
       tags:
         - storage
@@ -12614,7 +12614,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /storage/spaces/:
+  /api/v1/storage/spaces/:
     get:
       tags:
         - storage
@@ -12637,7 +12637,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /token-usage/:
+  /api/v1/token-usage/:
     get:
       tags:
         - token-usage
@@ -12708,7 +12708,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /token-usage/users:
+  /api/v1/token-usage/users:
     get:
       tags:
         - token-usage
@@ -12823,7 +12823,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/token-usage/users/{user_id}/summary':
+  '/api/v1/token-usage/users/{user_id}/summary':
     get:
       tags:
         - token-usage
@@ -12903,7 +12903,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/token-usage/users/{user_id}':
+  '/api/v1/token-usage/users/{user_id}':
     get:
       tags:
         - token-usage
@@ -12983,7 +12983,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /security-classifications/:
+  /api/v1/security-classifications/:
     get:
       tags:
         - security-classifications
@@ -13131,7 +13131,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/security-classifications/{id}/':
+  '/api/v1/security-classifications/{id}/':
     get:
       tags:
         - security-classifications
@@ -13329,7 +13329,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /security-classifications/enable/:
+  /api/v1/security-classifications/enable/:
     post:
       tags:
         - security-classifications
@@ -13389,7 +13389,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/config:
+  /api/v1/audit/config:
     get:
       tags:
         - audit
@@ -13450,7 +13450,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/config/actions:
+  /api/v1/audit/config/actions:
     get:
       tags:
         - audit
@@ -13511,7 +13511,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/access-session/rate-limit:
+  /api/v1/audit/access-session/rate-limit:
     delete:
       tags:
         - audit
@@ -13549,7 +13549,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/access-session:
+  /api/v1/audit/access-session:
     post:
       tags:
         - audit
@@ -13615,7 +13615,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/logs:
+  /api/v1/audit/logs:
     get:
       tags:
         - audit
@@ -13764,7 +13764,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/audit/logs/user/{user_id}':
+  '/api/v1/audit/logs/user/{user_id}':
     get:
       tags:
         - audit
@@ -13865,7 +13865,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/logs/export:
+  /api/v1/audit/logs/export:
     get:
       tags:
         - audit
@@ -14001,7 +14001,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/logs/export/async:
+  /api/v1/audit/logs/export/async:
     post:
       tags:
         - audit
@@ -14068,7 +14068,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/audit/logs/export/{job_id}/status':
+  '/api/v1/audit/logs/export/{job_id}/status':
     get:
       tags:
         - audit
@@ -14118,7 +14118,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/audit/logs/export/{job_id}/download':
+  '/api/v1/audit/logs/export/{job_id}/download':
     get:
       tags:
         - audit
@@ -14167,7 +14167,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/audit/logs/export/{job_id}/cancel':
+  '/api/v1/audit/logs/export/{job_id}/cancel':
     post:
       tags:
         - audit
@@ -14216,7 +14216,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /audit/retention-policy:
+  /api/v1/audit/retention-policy:
     get:
       tags:
         - audit
@@ -14314,7 +14314,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /integrations/:
+  /api/v1/integrations/:
     get:
       tags:
         - integrations
@@ -14337,7 +14337,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /integrations/tenant/:
+  /api/v1/integrations/tenant/:
     get:
       tags:
         - integrations
@@ -14377,7 +14377,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/tenant/add/{integration_id}/':
+  '/api/v1/integrations/tenant/add/{integration_id}/':
     post:
       tags:
         - integrations
@@ -14417,7 +14417,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/tenant/remove/{tenant_integration_id}/':
+  '/api/v1/integrations/tenant/remove/{tenant_integration_id}/':
     delete:
       tags:
         - integrations
@@ -14453,7 +14453,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /integrations/me/:
+  /api/v1/integrations/me/:
     get:
       tags:
         - integrations
@@ -14481,7 +14481,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/spaces/{space_id}/available/':
+  '/api/v1/integrations/spaces/{space_id}/available/':
     get:
       tags:
         - integrations
@@ -14530,7 +14530,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/users/{user_integration_id}/':
+  '/api/v1/integrations/users/{user_integration_id}/':
     delete:
       tags:
         - integrations
@@ -14566,7 +14566,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/sync-logs/{integration_knowledge_id}/':
+  '/api/v1/integrations/sync-logs/{integration_knowledge_id}/':
     get:
       tags:
         - integrations
@@ -14632,7 +14632,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/{user_integration_id}/preview/':
+  '/api/v1/integrations/{user_integration_id}/preview/':
     get:
       tags:
         - integrations
@@ -14672,7 +14672,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/{user_integration_id}/sharepoint/tree/':
+  '/api/v1/integrations/{user_integration_id}/sharepoint/tree/':
     get:
       tags:
         - integrations
@@ -14785,7 +14785,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/{integration_id}/':
+  '/api/v1/integrations/{integration_id}/':
     get:
       tags:
         - integrations
@@ -14824,7 +14824,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /integrations/sharepoint/webhook/:
+  /api/v1/integrations/sharepoint/webhook/:
     get:
       tags:
         - integrations
@@ -14856,7 +14856,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
@@ -14892,13 +14892,13 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/app:
+  /api/v1/admin/sharepoint/app:
     get:
       tags:
         - admin
@@ -15032,7 +15032,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/app/test:
+  /api/v1/admin/sharepoint/app/test:
     post:
       tags:
         - admin
@@ -15075,7 +15075,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/subscriptions:
+  /api/v1/admin/sharepoint/subscriptions:
     get:
       tags:
         - admin
@@ -15111,7 +15111,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/subscriptions/renew-expired:
+  /api/v1/admin/sharepoint/subscriptions/renew-expired:
     post:
       tags:
         - admin
@@ -15144,7 +15144,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/admin/sharepoint/subscriptions/{subscription_id}/recreate':
+  '/api/v1/admin/sharepoint/subscriptions/{subscription_id}/recreate':
     post:
       tags:
         - admin
@@ -15194,7 +15194,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/service-account/auth/start:
+  /api/v1/admin/sharepoint/service-account/auth/start:
     post:
       tags:
         - admin
@@ -15239,7 +15239,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /admin/sharepoint/service-account/auth/callback:
+  /api/v1/admin/sharepoint/service-account/auth/callback:
     post:
       tags:
         - admin
@@ -15285,7 +15285,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /ai-models/:
+  /api/v1/ai-models/:
     get:
       tags:
         - ai-models
@@ -15341,7 +15341,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/integrations/auth/{tenant_integration_id}/url/':
+  '/api/v1/integrations/auth/{tenant_integration_id}/url/':
     get:
       tags:
         - integrations
@@ -15390,7 +15390,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /integrations/auth/callback/token/:
+  /api/v1/integrations/auth/callback/token/:
     post:
       tags:
         - integrations
@@ -15425,1983 +15425,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /sysadmin/users/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get All Users
-      operationId: get_all_users_api_v1_sysadmin_users__get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse_UserInDB_'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - sysadmin
-      summary: Register New User
-      operationId: register_new_user_api_v1_sysadmin_users__post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserAddSuperAdmin'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserCreated'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/users/{user_id}/':
-    get:
-      tags:
-        - sysadmin
-      summary: Get User
-      operationId: get_user_api_v1_sysadmin_users__user_id___get
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: User Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserInDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - sysadmin
-      summary: Update User
-      description: Omitted fields are not updated.
-      operationId: update_user_api_v1_sysadmin_users__user_id___post
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: User Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserUpdatePublic'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserInDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete User
-      operationId: delete_user_api_v1_sysadmin_users__user_id___delete
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: User Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/tenants/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get Tenants
-      description: >-
-        Get all tenants with masked API credentials.
-
-
-        Returns tenant information with API keys masked to show only last 4
-        characters.
-
-        This prevents exposing full API keys through the API endpoint.
-
-
-        Args:
-            domain: Optional domain filter
-            container: Dependency injection container
-
-        Returns:
-            Paginated list of tenants with masked credentials
-      operationId: get_tenants_api_v1_sysadmin_tenants__get
-      parameters:
-        - name: domain
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            anyOf:
-              - type: string
-              - type: 'null'
-            title: Domain
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/PaginatedResponse_TenantWithMaskedCredentials_
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - sysadmin
-      summary: Create Tenant
-      operationId: create_tenant_api_v1_sysadmin_tenants__post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TenantBase'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantWithMaskedCredentials'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{id}/':
-    post:
-      tags:
-        - sysadmin
-      summary: Update Tenant
-      operationId: update_tenant_api_v1_sysadmin_tenants__id___post
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TenantUpdatePublic'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantWithMaskedCredentials'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete Tenant By Id
-      operationId: delete_tenant_by_id_api_v1_sysadmin_tenants__id___delete
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantWithMaskedCredentials'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/predefined-roles/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get Predefined Roles
-      operationId: get_predefined_roles_api_v1_sysadmin_predefined_roles__get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/crawl-all-weekly-websites/:
-    post:
-      tags:
-        - sysadmin
-      summary: Crawl All Weekly Websites
-      operationId: >-
-        crawl_all_weekly_websites_api_v1_sysadmin_crawl_all_weekly_websites__post
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/observability/oidc-debug/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get current OIDC debug toggle status
-      description: >-
-        Returns whether OIDC debug logging is currently enabled and when it
-        expires.
-      operationId: get_oidc_debug_status_api_v1_sysadmin_observability_oidc_debug__get
-      responses:
-        '200':
-          description: Current state of the OIDC debug toggle.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OIDCDebugToggleResponse'
-        '401':
-          description: Missing or invalid super API key.
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - sysadmin
-      summary: Enable or disable OIDC debug logging
-      description: >-
-        Turns verbose OIDC diagnostics on or off for a limited window. Requires
-        super API key.
-      operationId: toggle_oidc_debug_api_v1_sysadmin_observability_oidc_debug__post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OIDCDebugToggleRequest'
-        required: true
-      responses:
-        '200':
-          description: Debug flag state updated.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OIDCDebugToggleResponse'
-        '401':
-          description: Missing or invalid super API key.
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/embedding-models/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get Embedding Models
-      operationId: get_embedding_models_api_v1_sysadmin_embedding_models__get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse_EmbeddingModelLegacy_'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/completion-models/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get Completion Models
-      operationId: get_completion_models_api_v1_sysadmin_completion_models__get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse_CompletionModelPublic_'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{id}/completion-models/{completion_model_id}/':
-    post:
-      tags:
-        - sysadmin
-      summary: Enable Completion Model
-      operationId: >-
-        enable_completion_model_api_v1_sysadmin_tenants__id__completion_models__completion_model_id___post
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-        - name: completion_model_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Completion Model Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompletionModelUpdateFlags'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CompletionModelPublic'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{id}/embedding-models/{embedding_model_id}/':
-    post:
-      tags:
-        - sysadmin
-      summary: Enable Embedding Model
-      operationId: >-
-        enable_embedding_model_api_v1_sysadmin_tenants__id__embedding_models__embedding_model_id___post
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-        - name: embedding_model_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Embedding Model Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmbeddingModelUpdateFlags'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmbeddingModelPublicLegacy'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/allowed-origins/:
-    get:
-      tags:
-        - sysadmin
-      summary: Get Origins
-      operationId: get_origins_api_v1_sysadmin_allowed_origins__get
-      parameters:
-        - name: tenant_id
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            anyOf:
-              - type: string
-                format: uuid
-              - type: 'null'
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse_AllowedOriginInDB_'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - sysadmin
-      summary: Add Origin
-      operationId: add_origin_api_v1_sysadmin_allowed_origins__post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AllowedOriginCreate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AllowedOriginInDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/allowed-origins/{id}/':
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete Origin
-      operationId: delete_origin_api_v1_sysadmin_allowed_origins__id___delete
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-      responses:
-        '204':
-          description: Successful Response
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/usage-stats/recalculate':
-    post:
-      tags:
-        - sysadmin
-      summary: Recalculate Tenant Usage Statistics
-      description: |-
-        Recalculate usage statistics for a specific tenant.
-
-        This endpoint is intended for tenant-specific administrative operations,
-        such as fixing usage statistics for a particular tenant.
-      operationId: >-
-        recalculate_tenant_usage_statistics_api_v1_sysadmin_tenants__tenant_id__usage_stats_recalculate_post
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/system/usage-stats/recalculate-all:
-    post:
-      tags:
-        - sysadmin
-      summary: Recalculate All Tenants Usage Statistics
-      description: |-
-        Recalculate usage statistics for all active tenants.
-
-        This endpoint is intended for system-wide administrative operations,
-        such as bulk recalculation of usage statistics across all tenants.
-      operationId: >-
-        recalculate_all_tenants_usage_statistics_api_v1_sysadmin_system_usage_stats_recalculate_all_post
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/completion-models/{model_id}/migrate':
-    post:
-      tags:
-        - sysadmin
-      summary: Migrate Completion Model For Tenant
-      description: |-
-        Migrate completion model usage for a specific tenant.
-
-        This endpoint allows system administrators to migrate all usage from one
-        completion model to another for a specific tenant. This is useful for:
-        - Migrating tenants away from deprecated models
-        - Consolidating model usage
-        - Fixing model configurations for specific tenants
-
-        Args:
-            tenant_id: UUID of the tenant to migrate
-            model_id: UUID of the source model to migrate from
-            migration_request: Details of the migration (target model, entity types, etc.)
-      operationId: >-
-        migrate_completion_model_for_tenant_api_v1_sysadmin_tenants__tenant_id__completion_models__model_id__migrate_post
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-        - name: model_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Model Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ModelMigrationRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MigrationResult'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/system/completion-models/{model_id}/migrate-all-tenants':
-    post:
-      tags:
-        - sysadmin
-      summary: Migrate Completion Model For All Tenants
-      description: >-
-        Migrate completion model usage for all active tenants.
-
-
-        This endpoint allows system administrators to migrate all usage from one
-
-        completion model to another across all active tenants. This is useful
-        for:
-
-        - Deprecating models system-wide
-
-        - Migrating to newer model versions
-
-        - Consolidating model usage across the entire system
-
-
-        Args:
-            model_id: UUID of the source model to migrate from
-            migration_request: Details of the migration (target model, entity types, etc.)
-      operationId: >-
-        migrate_completion_model_for_all_tenants_api_v1_sysadmin_system_completion_models__model_id__migrate_all_tenants_post
-      parameters:
-        - name: model_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Model Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ModelMigrationRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: true
-                title: >-
-                  Response Migrate Completion Model For All Tenants Api V1
-                  Sysadmin System Completion Models  Model Id  Migrate All
-                  Tenants Post
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/completion-models/create:
-    post:
-      tags:
-        - sysadmin
-      summary: Create Completion Model
-      description: |-
-        Create a new completion model (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        This creates the model metadata only. To enable it for a tenant,
-        use POST /api/v1/completion-models/{id}/ with tenant credentials.
-      operationId: create_completion_model_api_v1_sysadmin_completion_models_create_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompletionModelCreate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CompletionModelSparse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/completion-models/{id}/metadata':
-    put:
-      tags:
-        - sysadmin
-      summary: Update Completion Model Metadata
-      description: |-
-        Update completion model metadata (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        Updates global model metadata. Does not affect tenant-specific settings.
-      operationId: >-
-        update_completion_model_metadata_api_v1_sysadmin_completion_models__id__metadata_put
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PartialCompletionModelUpdate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CompletionModelSparse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/completion-models/{id}':
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete Completion Model
-      description: |-
-        Delete a completion model (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        WARNING: Deletion affects all tenants. Use with caution.
-        Set force=true to delete even if model is in use (may break references).
-      operationId: delete_completion_model_api_v1_sysadmin_completion_models__id__delete
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-        - name: force
-          in: query
-          description: Force delete even if in use
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: boolean
-            default: false
-            description: Force delete even if in use
-            title: Force
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /sysadmin/embedding-models/create:
-    post:
-      tags:
-        - sysadmin
-      summary: Create Embedding Model
-      description: |-
-        Create a new embedding model (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        This creates the model metadata only. To enable it for a tenant,
-        use POST /api/v1/embedding-models/{id}/ with tenant credentials.
-      operationId: create_embedding_model_api_v1_sysadmin_embedding_models_create_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EmbeddingModelCreate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmbeddingModelSparse'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/embedding-models/{id}/metadata':
-    put:
-      tags:
-        - sysadmin
-      summary: Update Embedding Model Metadata
-      description: |-
-        Update embedding model metadata (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        Updates global model metadata. Does not affect tenant-specific settings.
-      operationId: >-
-        update_embedding_model_metadata_api_v1_sysadmin_embedding_models__id__metadata_put
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PartialEmbeddingModelUpdate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmbeddingModelSparse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/embedding-models/{id}':
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete Embedding Model
-      description: |-
-        Delete an embedding model (system-wide operation).
-
-        Requires: X-API-Key header with INTRIC_SUPER_API_KEY
-
-        WARNING: Deletion affects all tenants. Use with caution.
-      operationId: delete_embedding_model_api_v1_sysadmin_embedding_models__id__delete
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Id
-        - name: force
-          in: query
-          description: Force delete even if in use
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: boolean
-            default: false
-            description: Force delete even if in use
-            title: Force
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GeneralError'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/credentials/{provider}':
-    put:
-      tags:
-        - sysadmin
-      summary: Set tenant API credential
-      description: >-
-        Set or update API credentials for a specific LLM provider for a tenant.
-        System admin only. Provider-specific fields are validated:
-        OpenAI/Anthropic require api_key only; vLLM requires api_key and
-        endpoint; Azure requires api_key, endpoint, and api_version.
-      operationId: >-
-        set_tenant_credential_api_v1_sysadmin_tenants__tenant_id__credentials__provider__put
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-        - name: provider
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            enum:
-              - openai
-              - anthropic
-              - azure
-              - berget
-              - gdm
-              - mistral
-              - ovhcloud
-              - gemini
-              - cohere
-            title: Provider
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/intric__tenants__presentation__tenant_credentials_router__SetCredentialRequest
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/intric__tenants__presentation__tenant_credentials_router__SetCredentialResponse
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete tenant API credential
-      description: >-
-        Delete API credentials for a specific LLM provider for a tenant. System
-        admin only.
-      operationId: >-
-        delete_tenant_credential_api_v1_sysadmin_tenants__tenant_id__credentials__provider__delete
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-        - name: provider
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            enum:
-              - openai
-              - anthropic
-              - azure
-              - berget
-              - gdm
-              - mistral
-              - ovhcloud
-              - gemini
-              - cohere
-            title: Provider
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteCredentialResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/credentials':
-    get:
-      tags:
-        - sysadmin
-      summary: List tenant API credentials
-      description: >-
-        List all configured API credentials for a tenant with masked keys and
-        encryption status. Shows last 4 characters of API key for verification
-        and encryption state for security auditing. System admin only.
-      operationId: >-
-        list_tenant_credentials_api_v1_sysadmin_tenants__tenant_id__credentials_get
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: >-
-                  #/components/schemas/intric__tenants__presentation__tenant_credentials_router__ListCredentialsResponse
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/crawler-settings':
-    get:
-      tags:
-        - sysadmin
-      summary: Get tenant crawler settings
-      description: >-
-        Get current crawler settings for a tenant. Returns effective settings
-        (tenant overrides merged with environment defaults). System admin only.
-      operationId: >-
-        get_crawler_settings_api_v1_sysadmin_tenants__tenant_id__crawler_settings_get
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CrawlerSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    put:
-      tags:
-        - sysadmin
-      summary: Update tenant crawler settings
-      description: >-
-        Update crawler settings for a specific tenant. Only provided fields are
-        updated; missing fields retain previous values. Settings persist across
-        server restarts and override environment defaults. System admin only.
-      operationId: >-
-        update_crawler_settings_api_v1_sysadmin_tenants__tenant_id__crawler_settings_put
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CrawlerSettingsUpdate'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CrawlerSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    delete:
-      tags:
-        - sysadmin
-      summary: Reset tenant crawler settings
-      description: >-
-        Delete all tenant-specific crawler settings, reverting to environment
-        defaults. System admin only.
-      operationId: >-
-        delete_crawler_settings_api_v1_sysadmin_tenants__tenant_id__crawler_settings_delete
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteSettingsResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/federation':
-    get:
-      tags:
-        - sysadmin
-      summary: Get tenant federation config
-      description: View federation config with masked secrets. System admin only.
-      operationId: get_tenant_federation_api_v1_sysadmin_tenants__tenant_id__federation_get
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FederationInfo'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    put:
-      tags:
-        - sysadmin
-      summary: Set tenant federation config
-      description: Configure custom identity provider for tenant. System admin only.
-      operationId: set_tenant_federation_api_v1_sysadmin_tenants__tenant_id__federation_put
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SetFederationRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SetFederationResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    delete:
-      tags:
-        - sysadmin
-      summary: Delete tenant federation config
-      description: Remove custom identity provider for tenant. System admin only.
-      operationId: >-
-        delete_tenant_federation_api_v1_sysadmin_tenants__tenant_id__federation_delete
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeleteFederationResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/sysadmin/tenants/{tenant_id}/federation/test':
-    post:
-      tags:
-        - sysadmin
-      summary: Test tenant federation config
-      description: Test connection to tenant's IdP. System admin only.
-      operationId: >-
-        test_tenant_federation_api_v1_sysadmin_tenants__tenant_id__federation_test_post
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /modules/:
-    get:
-      tags:
-        - modules
-      summary: Get Modules
-      operationId: get_modules_api_v1_modules__get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse_ModuleInDB_'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-    post:
-      tags:
-        - modules
-      summary: Add Module
-      operationId: add_module_api_v1_modules__post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ModuleBase'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ModuleInDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  '/modules/{tenant_id}/':
-    post:
-      tags:
-        - modules
-      summary: Add Module To Tenant
-      description: Value is a list of module `id`'s to add to the `tenant_id`.
-      operationId: add_module_to_tenant_api_v1_modules__tenant_id___post
-      parameters:
-        - name: tenant_id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: uuid
-            title: Tenant Id
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ModelId'
-              title: Module Ids
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantInDB'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      security:
-        - APIKeyHeader: []
-        - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
-  /auth/federation-status:
+  /api/v1/auth/federation-status:
     get:
       tags:
         - authentication
@@ -17427,7 +15451,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /auth/tenants:
+  /api/v1/auth/tenants:
     get:
       tags:
         - authentication
@@ -17453,7 +15477,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /auth/initiate:
+  /api/v1/auth/initiate:
     get:
       tags:
         - authentication
@@ -17517,7 +15541,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /auth/callback:
+  /api/v1/auth/callback:
     post:
       tags:
         - authentication
@@ -17559,7 +15583,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api-docs:
+  /api/v1/api-docs:
     get:
       tags:
         - Documentation
@@ -17582,7 +15606,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /roles/permissions/:
+  /api/v1/roles/permissions/:
     get:
       tags:
         - roles
@@ -17614,7 +15638,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /roles/:
+  /api/v1/roles/:
     get:
       tags:
         - roles
@@ -17671,7 +15695,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/roles/{role_id}/':
+  '/api/v1/roles/{role_id}/':
     get:
       tags:
         - roles
@@ -17822,7 +15846,7 @@ paths:
               schema: {}
       security:
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
@@ -17886,7 +15910,7 @@ paths:
       security:
         - OAuth2PasswordBearer: []
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
@@ -21088,43 +19112,18 @@ components:
           title: Response Timestamp Utc
         crawler_activity:
           $ref: '#/components/schemas/CrawlerActivity'
-          default:
-            db_query_ok: true
-            arq_ongoing: 0
         arq:
           $ref: '#/components/schemas/ARQHealth'
-          default:
-            j_complete: 0
-            j_failed: 0
-            j_retried: 0
-            j_ongoing: 0
-            queued: 0
         watchdog:
           $ref: '#/components/schemas/WatchdogMetrics'
-          default:
-            zombies_reconciled: 0
-            expired_killed: 0
-            rescued: 0
-            early_zombies_failed: 0
-            long_running_failed: 0
-            slots_released: 0
         feeder:
           $ref: '#/components/schemas/FeederLeader'
-          default:
-            status: UNKNOWN
         pending:
           $ref: '#/components/schemas/PendingQueueSummary'
-          default:
-            total: 0
-            tenant_count: 0
-            top_tenants: {}
         thresholds:
           $ref: '#/components/schemas/HealthThresholds'
         debug:
           $ref: '#/components/schemas/DebugInfo'
-          default:
-            arq_raw: ''
-            queue_name: 'arq:queue'
       required:
         - response_timestamp_utc
         - status
@@ -31602,7 +29601,7 @@ x-wso2-sandbox-endpoints:
   urls:
     - 'https://eneo-test.sundsvall.se/api/v1/'
   type: http
-x-wso2-basePath: /eneo-sundsvall/1.1
+x-wso2-basePath: /eneo-sundsvall/1.2
 x-wso2-transports:
   - https
 x-wso2-application-security:
