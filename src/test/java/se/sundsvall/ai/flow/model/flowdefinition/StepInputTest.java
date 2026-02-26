@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import java.io.IOException;
 import java.util.Map;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +10,9 @@ import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -55,12 +54,12 @@ class StepInputTest {
 		}
 
 		@Test
-		void deserializeFlowInputRef() throws IOException {
+		void deserializeFlowInputRef() throws Exception {
 			final var inputId = "someInputId";
 
 			final var fields = Map.of(FLOW_INPUT_REF, mockFlowInputRefNode).entrySet();
 
-			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
+			when(mockJsonParser.readValueAsTree()).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
 			when(mockRootNode.properties()).thenReturn(fields);
 			when(mockFlowInputRefNode.textValue()).thenReturn(inputId);
@@ -72,7 +71,7 @@ class StepInputTest {
 		}
 
 		@Test
-		void deserializeRedirectedOutput() throws IOException {
+		void deserializeRedirectedOutput() throws Exception {
 			final var step = "someStep";
 			final var name = "someName";
 
@@ -80,7 +79,7 @@ class StepInputTest {
 				STEP_OUTPUT_REF, mockRedirectedOutputNode,
 				NAME, mockNameNode).entrySet();
 
-			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
+			when(mockJsonParser.readValueAsTree()).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
 			when(mockRootNode.properties()).thenReturn(fields);
 			when(mockRedirectedOutputNode.textValue()).thenReturn(step);
@@ -95,23 +94,23 @@ class StepInputTest {
 		}
 
 		@Test
-		void deserializeWhenInputIsInvalid() throws IOException {
+		void deserializeWhenInputIsInvalid() throws Exception {
 			final var fields = Map.<String, JsonNode>of().entrySet();
 
-			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
+			when(mockJsonParser.readValueAsTree()).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(true);
 			when(mockRootNode.properties()).thenReturn(fields);
 
-			assertThatExceptionOfType(IOException.class)
+			assertThatExceptionOfType(tools.jackson.core.JacksonException.class)
 				.isThrownBy(() -> deserializer.deserialize(mockJsonParser, mockDeserializationContext));
 		}
 
 		@Test
-		void deserializeWhenJsonIsInvalid() throws IOException {
-			when(mockJsonParser.getCodec().readTree(mockJsonParser)).thenReturn(mockRootNode);
+		void deserializeWhenJsonIsInvalid() throws Exception {
+			when(mockJsonParser.readValueAsTree()).thenReturn(mockRootNode);
 			when(mockRootNode.isObject()).thenReturn(false);
 
-			assertThatExceptionOfType(IOException.class)
+			assertThatExceptionOfType(tools.jackson.core.JacksonException.class)
 				.isThrownBy(() -> deserializer.deserialize(mockJsonParser, mockDeserializationContext));
 		}
 	}

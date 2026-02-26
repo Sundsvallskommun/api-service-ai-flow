@@ -1,34 +1,34 @@
 openapi: 3.1.0
 info:
   title: ai-flow
-  contact: { }
+  contact: {}
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-  - url: http://localhost:63801
-    description: Generated server url
+- url: http://localhost:62380
+  description: Generated server url
 tags:
-  - name: Sessions
-    description: Session resources
-  - name: Flows
-    description: Flow resources
+- name: Sessions
+  description: Session resources
+- name: Flows
+  description: Flow resources
 paths:
   /{municipalityId}/session:
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: Create a session for a given flow
       operationId: createSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       requestBody:
         content:
           application/json:
@@ -48,8 +48,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -65,24 +65,24 @@ paths:
   /{municipalityId}/session/{sessionId}:
     get:
       tags:
-        - Sessions
+      - Sessions
       summary: Get a session
       operationId: getSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         "200":
           description: Ok
@@ -96,8 +96,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -112,24 +112,24 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: Run (all steps in) a session
       operationId: runSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         "204":
           description: No Content
@@ -139,8 +139,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -155,24 +155,24 @@ paths:
                 $ref: "#/components/schemas/Problem"
     delete:
       tags:
-        - Sessions
+      - Sessions
       summary: Delete a session
       operationId: deleteSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
       responses:
         "204":
           description: No Content
@@ -182,8 +182,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -199,30 +199,30 @@ paths:
   /{municipalityId}/session/{sessionId}/step/{stepId}:
     get:
       tags:
-        - Sessions
+      - Sessions
       summary: Get a step (execution) for a session
       operationId: getStep
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: stepId
-          in: path
-          description: Step id
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: stepId
+        in: path
+        description: Step id
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Ok
@@ -236,8 +236,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -252,30 +252,30 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: Run/re-run a step (execution) for a session
       operationId: runStep
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: stepId
-          in: path
-          description: Step id
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: stepId
+        in: path
+        description: Step id
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -291,8 +291,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -308,31 +308,31 @@ paths:
   /{municipalityId}/session/{sessionId}/input/{inputId}/simple:
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: ' Add simple (text) input to a session'
       description: If the input is single-valued - the input value is replaced entirely
       operationId: addSimpleInputToSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: inputId
-          in: path
-          description: Input id
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: inputId
+        in: path
+        description: Input id
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -352,8 +352,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -369,31 +369,31 @@ paths:
   /{municipalityId}/session/{sessionId}/input/{inputId}/file:
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: ' Add binary (file) input to a session'
       description: If the input is single-valued - the input value is replaced entirely
       operationId: addFileInputToSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: inputId
-          in: path
-          description: Input id
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: inputId
+        in: path
+        description: Input id
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           multipart/form-data:
@@ -404,7 +404,7 @@ paths:
                   type: string
                   format: binary
               required:
-                - file
+              - file
       responses:
         "200":
           description: Ok
@@ -418,8 +418,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -435,24 +435,24 @@ paths:
   /{municipalityId}/session/{sessionId}/generate:
     post:
       tags:
-        - Sessions
+      - Sessions
       summary: Generate session output
       operationId: generateSessionOutput
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         content:
           application/json:
@@ -471,8 +471,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -488,17 +488,17 @@ paths:
   /{municipalityId}/flow:
     get:
       tags:
-        - Flows
+      - Flows
       summary: Get all available flows
       operationId: getFlows
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       responses:
         "200":
           description: Ok
@@ -514,8 +514,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -524,17 +524,17 @@ paths:
                 $ref: "#/components/schemas/Problem"
     post:
       tags:
-        - Flows
+      - Flows
       summary: Create a flow
       operationId: createFlow
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
       requestBody:
         content:
           application/json:
@@ -550,8 +550,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -561,25 +561,24 @@ paths:
   /{municipalityId}/flow/{flowId}:
     get:
       tags:
-        - Flows
+      - Flows
       summary: Get the latest version of a flow
       operationId: getLatestFlowVersion
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: flowId
-          in: path
-          description: Flow id
-          required: true
-          schema:
-            type: string
-            minLength: 1
-          example: tjansteskrivelse
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: flowId
+        in: path
+        description: Flow id
+        required: true
+        schema:
+          type: string
+        example: tjansteskrivelse
       responses:
         "200":
           description: Ok
@@ -599,8 +598,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -609,22 +608,22 @@ paths:
                 $ref: "#/components/schemas/Problem"
     delete:
       tags:
-        - Flows
+      - Flows
       summary: "Delete a flow, including all its versions"
       operationId: deleteFlow
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: flowId
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: flowId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Ok
@@ -640,8 +639,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -651,33 +650,32 @@ paths:
   /{municipalityId}/flow/{flowId}/{version}:
     get:
       tags:
-        - Flows
+      - Flows
       summary: Get a specific version of a flow
       operationId: getFlowVersion
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: flowId
-          in: path
-          description: Flow id
-          required: true
-          schema:
-            type: string
-            minLength: 1
-          example: tjansteskrivelse
-        - name: version
-          in: path
-          description: Flow version
-          required: true
-          schema:
-            type: integer
-            format: int32
-          example: 1
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: flowId
+        in: path
+        description: Flow id
+        required: true
+        schema:
+          type: string
+        example: tjansteskrivelse
+      - name: version
+        in: path
+        description: Flow version
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
       responses:
         "200":
           description: Ok
@@ -697,8 +695,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -707,28 +705,28 @@ paths:
                 $ref: "#/components/schemas/Problem"
     delete:
       tags:
-        - Flows
+      - Flows
       summary: Delete a specific version of a flow
       operationId: deleteFlowVersion
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: flowId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: version
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int32
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: flowId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
         "200":
           description: Ok
@@ -744,8 +742,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "500":
           description: Internal Server Error
           content:
@@ -755,7 +753,7 @@ paths:
   /api-docs:
     get:
       tags:
-        - API
+      - API
       summary: OpenAPI
       operationId: getApiDocs
       responses:
@@ -771,30 +769,30 @@ paths:
   /{municipalityId}/session/{sessionId}/input/{inputId}:
     delete:
       tags:
-        - Sessions
+      - Sessions
       summary: Clear an input in a session
       operationId: clearInputInSession
       parameters:
-        - name: municipalityId
-          in: path
-          description: Municipality id
-          required: true
-          schema:
-            type: string
-          example: 2281
-        - name: sessionId
-          in: path
-          description: Session id
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: inputId
-          in: path
-          description: Input id
-          required: true
-          schema:
-            type: string
+      - name: municipalityId
+        in: path
+        description: Municipality id
+        required: true
+        schema:
+          type: string
+        example: 2281
+      - name: sessionId
+        in: path
+        description: Session id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: inputId
+        in: path
+        description: Input id
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: Ok
@@ -808,8 +806,8 @@ paths:
             application/problem+json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/Problem"
-                  - $ref: "#/components/schemas/ConstraintViolationProblem"
+                - $ref: "#/components/schemas/Problem"
+                - $ref: "#/components/schemas/ConstraintViolationProblem"
         "404":
           description: Not Found
           content:
@@ -831,21 +829,18 @@ components:
           type: string
           description: Flow id
           examples:
-            - tjansteskrivelse
-          minLength: 1
+          - tjansteskrivelse
         version:
           type: integer
           format: int32
           description: Flow version
           examples:
-            - "1"
+          - "1"
       required:
-        - flowId
+      - flowId
     Problem:
       type: object
       properties:
-        status:
-          $ref: "#/components/schemas/StatusType"
         title:
           type: string
         detail:
@@ -856,174 +851,48 @@ components:
         type:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: { }
-    StatusType:
-      type: object
-      properties:
-        statusCode:
+        status:
           type: integer
           format: int32
-        reasonPhrase:
-          type: string
     ConstraintViolationProblem:
       type: object
       properties:
-        cause:
-          $ref: "#/components/schemas/ThrowableProblem"
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
         type:
           type: string
           format: uri
         status:
-          $ref: "#/components/schemas/StatusType"
+          type: integer
+          format: int32
         violations:
           type: array
           items:
             $ref: "#/components/schemas/Violation"
         title:
           type: string
-        message:
-          type: string
+        causeAsProblem:
+          $ref: "#/components/schemas/ThrowableProblem"
         detail:
           type: string
         instance:
           type: string
           format: uri
-        parameters:
-          type: object
-          additionalProperties: { }
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
     ThrowableProblem:
       type: object
       properties:
-        cause: { }
-        stackTrace:
-          type: array
-          items:
-            type: object
-            properties:
-              classLoaderName:
-                type: string
-              moduleName:
-                type: string
-              moduleVersion:
-                type: string
-              methodName:
-                type: string
-              fileName:
-                type: string
-              lineNumber:
-                type: integer
-                format: int32
-              className:
-                type: string
-              nativeMethod:
-                type: boolean
-        message:
+        type:
           type: string
-        status:
-          $ref: "#/components/schemas/StatusType"
+          format: uri
         title:
           type: string
+        status:
+          type: integer
+          format: int32
         detail:
           type: string
         instance:
           type: string
           format: uri
-        type:
-          type: string
-          format: uri
-        parameters:
-          type: object
-          additionalProperties: { }
-        suppressed:
-          type: array
-          items:
-            type: object
-            properties:
-              stackTrace:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    classLoaderName:
-                      type: string
-                    moduleName:
-                      type: string
-                    moduleVersion:
-                      type: string
-                    methodName:
-                      type: string
-                    fileName:
-                      type: string
-                    lineNumber:
-                      type: integer
-                      format: int32
-                    className:
-                      type: string
-                    nativeMethod:
-                      type: boolean
-              message:
-                type: string
-              localizedMessage:
-                type: string
-        localizedMessage:
-          type: string
+        causeAsProblem: {}
     Violation:
       type: object
       properties:
@@ -1057,20 +926,20 @@ components:
         state:
           type: string
           enum:
-            - CREATED
-            - RUNNING
-            - FINISHED
-            - ERROR
+          - CREATED
+          - RUNNING
+          - FINISHED
+          - ERROR
     StepExecution:
       type: object
       properties:
         state:
           type: string
           enum:
-            - CREATED
-            - RUNNING
-            - DONE
-            - ERROR
+          - CREATED
+          - RUNNING
+          - DONE
+          - ERROR
         startedAt:
           type: string
           format: date-time
@@ -1090,22 +959,20 @@ components:
         input:
           type: string
           description: The input
-          minLength: 1
         runRequiredSteps:
           type: boolean
           default: false
           description: Whether to run/re-run required steps
       required:
-        - input
+      - input
     SimpleInput:
       type: object
       properties:
         value:
           type: string
           description: The input value
-          minLength: 1
       required:
-        - value
+      - value
     RenderRequest:
       type: object
       properties:
@@ -1160,9 +1027,9 @@ components:
         type:
           type: string
           enum:
-            - STRING
-            - TEXT
-            - FILE
+          - STRING
+          - TEXT
+          - FILE
         optional:
           type: boolean
         multipleValued:
@@ -1189,16 +1056,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/StepInput"
-    StepInput: { }
+    StepInput: {}
     Target:
       type: object
       properties:
         type:
           type: string
           enum:
-            - SERVICE
-            - ASSISTANT
-            - APP
+          - SERVICE
+          - ASSISTANT
+          - APP
         id:
           type: string
           format: uuid
@@ -1218,4 +1085,4 @@ components:
         description:
           type: string
           description: The flow description
-  securitySchemes: { }
+  securitySchemes: {}

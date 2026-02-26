@@ -1,9 +1,5 @@
 package se.sundsvall.ai.flow.model.support;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +7,10 @@ import java.io.InputStream;
 import java.io.Serial;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 @JsonSerialize(using = UploadedMultipartFile.Serializer.class)
 public class UploadedMultipartFile implements MultipartFile {
@@ -80,11 +80,11 @@ public class UploadedMultipartFile implements MultipartFile {
 		}
 
 		@Override
-		public void serialize(final UploadedMultipartFile uploadedMultipartFile, final JsonGenerator jsonGenerator, final SerializerProvider serializerProvider) throws IOException {
+		public void serialize(final UploadedMultipartFile uploadedMultipartFile, final JsonGenerator jsonGenerator, final SerializationContext serializationContext) {
 			jsonGenerator.writeStartObject();
-			jsonGenerator.writeStringField("type", "file");
-			jsonGenerator.writeStringField("contentType", uploadedMultipartFile.getContentType());
-			jsonGenerator.writeNumberField("size", uploadedMultipartFile.getSize());
+			jsonGenerator.writeStringProperty("type", "file");
+			jsonGenerator.writeStringProperty("contentType", uploadedMultipartFile.getContentType());
+			jsonGenerator.writeNumberProperty("size", uploadedMultipartFile.getSize());
 			jsonGenerator.writeEndObject();
 		}
 	}

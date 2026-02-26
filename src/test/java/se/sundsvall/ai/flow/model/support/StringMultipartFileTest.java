@@ -1,11 +1,10 @@
 package se.sundsvall.ai.flow.model.support;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JsonGenerator;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +39,7 @@ class StringMultipartFileTest {
 	class SerializerTest {
 
 		@Test
-		void serialize() throws IOException {
+		void serialize() {
 			final var name = "someName";
 			final var value = "someValue";
 
@@ -51,9 +50,9 @@ class StringMultipartFileTest {
 			serializer.serialize(stringMultipartFile, mockJsonGenerator, null);
 
 			verify(mockJsonGenerator).writeStartObject();
-			verify(mockJsonGenerator).writeStringField("type", "simple");
-			verify(mockJsonGenerator).writeStringField("contentType", stringMultipartFile.getContentType());
-			verify(mockJsonGenerator).writeNumberField("size", stringMultipartFile.getSize());
+			verify(mockJsonGenerator).writeStringProperty("type", "simple");
+			verify(mockJsonGenerator).writeStringProperty("contentType", stringMultipartFile.getContentType());
+			verify(mockJsonGenerator).writeNumberProperty("size", stringMultipartFile.getSize());
 			verify(mockJsonGenerator).writeEndObject();
 			verifyNoMoreInteractions(mockJsonGenerator);
 		}

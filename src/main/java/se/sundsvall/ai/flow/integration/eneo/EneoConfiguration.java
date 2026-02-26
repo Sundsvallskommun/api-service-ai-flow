@@ -2,9 +2,13 @@ package se.sundsvall.ai.flow.integration.eneo;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.http.converter.autoconfigure.ClientHttpMessageConvertersCustomizer;
 import org.springframework.cloud.openfeign.FeignBuilderCustomizer;
 import org.springframework.cloud.openfeign.FeignClientBuilder;
+import org.springframework.cloud.openfeign.support.FeignHttpMessageConverters;
+import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +30,13 @@ class EneoConfiguration {
 	EneoConfiguration(final ApplicationContext applicationContext, final EneoProperties properties) {
 		this.applicationContext = applicationContext;
 		this.properties = properties;
+	}
+
+	@Bean
+	FeignHttpMessageConverters feignHttpMessageConverters(
+		final ObjectProvider<ClientHttpMessageConvertersCustomizer> customizers,
+		final ObjectProvider<HttpMessageConverterCustomizer> cloudCustomizers) {
+		return new FeignHttpMessageConverters(customizers, cloudCustomizers);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package se.sundsvall.ai.flow.model.support;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JsonGenerator;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,9 +37,9 @@ class UploadedMultipartFileTest {
 
 	@Test
 	void multipartFileContract() throws IOException {
-		var name = "someName";
+		final var name = "someName";
 
-		var uploadedMultipartFile = new UploadedMultipartFile(name, mockOriginalMultipartFile);
+		final var uploadedMultipartFile = new UploadedMultipartFile(name, mockOriginalMultipartFile);
 
 		assertThat(uploadedMultipartFile.getName()).isEqualTo(name);
 		assertThat(uploadedMultipartFile.getOriginalFilename()).isEqualTo(name);
@@ -56,19 +56,19 @@ class UploadedMultipartFileTest {
 	class SerializerTest {
 
 		@Test
-		void serialize() throws IOException {
-			var name = "someName";
+		void serialize() {
+			final var name = "someName";
 
-			var uploadedMultipartFile = new UploadedMultipartFile(name, mockOriginalMultipartFile);
-			var serializer = new UploadedMultipartFile.Serializer();
-			var mockJsonGenerator = mock(JsonGenerator.class);
+			final var uploadedMultipartFile = new UploadedMultipartFile(name, mockOriginalMultipartFile);
+			final var serializer = new UploadedMultipartFile.Serializer();
+			final var mockJsonGenerator = mock(JsonGenerator.class);
 
 			serializer.serialize(uploadedMultipartFile, mockJsonGenerator, null);
 
 			verify(mockJsonGenerator).writeStartObject();
-			verify(mockJsonGenerator).writeStringField("type", "file");
-			verify(mockJsonGenerator).writeStringField("contentType", uploadedMultipartFile.getContentType());
-			verify(mockJsonGenerator).writeNumberField("size", uploadedMultipartFile.getSize());
+			verify(mockJsonGenerator).writeStringProperty("type", "file");
+			verify(mockJsonGenerator).writeStringProperty("contentType", uploadedMultipartFile.getContentType());
+			verify(mockJsonGenerator).writeNumberProperty("size", uploadedMultipartFile.getSize());
 			verify(mockJsonGenerator).writeEndObject();
 			verifyNoMoreInteractions(mockJsonGenerator);
 		}

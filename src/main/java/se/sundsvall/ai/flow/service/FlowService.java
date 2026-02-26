@@ -1,20 +1,20 @@
 package se.sundsvall.ai.flow.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.zalando.problem.Problem;
 import se.sundsvall.ai.flow.api.model.FlowSummary;
 import se.sundsvall.ai.flow.integration.db.FlowRepository;
 import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowConfigurationException;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+import se.sundsvall.dept44.problem.Problem;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.ai.flow.model.flowdefinition.validation.FlowValidator.hasStepDependencyCycle;
 
 @Service
@@ -98,7 +98,7 @@ public class FlowService {
 	Flow fromJson(final String json) {
 		try {
 			return objectMapper.readValue(json, Flow.class);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new FlowException("Unable to deserialize flow instance from JSON", e);
 		}
 	}
@@ -106,7 +106,7 @@ public class FlowService {
 	String toJson(final Flow flow) {
 		try {
 			return objectMapper.writeValueAsString(flow);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new FlowException("Unable to serialize flow instance to JSON", e);
 		}
 	}
