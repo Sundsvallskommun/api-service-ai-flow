@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -9,13 +7,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zalando.problem.Status;
-import org.zalando.problem.ThrowableProblem;
 import se.sundsvall.ai.flow.TestDataFactory;
 import se.sundsvall.ai.flow.integration.db.FlowRepository;
 import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+import se.sundsvall.dept44.problem.ThrowableProblem;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.ai.flow.TestDataFactory.createFlowEntity;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,7 +70,7 @@ class FlowServiceTest {
 
 		assertThatThrownBy(() -> flowService.getFlowVersion(flowId, version))
 			.isInstanceOf(ThrowableProblem.class)
-			.hasFieldOrPropertyWithValue("status", Status.NOT_FOUND)
+			.hasFieldOrPropertyWithValue("status", NOT_FOUND)
 			.hasFieldOrPropertyWithValue("title", "Not Found")
 			.hasFieldOrPropertyWithValue("detail", "No flow found with id %s and version %s".formatted(flowId, version));
 
@@ -121,7 +121,7 @@ class FlowServiceTest {
 
 		assertThatThrownBy(() -> flowService.deleteFlowVersion(flowId, version))
 			.isInstanceOf(ThrowableProblem.class)
-			.hasFieldOrPropertyWithValue("status", Status.NOT_FOUND)
+			.hasFieldOrPropertyWithValue("status", NOT_FOUND)
 			.hasFieldOrPropertyWithValue("title", "Not Found")
 			.hasFieldOrPropertyWithValue("detail", "No flow found with id %s and version %s".formatted(flowId, version));
 
@@ -133,7 +133,7 @@ class FlowServiceTest {
 	 * Test scenario where flow is created with version 2.
 	 */
 	@Test
-	void createFlow_1() throws JsonProcessingException {
+	void createFlow_1() {
 		var flow = TestDataFactory.createFlow();
 
 		when(flowRepositoryMock.findMaxVersionById(flow.getId())).thenReturn(Optional.of(1));
@@ -152,11 +152,11 @@ class FlowServiceTest {
 	 * Test scenario where flow could not be written as string and problem is thrown.
 	 */
 	@Test
-	void createFlow_2() throws JsonProcessingException {
+	void createFlow_2() {
 		var flow = TestDataFactory.createFlow();
 
 		when(flowRepositoryMock.findMaxVersionById(flow.getId())).thenReturn(Optional.of(1));
-		when(objectMapperMock.writeValueAsString(flow)).thenThrow(JsonProcessingException.class);
+		when(objectMapperMock.writeValueAsString(flow)).thenThrow(JacksonException.class);
 
 		assertThatThrownBy(() -> flowService.createFlow(flow))
 			.isInstanceOf(FlowException.class)

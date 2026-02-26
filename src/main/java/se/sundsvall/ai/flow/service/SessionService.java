@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.templating.TemplatingIntegration;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
@@ -19,10 +17,12 @@ import se.sundsvall.ai.flow.model.session.Input;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.util.DocumentUtil;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.requestid.RequestId;
 
 import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class SessionService {
@@ -65,7 +65,7 @@ public class SessionService {
 			.filter(inputId -> session.getInput().getOrDefault(inputId, List.of()).isEmpty())
 			.toList();
 		if (!unsetRequiredInputs.isEmpty()) {
-			throw Problem.valueOf(Status.BAD_REQUEST, "Unable to execute session %s as the following required inputs are unset or empty: %s".formatted(sessionId, unsetRequiredInputs));
+			throw Problem.valueOf(BAD_REQUEST, "Unable to execute session %s as the following required inputs are unset or empty: %s".formatted(sessionId, unsetRequiredInputs));
 		}
 
 		executor.executeSession(municipalityId, session, RequestId.get());

@@ -1,10 +1,10 @@
 flow-loader:
   enabled: true
-  
+
 integration:
   eneo:
     oauth2:
-      token-url: http://localhost:${wiremock.server.port}/eneo/token
+      token-url: http://localhost:${wiremock.server.port:}/eneo/token
       client-id: override
       client-secret: override
       authorization-grant-type: client_credentials
@@ -12,18 +12,18 @@ integration:
     connect-timeout-in-seconds: 5
     municipalities:
       2281:
-        url: http://localhost:${wiremock.server.port}/eneo
+        url: http://localhost:${wiremock.server.port:}/eneo
         api-key: aKey
       1984:
-        url: http://localhost:${wiremock.server.port}/eneo-arboga
+        url: http://localhost:${wiremock.server.port:}/eneo-arboga
         api-key: anotherKey
   templating:
-    base-url: http://localhost:${wiremock.server.port}/templating
+    base-url: http://localhost:${wiremock.server.port:}/templating
     oauth2:
       authorization-grant-type: client_credentials
       client-id: client_id
       client-secret: client_secret
-      token-url: http://localhost:${wiremock.server.port}/token
+      token-url: http://localhost:${wiremock.server.port:}/token
     read-timeout-in-seconds: 15
     connect-timeout-in-seconds: 5
 

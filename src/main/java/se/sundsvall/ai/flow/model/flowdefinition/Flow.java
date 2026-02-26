@@ -5,8 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
+import se.sundsvall.dept44.problem.Problem;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public class Flow {
 
@@ -133,7 +134,7 @@ public class Flow {
 		return flowInputs.stream()
 			.filter(currentFlowInput -> inputId.equals(currentFlowInput.getId()))
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No input '%s' exists in flow '%s'".formatted(inputId, name)));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No input '%s' exists in flow '%s'".formatted(inputId, name)));
 	}
 
 	public List<FlowInput> getFlowInputs() {
@@ -153,7 +154,7 @@ public class Flow {
 		return steps.stream()
 			.filter(currentStep -> stepId.equals(currentStep.getId()))
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No step '%s' exists in flow '%s'".formatted(stepId, name)));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step '%s' exists in flow '%s'".formatted(stepId, name)));
 	}
 
 	public List<Step> getSteps() {
