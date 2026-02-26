@@ -3,14 +3,15 @@ package se.sundsvall.ai.flow.service;
 import java.util.List;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.service.execution.SessionOrchestrator;
 import se.sundsvall.ai.flow.service.execution.StepRunContext;
 import se.sundsvall.ai.flow.service.execution.StepRunner;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.requestid.RequestId;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Component
 public class Executor {
@@ -40,12 +41,12 @@ public class Executor {
 
 		// The session must either be running or finished before allowing any individual steps to be executed individually
 		if (session.getState() != Session.State.RUNNING && session.getState() != Session.State.FINISHED) {
-			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to run step '%s' in flow '%s' for session %s since the session has never been run yet".formatted(stepExecution.getStep().getId(), session.getFlow().getName(), session.getId()));
+			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Unable to run step '%s' in flow '%s' for session %s since the session has never been run yet".formatted(stepExecution.getStep().getId(), session.getFlow().getName(), session.getId()));
 		}
 
 		// Make sure the step isn't already running
 		if (stepExecution.isRunning()) {
-			throw Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepExecution.getStep().getId(), session.getFlow().getName(), session.getId()));
+			throw Problem.valueOf(INTERNAL_SERVER_ERROR, "Unable to run already running step '%s' in flow '%s' for session %s".formatted(stepExecution.getStep().getId(), session.getFlow().getName(), session.getId()));
 		}
 
 		executeStepInternal(municipalityId, stepExecution, input, runRequiredSteps);

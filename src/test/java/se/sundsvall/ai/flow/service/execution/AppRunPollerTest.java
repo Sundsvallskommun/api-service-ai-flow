@@ -4,10 +4,10 @@ import java.time.Duration;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.zalando.problem.Problem;
 import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+import se.sundsvall.dept44.problem.Problem;
 
 import static generated.eneo.ai.Status.COMPLETE;
 import static generated.eneo.ai.Status.FAILED;

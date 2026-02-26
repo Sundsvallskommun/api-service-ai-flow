@@ -2,9 +2,10 @@ package se.sundsvall.ai.flow.service.execution;
 
 import java.util.List;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
+import se.sundsvall.dept44.problem.Problem;
+
+import static org.springframework.http.HttpStatus.NOT_IMPLEMENTED;
 
 @Component
 public class TargetExecutorResolver {
@@ -19,6 +20,6 @@ public class TargetExecutorResolver {
 		return targetExecutors.stream()
 			.filter(targetExecutor -> targetExecutor.supports(type))
 			.findFirst()
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_IMPLEMENTED, "No TargetExecutor for type " + type));
+			.orElseThrow(() -> Problem.valueOf(NOT_IMPLEMENTED, "No TargetExecutor for type " + type));
 	}
 }

@@ -1,15 +1,14 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import java.io.IOException;
 import java.io.Serial;
 import java.util.Map;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.exc.MismatchedInputException;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toMap;
@@ -45,16 +44,16 @@ public abstract class StepInput {
 		private static final long serialVersionUID = -703432197878787L;
 
 		Deserializer() {
-			super((Class<?>) null);
+			super(StepInput.class);
 		}
 
 		@Override
-		public StepInput deserialize(final JsonParser parser, final DeserializationContext context) throws IOException {
-			final var root = (JsonNode) parser.getCodec().readTree(parser);
+		public StepInput deserialize(final JsonParser parser, final DeserializationContext context) {
+			final var root = (JsonNode) parser.readValueAsTree();
 
 			// Make sure we actually have an object node to work with
 			if (!root.isObject()) {
-				throw new JsonParseException("Object node expected");
+				throw MismatchedInputException.from(parser, StepInput.class, "Object node expected");
 			}
 
 			// Re-map the child nodes as a map from node name to the actual node, for easier access
@@ -79,7 +78,8 @@ public abstract class StepInput {
 				return new RedirectedOutput().withStep(step).withUseAs(name);
 			}
 
-			throw new JsonParseException("Unable to parse step input. Either \"%s\" OR (\"%s\" AND \"%s\") should be set".formatted(FLOW_INPUT_REF, STEP_OUTPUT_REF, NAME));
+			throw MismatchedInputException.from(parser, StepInput.class,
+				"Unable to parse step input. Either \"%s\" OR (\"%s\" AND \"%s\") should be set".formatted(FLOW_INPUT_REF, STEP_OUTPUT_REF, NAME));
 		}
 	}
 }

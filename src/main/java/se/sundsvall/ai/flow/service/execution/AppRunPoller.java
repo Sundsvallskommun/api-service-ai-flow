@@ -5,14 +5,14 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.configuration.AppPollingProperties;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
+import se.sundsvall.dept44.problem.Problem;
 
 import static generated.eneo.ai.Status.COMPLETE;
 import static generated.eneo.ai.Status.FAILED;
-import static generated.eneo.ai.Status.NOT_FOUND;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
+import static org.springframework.http.HttpStatus.GATEWAY_TIMEOUT;
 
 @Component
 public class AppRunPoller {
@@ -36,7 +36,7 @@ public class AppRunPoller {
 
 		while (true) {
 			if (System.currentTimeMillis() - startTime > maxPollDurationMs) {
-				throw Problem.valueOf(Status.GATEWAY_TIMEOUT, "App run for step '%s' timed out after %s ms".formatted(stepName, maxPollDurationMs));
+				throw Problem.valueOf(GATEWAY_TIMEOUT, "App run for step '%s' timed out after %s ms".formatted(stepName, maxPollDurationMs));
 			}
 
 			LOG.debug("Polling app run status for step {} with run ID {}", stepName, runId);
@@ -44,7 +44,7 @@ public class AppRunPoller {
 			currentStatus = currentResponse.status();
 			output = currentResponse.answer();
 
-			if (currentStatus == COMPLETE || currentStatus == FAILED || currentStatus == NOT_FOUND) {
+			if (currentStatus == COMPLETE || currentStatus == FAILED || currentStatus == generated.eneo.ai.Status.NOT_FOUND) {
 				break;
 			}
 
@@ -52,10 +52,10 @@ public class AppRunPoller {
 		}
 
 		if (currentStatus == FAILED) {
-			throw Problem.valueOf(Status.BAD_GATEWAY, "App run for step '%s' failed".formatted(stepName));
+			throw Problem.valueOf(BAD_GATEWAY, "App run for step '%s' failed".formatted(stepName));
 		}
-		if (currentStatus == NOT_FOUND) {
-			throw Problem.valueOf(Status.NOT_FOUND, "App run for step '%s' not found".formatted(stepName));
+		if (currentStatus == generated.eneo.ai.Status.NOT_FOUND) {
+			throw Problem.valueOf(org.springframework.http.HttpStatus.NOT_FOUND, "App run for step '%s' not found".formatted(stepName));
 		}
 
 		LOG.info("App run for step {} completed successfully", stepName);
