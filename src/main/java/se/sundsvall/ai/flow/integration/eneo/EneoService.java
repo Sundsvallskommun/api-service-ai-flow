@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.integration.eneo.model.Response;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toAskAssistant;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toResponse;
 import static se.sundsvall.ai.flow.integration.eneo.EneoMapper.toRunAppRequest;
@@ -65,7 +65,7 @@ public class EneoService {
 
 		return ofNullable(filePublic)
 			.map(FilePublic::getId)
-			.orElseThrow(() -> Problem.valueOf(Status.INTERNAL_SERVER_ERROR, "Unable to upload file to Eneo"));
+			.orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, "Unable to upload file to Eneo"));
 	}
 
 	public void deleteFiles(final String municipalityId, final List<UUID> fileIds) {

@@ -10,15 +10,15 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.web.multipart.MultipartFile;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.support.ByteArrayMultipartFile;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toMap;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public class Session {
 
@@ -171,7 +171,7 @@ public class Session {
 	public StepExecution getStepExecution(final String stepId) {
 		return of(stepExecutions)
 			.map(actualStepExecutions -> actualStepExecutions.get(stepId))
-			.orElseThrow(() -> Problem.valueOf(Status.NOT_FOUND, "No step execution exists for step '%s' in session '%s'".formatted(stepId, id)));
+			.orElseThrow(() -> Problem.valueOf(NOT_FOUND, "No step execution exists for step '%s' in session '%s'".formatted(stepId, id)));
 	}
 
 	public enum State {

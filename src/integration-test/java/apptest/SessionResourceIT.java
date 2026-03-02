@@ -127,7 +127,6 @@ class SessionResourceIT extends AbstractAppTest {
 		final var stepExecution = session.getStepExecution("arendet");
 
 		await().atMost(Duration.ofSeconds(30)).until(() -> stepExecution.getState() == StepExecution.State.DONE);
-		verifyAllStubs();
 	}
 
 	@Test

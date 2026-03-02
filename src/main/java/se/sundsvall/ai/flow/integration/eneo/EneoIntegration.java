@@ -1,7 +1,5 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
@@ -15,11 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.zalando.problem.Problem;
+import se.sundsvall.dept44.problem.Problem;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import static java.util.Optional.ofNullable;
-import static org.zalando.problem.Status.BAD_GATEWAY;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 @Component
@@ -29,7 +30,7 @@ public class EneoIntegration {
 
 	static final String CLIENT_ID = "eneo";
 
-	private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+	private final ObjectMapper objectMapper = JsonMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
 
 	/**
 	 * The key is the municipality ID, and the value is the municipality specific configured EneoClient.

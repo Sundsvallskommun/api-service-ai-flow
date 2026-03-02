@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,8 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.zalando.problem.violations.ConstraintViolationProblem;
-import org.zalando.problem.violations.Violation;
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.ai.flow.api.model.ChatRequest;
 import se.sundsvall.ai.flow.api.model.CreateSessionRequest;
@@ -26,13 +25,16 @@ import se.sundsvall.ai.flow.api.model.RenderRequest;
 import se.sundsvall.ai.flow.api.model.SimpleInput;
 import se.sundsvall.ai.flow.service.FlowService;
 import se.sundsvall.ai.flow.service.SessionService;
+import se.sundsvall.dept44.problem.violations.ConstraintViolationProblem;
+import se.sundsvall.dept44.problem.violations.Violation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+@AutoConfigureWebTestClient
 @SpringBootTest(classes = Application.class, webEnvironment = RANDOM_PORT)
 @ActiveProfiles("junit")
 class SessionResourceFailureTest {
@@ -104,7 +106,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -123,7 +125,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -142,7 +144,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -161,7 +163,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -181,7 +183,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -201,7 +203,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -231,7 +233,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -249,7 +251,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -267,7 +269,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
@@ -286,7 +288,7 @@ class SessionResourceFailureTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getTitle()).isEqualTo("Constraint Violation");
 		assertThat(response.getStatus()).isEqualTo(BAD_REQUEST);
-		assertThat(response.getViolations()).extracting(Violation::getField, Violation::getMessage).containsExactly(expectedResponse);
+		assertThat(response.getViolations()).extracting(Violation::field, Violation::message).containsExactly(expectedResponse);
 
 		verifyNoInteractions(sessionService, flowService);
 	}
