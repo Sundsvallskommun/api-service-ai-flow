@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-- url: http://localhost:62380
+- url: http://localhost:49434
   description: Generated server url
 tags:
 - name: Sessions
@@ -578,6 +578,7 @@ paths:
         required: true
         schema:
           type: string
+          minLength: 1
         example: tjansteskrivelse
       responses:
         "200":
@@ -667,6 +668,7 @@ paths:
         required: true
         schema:
           type: string
+          minLength: 1
         example: tjansteskrivelse
       - name: version
         in: path
@@ -830,6 +832,7 @@ components:
           description: Flow id
           examples:
           - tjansteskrivelse
+          minLength: 1
         version:
           type: integer
           format: int32
@@ -959,6 +962,7 @@ components:
         input:
           type: string
           description: The input
+          minLength: 1
         runRequiredSteps:
           type: boolean
           default: false
@@ -971,6 +975,7 @@ components:
         value:
           type: string
           description: The input value
+          minLength: 1
       required:
       - value
     RenderRequest:
