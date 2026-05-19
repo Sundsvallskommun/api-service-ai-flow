@@ -1,12 +1,12 @@
 package se.sundsvall.ai.flow.model.session;
 
-import static java.util.Collections.emptyList;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
+
+import static java.util.Collections.emptyList;
 
 public class StepExecution implements Comparable<StepExecution> {
 

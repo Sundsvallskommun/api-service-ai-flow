@@ -1,12 +1,12 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.zalando.problem.Status.NOT_FOUND;
-
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.ThrowableProblem;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.zalando.problem.Status.NOT_FOUND;
 
 class FlowTest {
 

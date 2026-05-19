@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.service;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static se.sundsvall.ai.flow.model.flowdefinition.validation.FlowValidator.hasStepDependencyCycle;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -19,6 +16,9 @@ import se.sundsvall.ai.flow.integration.db.FlowRepository;
 import se.sundsvall.ai.flow.integration.db.model.FlowEntity;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowConfigurationException;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static se.sundsvall.ai.flow.model.flowdefinition.validation.FlowValidator.hasStepDependencyCycle;
 
 @Component
 @EnableConfigurationProperties(FlowLoader.Configuration.class)

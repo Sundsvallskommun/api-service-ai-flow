@@ -1,10 +1,5 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,6 +10,11 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.Map;
+
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @JsonDeserialize(using = StepInput.Deserializer.class)
 public abstract class StepInput {

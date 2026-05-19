@@ -1,12 +1,5 @@
 package se.sundsvall.ai.flow.model.flowdefinition;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.FLOW_INPUT_REF;
-import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.NAME;
-import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.STEP_OUTPUT_REF;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,6 +14,13 @@ import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
+import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.FLOW_INPUT_REF;
+import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.NAME;
+import static se.sundsvall.ai.flow.model.flowdefinition.StepInput.STEP_OUTPUT_REF;
 
 @ExtendWith(MockitoExtension.class)
 class StepInputTest {

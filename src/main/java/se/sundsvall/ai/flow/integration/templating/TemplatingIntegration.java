@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.integration.templating;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import generated.se.sundsvall.templating.RenderRequest;
 import java.util.Base64;
 import java.util.HashMap;
@@ -10,6 +7,9 @@ import org.springframework.stereotype.Component;
 import se.sundsvall.ai.flow.model.flowdefinition.FlowInput;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.support.StringMultipartFile;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 public class TemplatingIntegration {

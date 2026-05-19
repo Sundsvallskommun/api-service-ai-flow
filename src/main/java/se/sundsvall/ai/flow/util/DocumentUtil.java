@@ -1,8 +1,5 @@
 package se.sundsvall.ai.flow.util;
 
-import static java.util.function.Predicate.not;
-import static java.util.stream.Collectors.joining;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,6 +10,9 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import se.sundsvall.ai.flow.model.flowdefinition.exception.FlowException;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.joining;
 
 public final class DocumentUtil {
 

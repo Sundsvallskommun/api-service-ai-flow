@@ -1,8 +1,8 @@
 package se.sundsvall.ai.flow.model.session.exception;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class ExecutionExceptionTest {
 
