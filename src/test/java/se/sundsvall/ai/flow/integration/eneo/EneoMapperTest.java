@@ -3,11 +3,14 @@ package se.sundsvall.ai.flow.integration.eneo;
 import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.ServiceOutput;
 import generated.eneo.ai.Status;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class EneoMapperTest {
 
@@ -21,22 +24,8 @@ class EneoMapperTest {
 
 		assertThat(runService).isNotNull().satisfies(service -> {
 			assertThat(service.getInput()).isEqualTo(input);
-			assertThat(service.getFiles()).hasSize(1);
-			assertThat(service.getFiles().getFirst().getId()).isEqualTo(uploadedInputFile);
+			assertThat(service.getFiles()).containsExactly(uploadedInputFile);
 		});
-	}
-
-	@Test
-	void toModelIdsTest() {
-		var id1 = UUID.randomUUID();
-		var id2 = UUID.randomUUID();
-		var ids = List.of(id1, id2);
-
-		var modelIds = EneoMapper.toModelIds(ids);
-
-		assertThat(modelIds).isNotNull().hasSize(2)
-			.extracting("id")
-			.containsExactlyInAnyOrder(id1, id2);
 	}
 
 	@Test
@@ -49,8 +38,7 @@ class EneoMapperTest {
 
 		assertThat(askAssistant).isNotNull().satisfies(assistant -> {
 			assertThat(assistant.getQuestion()).isEqualTo(question);
-			assertThat(assistant.getFiles()).hasSize(1);
-			assertThat(assistant.getFiles().getFirst().getId()).isEqualTo(uploadedInputFile);
+			assertThat(assistant.getFiles()).containsExactly(uploadedInputFile);
 		});
 	}
 
@@ -79,6 +67,69 @@ class EneoMapperTest {
 			assertThat(res.sessionId()).isNull();
 			assertThat(res.answer()).isEqualTo(output);
 		});
+	}
+
+	@Test
+	void toResponseFromServiceOutputWithMapTest() {
+		final var output = new LinkedHashMap<String, Object>();
+		output.put("key", "value");
+		output.put("number", 42);
+		final var serviceOutput = new ServiceOutput().output(output);
+
+		final var response = EneoMapper.toResponse(serviceOutput);
+
+		assertThat(response).isNotNull().satisfies(res -> {
+			assertThat(res.sessionId()).isNull();
+			assertThat(res.answer()).isEqualTo("{\"key\":\"value\",\"number\":42}");
+		});
+	}
+
+	@Test
+	void toResponseFromServiceOutputWithListTest() {
+		final var output = List.of("item1", "item2", "item3");
+		final var serviceOutput = new ServiceOutput().output(output);
+
+		final var response = EneoMapper.toResponse(serviceOutput);
+
+		assertThat(response).isNotNull().satisfies(res -> {
+			assertThat(res.sessionId()).isNull();
+			assertThat(res.answer()).isEqualTo("[\"item1\",\"item2\",\"item3\"]");
+		});
+	}
+
+	@Test
+	void toResponseFromServiceOutputWithBooleanTest() {
+		final var serviceOutput = new ServiceOutput().output(true);
+
+		final var response = EneoMapper.toResponse(serviceOutput);
+
+		assertThat(response).isNotNull().satisfies(res -> {
+			assertThat(res.sessionId()).isNull();
+			assertThat(res.answer()).isEqualTo("true");
+		});
+	}
+
+	@Test
+	void toResponseFromServiceOutputWithNullTest() {
+		final var serviceOutput = new ServiceOutput().output(null);
+
+		final var response = EneoMapper.toResponse(serviceOutput);
+
+		assertThat(response).isNotNull().satisfies(res -> {
+			assertThat(res.sessionId()).isNull();
+			assertThat(res.answer()).isNull();
+		});
+	}
+
+	@Test
+	void toResponseFromServiceOutputWithUnserializableObjectThrowsException() {
+		final var circularMap = new LinkedHashMap<String, Object>();
+		circularMap.put("self", Collections.unmodifiableMap(circularMap));
+		final var serviceOutput = new ServiceOutput().output(circularMap);
+
+		assertThatExceptionOfType(RuntimeException.class)
+			.isThrownBy(() -> EneoMapper.toResponse(serviceOutput))
+			.withMessage("Internal Server Error: Failed to serialize ServiceOutput to JSON string");
 	}
 
 	@Test

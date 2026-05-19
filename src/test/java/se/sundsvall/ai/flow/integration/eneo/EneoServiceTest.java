@@ -4,7 +4,6 @@ import generated.eneo.ai.AppRunPublic;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.FilePublic;
-import generated.eneo.ai.ModelId;
 import generated.eneo.ai.RunAppRequest;
 import generated.eneo.ai.RunService;
 import generated.eneo.ai.ServiceOutput;
@@ -62,7 +61,7 @@ class EneoServiceTest {
 		final var uploadedInputFilesInUseInfo = "someInfo";
 		final var askAssistantRequest = new AskAssistant()
 			.question(uploadedInputFilesInUseInfo)
-			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
+			.files(uploadedInputFilesInUse);
 		final var sessionId = UUID.randomUUID();
 		final var answer = "someAnswer";
 
