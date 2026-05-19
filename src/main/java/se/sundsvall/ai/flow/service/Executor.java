@@ -46,11 +46,21 @@ public class Executor {
 			// Mark the session as running
 			session.setState(Session.State.RUNNING);
 			// Execute the steps in the order defined in the flow, running required steps if they exist
-			flow.getSteps().stream()
-				.map(step -> session.getStepExecution(step.getId()))
-				.forEach(step -> executeStepInternal(municipalityId, step, null, true));
+			for (final var step : flow.getSteps()) {
+				final var stepExecution = session.getStepExecution(step.getId());
+				executeStepInternal(municipalityId, stepExecution, null, true);
+
+				// Stop execution if the step failed
+				if (stepExecution.getState() == StepExecution.State.ERROR) {
+					session.setState(Session.State.ERROR);
+					return;
+				}
+			}
 			// Mark the session as finished
 			session.setState(Session.State.FINISHED);
+		} catch (final Exception e) {
+			LOG.error("Session execution failed for session {}", session.getId(), e);
+			session.setState(Session.State.ERROR);
 		} finally {
 			RequestId.reset();
 		}
@@ -95,55 +105,55 @@ public class Executor {
 		// Mark the step execution as running
 		stepExecution.setState(StepExecution.State.RUNNING);
 
-		// Extract inputs that are "regular" flow input references
-		final var flowInputRefStepInputs = step.getInputs().stream()
-			.filter(FlowInputRef.class::isInstance)
-			.map(FlowInputRef.class::cast)
-			// Skip inputs that are marked as passthrough
-			.filter(not(flowInputRef -> flow.getFlowInput(flowInputRef.getInput()).isPassthrough()))
-			.toList();
-
-		// Extract inputs that are redirected output from other steps
-		final var redirectedOutputStepInputs = step.getInputs().stream()
-			.filter(RedirectedOutput.class::isInstance)
-			.map(RedirectedOutput.class::cast)
-			.toList();
-
-		// Add any redirected output inputs to the session
-		redirectedOutputStepInputs.forEach(redirectedOutputInput -> {
-			// Get the required step execution
-			final var requiredStepExecution = session.getStepExecutions().get(redirectedOutputInput.getStep());
-			// Wrap the output of the required step execution in a StringMultipartFile
-			final var requiredStepOutputMultipartFile = new StringMultipartFile(session.getFlow().getInputPrefix(), redirectedOutputInput.getName(), requiredStepExecution.getOutput());
-			// Add it as an input to the session
-			session.addRedirectedOutputAsInput(redirectedOutputInput.getStep(), requiredStepOutputMultipartFile);
-		});
-
-		// At this point we may have inputs that haven't been uploaded to Eneo yet - upload them
-		uploadMissingInputFilesInSessionToEneo(municipalityId, session);
-
-		// Join both input types to get all inputs actually in use for the current step execution
-		final var inputsInUse = Stream.concat(
-			flowInputRefStepInputs.stream().map(FlowInputRef::getInput),
-			redirectedOutputStepInputs.stream().map(RedirectedOutput::getStep)).toList();
-
-		// Extract the input files (ie Eneo file id:s) for the inputs actually in use for the current step execution
-		final var inputFilesInUse = session.getAllInput().entrySet().stream()
-			.filter(entry -> inputsInUse.contains(entry.getKey()))
-			.flatMap(entry -> entry.getValue().stream())
-			.map(Input::getIntricFileId)
-			.toList();
-
-		// Create an additional instruction on what information lies within each input
-		final var inputsInUseInfo = session.getInputInfo().entrySet().stream()
-			.filter(entry -> inputsInUse.contains(entry.getKey()))
-			.map(Map.Entry::getValue)
-			.collect(joining());
-
-		// Get the Eneo endpoint id
-		final var eneoEndpointId = step.getIntricEndpoint().id();
-
 		try {
+			// Extract inputs that are "regular" flow input references
+			final var flowInputRefStepInputs = step.getInputs().stream()
+				.filter(FlowInputRef.class::isInstance)
+				.map(FlowInputRef.class::cast)
+				// Skip inputs that are marked as passthrough
+				.filter(not(flowInputRef -> flow.getFlowInput(flowInputRef.getInput()).isPassthrough()))
+				.toList();
+
+			// Extract inputs that are redirected output from other steps
+			final var redirectedOutputStepInputs = step.getInputs().stream()
+				.filter(RedirectedOutput.class::isInstance)
+				.map(RedirectedOutput.class::cast)
+				.toList();
+
+			// Add any redirected output inputs to the session
+			redirectedOutputStepInputs.forEach(redirectedOutputInput -> {
+				// Get the required step execution
+				final var requiredStepExecution = session.getStepExecutions().get(redirectedOutputInput.getStep());
+				// Wrap the output of the required step execution in a StringMultipartFile
+				final var requiredStepOutputMultipartFile = new StringMultipartFile(session.getFlow().getInputPrefix(), redirectedOutputInput.getName(), requiredStepExecution.getOutput());
+				// Add it as an input to the session
+				session.addRedirectedOutputAsInput(redirectedOutputInput.getStep(), requiredStepOutputMultipartFile);
+			});
+
+			// At this point we may have inputs that haven't been uploaded to Eneo yet - upload them
+			uploadMissingInputFilesInSessionToEneo(municipalityId, session);
+
+			// Join both input types to get all inputs actually in use for the current step execution
+			final var inputsInUse = Stream.concat(
+				flowInputRefStepInputs.stream().map(FlowInputRef::getInput),
+				redirectedOutputStepInputs.stream().map(RedirectedOutput::getStep)).toList();
+
+			// Extract the input files (ie Eneo file id:s) for the inputs actually in use for the current step execution
+			final var inputFilesInUse = session.getAllInput().entrySet().stream()
+				.filter(entry -> inputsInUse.contains(entry.getKey()))
+				.flatMap(entry -> entry.getValue().stream())
+				.map(Input::getIntricFileId)
+				.toList();
+
+			// Create an additional instruction on what information lies within each input
+			final var inputsInUseInfo = session.getInputInfo().entrySet().stream()
+				.filter(entry -> inputsInUse.contains(entry.getKey()))
+				.map(Map.Entry::getValue)
+				.collect(joining());
+
+			// Get the Eneo endpoint id
+			final var eneoEndpointId = step.getIntricEndpoint().id();
+
 			switch (step.getIntricEndpoint().type()) {
 				case SERVICE -> {
 					LOG.info("Running step {} using SERVICE {}", step.getName(), eneoEndpointId);

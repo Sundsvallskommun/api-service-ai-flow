@@ -36,7 +36,8 @@ public class Session {
 	public enum State {
 		CREATED,
 		RUNNING,
-		FINISHED
+		FINISHED,
+		ERROR
 	}
 
 	private final UUID id;

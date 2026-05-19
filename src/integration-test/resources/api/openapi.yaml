@@ -1061,6 +1061,7 @@ components:
             - CREATED
             - RUNNING
             - FINISHED
+            - ERROR
     StepExecution:
       type: object
       properties:

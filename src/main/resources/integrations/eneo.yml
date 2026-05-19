@@ -70,7 +70,7 @@ tags:
       Module operations. These endpoints are used to handle module access for
       tenants. Requires elevated privileges.
 paths:
-  '/api/v1/crawl-runs/{id}/':
+  '/crawl-runs/{id}/':
     get:
       tags:
         - crawl-runs
@@ -118,7 +118,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/apps/{id}/':
+  '/apps/{id}/':
     get:
       tags:
         - apps
@@ -277,7 +277,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/apps/{id}/runs/':
+  '/apps/{id}/runs/':
     get:
       tags:
         - apps
@@ -390,7 +390,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/apps/{id}/prompts/':
+  '/apps/{id}/prompts/':
     get:
       tags:
         - apps
@@ -441,7 +441,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/apps/{id}/publish/':
+  '/apps/{id}/publish/':
     post:
       tags:
         - apps
@@ -500,7 +500,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/app-runs/{id}/':
+  '/app-runs/{id}/':
     get:
       tags:
         - app-runs
@@ -597,7 +597,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/login/token/:
+  /users/login/token/:
     post:
       tags:
         - users
@@ -637,7 +637,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/login/openid-connect/mobilityguard/:
+  /users/login/openid-connect/mobilityguard/:
     post:
       tags:
         - users
@@ -672,7 +672,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/:
+  /users/:
     get:
       tags:
         - users
@@ -750,7 +750,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/me/:
+  /users/me/:
     get:
       tags:
         - users
@@ -778,7 +778,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/api-keys/:
+  /users/api-keys/:
     get:
       tags:
         - users
@@ -804,7 +804,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/tenant/:
+  /users/tenant/:
     get:
       tags:
         - users
@@ -832,7 +832,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/admin/invite/:
+  /users/admin/invite/:
     post:
       tags:
         - users
@@ -867,7 +867,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/users/admin/{id}/':
+  '/users/admin/{id}/':
     delete:
       tags:
         - users
@@ -946,7 +946,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/users/provision/:
+  /users/provision/:
     post:
       tags:
         - users
@@ -984,7 +984,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/info-blobs/:
+  /info-blobs/:
     get:
       tags:
         - info-blobs
@@ -1011,7 +1011,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/info-blobs/{id}/':
+  '/info-blobs/{id}/':
     get:
       tags:
         - info-blobs
@@ -1149,7 +1149,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/info-blobs/spaces/{space_id}/info-blobs/':
+  '/info-blobs/spaces/{space_id}/info-blobs/':
     get:
       tags:
         - info-blobs
@@ -1187,7 +1187,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/groups/:
+  /groups/:
     get:
       tags:
         - groups
@@ -1252,7 +1252,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/groups/{id}/':
+  '/groups/{id}/':
     get:
       tags:
         - groups
@@ -1390,7 +1390,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/groups/{id}/info-blobs/':
+  '/groups/{id}/info-blobs/':
     get:
       tags:
         - groups
@@ -1513,7 +1513,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/groups/{id}/info-blobs/upload/':
+  '/groups/{id}/info-blobs/upload/':
     post:
       tags:
         - groups
@@ -1560,7 +1560,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/groups/{id}/searches/':
+  '/groups/{id}/searches/':
     post:
       tags:
         - groups
@@ -1605,7 +1605,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/groups/{id}/transfer/':
+  '/groups/{id}/transfer/':
     post:
       tags:
         - groups
@@ -1646,7 +1646,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/:
+  /settings/:
     get:
       tags:
         - settings
@@ -1704,7 +1704,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/models/:
+  /settings/models/:
     get:
       tags:
         - settings
@@ -1733,7 +1733,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/formats/:
+  /settings/formats/:
     get:
       tags:
         - settings
@@ -1755,7 +1755,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/templates:
+  /settings/templates:
     patch:
       tags:
         - settings
@@ -1815,7 +1815,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/audit-logging:
+  /settings/audit-logging:
     patch:
       tags:
         - settings
@@ -1894,7 +1894,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/settings/provisioning:
+  /settings/provisioning:
     patch:
       tags:
         - settings
@@ -1956,7 +1956,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/assistants/:
+  /assistants/:
     get:
       tags:
         - assistants
@@ -2045,7 +2045,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/':
+  '/assistants/{id}/':
     get:
       tags:
         - assistants
@@ -2199,7 +2199,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/sessions/':
+  '/assistants/{id}/sessions/':
     get:
       tags:
         - assistants
@@ -2368,390 +2368,6 @@ paths:
                   - tools
                   - web_search_references
                 title: AskResponse
-                $defs:
-                  CompletionModelPublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      nickname:
-                        title: Nickname
-                        type: string
-                      family:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelFamily'
-                          - type: string
-                        title: Family
-                      token_limit:
-                        title: Token Limit
-                        type: integer
-                      is_deprecated:
-                        title: Is Deprecated
-                        type: boolean
-                      nr_billion_parameters:
-                        anyOf:
-                          - type: integer
-                          - type: 'null'
-                        title: Nr Billion Parameters
-                      hf_link:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Hf Link
-                      stability:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelStability'
-                          - type: string
-                        title: Stability
-                      hosting:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelHostingLocation'
-                          - type: string
-                        title: Hosting
-                      open_source:
-                        anyOf:
-                          - type: boolean
-                          - type: 'null'
-                        title: Open Source
-                      description:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Description
-                      deployment_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Deployment Name
-                      org:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelOrg'
-                          - type: string
-                          - type: 'null'
-                        title: Org
-                      vision:
-                        title: Vision
-                        type: boolean
-                      reasoning:
-                        title: Reasoning
-                        type: boolean
-                      base_url:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Base Url
-                      litellm_model_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Litellm Model Name
-                      is_org_enabled:
-                        default: false
-                        title: Is Org Enabled
-                        type: boolean
-                      is_org_default:
-                        default: false
-                        title: Is Org Default
-                        type: boolean
-                      tenant_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Tenant Id
-                      provider_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Provider Id
-                      can_access:
-                        default: false
-                        title: Can Access
-                        type: boolean
-                      is_locked:
-                        default: true
-                        title: Is Locked
-                        type: boolean
-                      lock_reason:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Lock Reason
-                      credential_provider:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Credential Provider
-                      security_classification:
-                        anyOf:
-                          - $ref: '#/components/schemas/SecurityClassificationPublic'
-                          - type: 'null'
-                      provider_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Provider Name
-                      provider_type:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Provider Type
-                    required:
-                      - id
-                      - name
-                      - nickname
-                      - family
-                      - token_limit
-                      - is_deprecated
-                      - stability
-                      - hosting
-                      - vision
-                      - reasoning
-                    title: CompletionModelPublic
-                    type: object
-                  FilePublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      mimetype:
-                        title: Mimetype
-                        type: string
-                      size:
-                        title: Size
-                        type: integer
-                      transcription:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Transcription
-                      token_count:
-                        anyOf:
-                          - type: integer
-                          - type: 'null'
-                        title: Token Count
-                    required:
-                      - id
-                      - name
-                      - mimetype
-                      - size
-                    title: FilePublic
-                    type: object
-                  InfoBlobAskAssistantPublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      metadata:
-                        $ref: '#/components/schemas/InfoBlobMetadata'
-                      group_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Group Id
-                      website_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Website Id
-                      score:
-                        title: Score
-                        type: number
-                    required:
-                      - id
-                      - metadata
-                      - score
-                    title: InfoBlobAskAssistantPublic
-                    type: object
-                  InfoBlobMetadata:
-                    properties:
-                      url:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Url
-                      title:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Title
-                      embedding_model_id:
-                        format: uuid
-                        title: Embedding Model Id
-                        type: string
-                      size:
-                        title: Size
-                        type: integer
-                    required:
-                      - embedding_model_id
-                      - size
-                    title: InfoBlobMetadata
-                    type: object
-                  ModelFamily:
-                    enum:
-                      - openai
-                      - mistral
-                      - vllm
-                      - claude
-                      - azure
-                      - ovhcloud
-                      - e5
-                    title: ModelFamily
-                    type: string
-                  ModelHostingLocation:
-                    enum:
-                      - usa
-                      - eu
-                      - swe
-                    title: ModelHostingLocation
-                    type: string
-                  ModelOrg:
-                    enum:
-                      - OpenAI
-                      - Meta
-                      - Microsoft
-                      - Anthropic
-                      - Mistral
-                      - KBLab
-                      - Google
-                      - Berget
-                      - GDM
-                    title: ModelOrg
-                    type: string
-                  ModelStability:
-                    enum:
-                      - stable
-                      - experimental
-                    title: ModelStability
-                    type: string
-                  SecurityClassificationPublic:
-                    description: Basic security classification information.
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      description:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Description
-                      security_level:
-                        title: Security Level
-                        type: integer
-                    required:
-                      - id
-                      - name
-                      - description
-                      - security_level
-                    title: SecurityClassificationPublic
-                    type: object
-                  ToolAssistant:
-                    properties:
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      handle:
-                        title: Handle
-                        type: string
-                    required:
-                      - id
-                      - handle
-                    title: ToolAssistant
-                    type: object
-                  UseTools:
-                    properties:
-                      assistants:
-                        items:
-                          $ref: '#/components/schemas/ToolAssistant'
-                        title: Assistants
-                        type: array
-                    required:
-                      - assistants
-                    title: UseTools
-                    type: object
-                  WebSearchResultPublic:
-                    properties:
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      title:
-                        title: Title
-                        type: string
-                      url:
-                        title: Url
-                        type: string
-                    required:
-                      - id
-                      - title
-                      - url
-                    title: WebSearchResultPublic
-                    type: object
         '400':
           description: Bad Request
           content:
@@ -2780,7 +2396,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/sessions/{session_id}/':
+  '/assistants/{id}/sessions/{session_id}/':
     get:
       tags:
         - assistants
@@ -2939,390 +2555,6 @@ paths:
                   - tools
                   - web_search_references
                 title: AskResponse
-                $defs:
-                  CompletionModelPublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      nickname:
-                        title: Nickname
-                        type: string
-                      family:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelFamily'
-                          - type: string
-                        title: Family
-                      token_limit:
-                        title: Token Limit
-                        type: integer
-                      is_deprecated:
-                        title: Is Deprecated
-                        type: boolean
-                      nr_billion_parameters:
-                        anyOf:
-                          - type: integer
-                          - type: 'null'
-                        title: Nr Billion Parameters
-                      hf_link:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Hf Link
-                      stability:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelStability'
-                          - type: string
-                        title: Stability
-                      hosting:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelHostingLocation'
-                          - type: string
-                        title: Hosting
-                      open_source:
-                        anyOf:
-                          - type: boolean
-                          - type: 'null'
-                        title: Open Source
-                      description:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Description
-                      deployment_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Deployment Name
-                      org:
-                        anyOf:
-                          - $ref: '#/components/schemas/ModelOrg'
-                          - type: string
-                          - type: 'null'
-                        title: Org
-                      vision:
-                        title: Vision
-                        type: boolean
-                      reasoning:
-                        title: Reasoning
-                        type: boolean
-                      base_url:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Base Url
-                      litellm_model_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Litellm Model Name
-                      is_org_enabled:
-                        default: false
-                        title: Is Org Enabled
-                        type: boolean
-                      is_org_default:
-                        default: false
-                        title: Is Org Default
-                        type: boolean
-                      tenant_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Tenant Id
-                      provider_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Provider Id
-                      can_access:
-                        default: false
-                        title: Can Access
-                        type: boolean
-                      is_locked:
-                        default: true
-                        title: Is Locked
-                        type: boolean
-                      lock_reason:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Lock Reason
-                      credential_provider:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Credential Provider
-                      security_classification:
-                        anyOf:
-                          - $ref: '#/components/schemas/SecurityClassificationPublic'
-                          - type: 'null'
-                      provider_name:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Provider Name
-                      provider_type:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Provider Type
-                    required:
-                      - id
-                      - name
-                      - nickname
-                      - family
-                      - token_limit
-                      - is_deprecated
-                      - stability
-                      - hosting
-                      - vision
-                      - reasoning
-                    title: CompletionModelPublic
-                    type: object
-                  FilePublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      mimetype:
-                        title: Mimetype
-                        type: string
-                      size:
-                        title: Size
-                        type: integer
-                      transcription:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Transcription
-                      token_count:
-                        anyOf:
-                          - type: integer
-                          - type: 'null'
-                        title: Token Count
-                    required:
-                      - id
-                      - name
-                      - mimetype
-                      - size
-                    title: FilePublic
-                    type: object
-                  InfoBlobAskAssistantPublic:
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      metadata:
-                        $ref: '#/components/schemas/InfoBlobMetadata'
-                      group_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Group Id
-                      website_id:
-                        anyOf:
-                          - format: uuid
-                            type: string
-                          - type: 'null'
-                        title: Website Id
-                      score:
-                        title: Score
-                        type: number
-                    required:
-                      - id
-                      - metadata
-                      - score
-                    title: InfoBlobAskAssistantPublic
-                    type: object
-                  InfoBlobMetadata:
-                    properties:
-                      url:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Url
-                      title:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Title
-                      embedding_model_id:
-                        format: uuid
-                        title: Embedding Model Id
-                        type: string
-                      size:
-                        title: Size
-                        type: integer
-                    required:
-                      - embedding_model_id
-                      - size
-                    title: InfoBlobMetadata
-                    type: object
-                  ModelFamily:
-                    enum:
-                      - openai
-                      - mistral
-                      - vllm
-                      - claude
-                      - azure
-                      - ovhcloud
-                      - e5
-                    title: ModelFamily
-                    type: string
-                  ModelHostingLocation:
-                    enum:
-                      - usa
-                      - eu
-                      - swe
-                    title: ModelHostingLocation
-                    type: string
-                  ModelOrg:
-                    enum:
-                      - OpenAI
-                      - Meta
-                      - Microsoft
-                      - Anthropic
-                      - Mistral
-                      - KBLab
-                      - Google
-                      - Berget
-                      - GDM
-                    title: ModelOrg
-                    type: string
-                  ModelStability:
-                    enum:
-                      - stable
-                      - experimental
-                    title: ModelStability
-                    type: string
-                  SecurityClassificationPublic:
-                    description: Basic security classification information.
-                    properties:
-                      created_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Created At
-                      updated_at:
-                        anyOf:
-                          - format: date-time
-                            type: string
-                          - type: 'null'
-                        title: Updated At
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      name:
-                        title: Name
-                        type: string
-                      description:
-                        anyOf:
-                          - type: string
-                          - type: 'null'
-                        title: Description
-                      security_level:
-                        title: Security Level
-                        type: integer
-                    required:
-                      - id
-                      - name
-                      - description
-                      - security_level
-                    title: SecurityClassificationPublic
-                    type: object
-                  ToolAssistant:
-                    properties:
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      handle:
-                        title: Handle
-                        type: string
-                    required:
-                      - id
-                      - handle
-                    title: ToolAssistant
-                    type: object
-                  UseTools:
-                    properties:
-                      assistants:
-                        items:
-                          $ref: '#/components/schemas/ToolAssistant'
-                        title: Assistants
-                        type: array
-                    required:
-                      - assistants
-                    title: UseTools
-                    type: object
-                  WebSearchResultPublic:
-                    properties:
-                      id:
-                        format: uuid
-                        title: Id
-                        type: string
-                      title:
-                        title: Title
-                        type: string
-                      url:
-                        title: Url
-                        type: string
-                    required:
-                      - id
-                      - title
-                      - url
-                    title: WebSearchResultPublic
-                    type: object
         '400':
           description: Bad Request
           content:
@@ -3411,7 +2643,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/sessions/{session_id}/feedback/':
+  '/assistants/{id}/sessions/{session_id}/feedback/':
     post:
       tags:
         - assistants
@@ -3478,7 +2710,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/api-keys/':
+  '/assistants/{id}/api-keys/':
     get:
       tags:
         - assistants
@@ -3525,7 +2757,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/transfer/':
+  '/assistants/{id}/transfer/':
     post:
       tags:
         - assistants
@@ -3566,7 +2798,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/publish/':
+  '/assistants/{id}/publish/':
     post:
       tags:
         - assistants
@@ -3625,7 +2857,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/assistants/{id}/token-estimate':
+  '/assistants/{id}/token-estimate':
     post:
       tags:
         - assistants
@@ -3693,7 +2925,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/group-chats/{id}/':
+  '/group-chats/{id}/':
     get:
       tags:
         - group-chats
@@ -3849,7 +3081,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/group-chats/{id}/publish/':
+  '/group-chats/{id}/publish/':
     post:
       tags:
         - group-chats
@@ -3908,7 +3140,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/conversations/:
+  /conversations/:
     get:
       tags:
         - conversations
@@ -4111,72 +3343,6 @@ paths:
                       - references
                       - session_id
                     title: SSEText
-                    $defs:
-                      InfoBlobAskAssistantPublic:
-                        properties:
-                          created_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Created At
-                          updated_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Updated At
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          metadata:
-                            $ref: '#/components/schemas/InfoBlobMetadata'
-                          group_id:
-                            anyOf:
-                              - format: uuid
-                                type: string
-                              - type: 'null'
-                            title: Group Id
-                          website_id:
-                            anyOf:
-                              - format: uuid
-                                type: string
-                              - type: 'null'
-                            title: Website Id
-                          score:
-                            title: Score
-                            type: number
-                        required:
-                          - id
-                          - metadata
-                          - score
-                        title: InfoBlobAskAssistantPublic
-                        type: object
-                      InfoBlobMetadata:
-                        properties:
-                          url:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Url
-                          title:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Title
-                          embedding_model_id:
-                            format: uuid
-                            title: Embedding Model Id
-                            type: string
-                          size:
-                            title: Size
-                            type: integer
-                        required:
-                          - embedding_model_id
-                          - size
-                        title: InfoBlobMetadata
-                        type: object
                   - type: object
                     properties:
                       session_id:
@@ -4189,12 +3355,6 @@ paths:
                       - intric_event_type
                       - session_id
                     title: SSEIntricEvent
-                    $defs:
-                      IntricEventType:
-                        enum:
-                          - generating_image
-                        title: IntricEventType
-                        type: string
                   - type: object
                     properties:
                       session_id:
@@ -4210,51 +3370,6 @@ paths:
                       - generated_files
                       - session_id
                     title: SSEFiles
-                    $defs:
-                      FilePublic:
-                        properties:
-                          created_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Created At
-                          updated_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Updated At
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          name:
-                            title: Name
-                            type: string
-                          mimetype:
-                            title: Mimetype
-                            type: string
-                          size:
-                            title: Size
-                            type: integer
-                          transcription:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Transcription
-                          token_count:
-                            anyOf:
-                              - type: integer
-                              - type: 'null'
-                            title: Token Count
-                        required:
-                          - id
-                          - name
-                          - mimetype
-                          - size
-                        title: FilePublic
-                        type: object
                   - type: object
                     properties:
                       session_id:
@@ -4299,159 +3414,6 @@ paths:
                       - tools
                       - web_search_references
                     title: SSEFirstChunk
-                    $defs:
-                      FilePublic:
-                        properties:
-                          created_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Created At
-                          updated_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Updated At
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          name:
-                            title: Name
-                            type: string
-                          mimetype:
-                            title: Mimetype
-                            type: string
-                          size:
-                            title: Size
-                            type: integer
-                          transcription:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Transcription
-                          token_count:
-                            anyOf:
-                              - type: integer
-                              - type: 'null'
-                            title: Token Count
-                        required:
-                          - id
-                          - name
-                          - mimetype
-                          - size
-                        title: FilePublic
-                        type: object
-                      InfoBlobAskAssistantPublic:
-                        properties:
-                          created_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Created At
-                          updated_at:
-                            anyOf:
-                              - format: date-time
-                                type: string
-                              - type: 'null'
-                            title: Updated At
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          metadata:
-                            $ref: '#/components/schemas/InfoBlobMetadata'
-                          group_id:
-                            anyOf:
-                              - format: uuid
-                                type: string
-                              - type: 'null'
-                            title: Group Id
-                          website_id:
-                            anyOf:
-                              - format: uuid
-                                type: string
-                              - type: 'null'
-                            title: Website Id
-                          score:
-                            title: Score
-                            type: number
-                        required:
-                          - id
-                          - metadata
-                          - score
-                        title: InfoBlobAskAssistantPublic
-                        type: object
-                      InfoBlobMetadata:
-                        properties:
-                          url:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Url
-                          title:
-                            anyOf:
-                              - type: string
-                              - type: 'null'
-                            title: Title
-                          embedding_model_id:
-                            format: uuid
-                            title: Embedding Model Id
-                            type: string
-                          size:
-                            title: Size
-                            type: integer
-                        required:
-                          - embedding_model_id
-                          - size
-                        title: InfoBlobMetadata
-                        type: object
-                      ToolAssistant:
-                        properties:
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          handle:
-                            title: Handle
-                            type: string
-                        required:
-                          - id
-                          - handle
-                        title: ToolAssistant
-                        type: object
-                      UseTools:
-                        properties:
-                          assistants:
-                            items:
-                              $ref: '#/components/schemas/ToolAssistant'
-                            title: Assistants
-                            type: array
-                        required:
-                          - assistants
-                        title: UseTools
-                        type: object
-                      WebSearchResultPublic:
-                        properties:
-                          id:
-                            format: uuid
-                            title: Id
-                            type: string
-                          title:
-                            title: Title
-                            type: string
-                          url:
-                            title: Url
-                            type: string
-                        required:
-                          - id
-                          - title
-                          - url
-                        title: WebSearchResultPublic
-                        type: object
                   - type: object
                     properties:
                       session_id:
@@ -4498,7 +3460,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/conversations/{session_id}/':
+  '/conversations/{session_id}/':
     get:
       tags:
         - conversations
@@ -4601,7 +3563,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/conversations/{session_id}/feedback/':
+  '/conversations/{session_id}/feedback/':
     post:
       tags:
         - conversations
@@ -4661,7 +3623,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/conversations/{session_id}/title/':
+  '/conversations/{session_id}/title/':
     post:
       tags:
         - conversations
@@ -4713,7 +3675,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/services/:
+  /services/:
     get:
       tags:
         - services
@@ -4810,7 +3772,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/services/{id}/':
+  '/services/{id}/':
     get:
       tags:
         - services
@@ -4952,7 +3914,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/services/{id}/run/':
+  '/services/{id}/run/':
     get:
       tags:
         - services
@@ -5056,7 +4018,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/services/{id}/transfer/':
+  '/services/{id}/transfer/':
     post:
       tags:
         - services
@@ -5097,7 +4059,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/logging/{message_id}/':
+  '/logging/{message_id}/':
     get:
       tags:
         - logging
@@ -5135,7 +4097,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/analysis/counts/:
+  /analysis/counts/:
     get:
       tags:
         - analysis
@@ -5159,7 +4121,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/analysis/metadata-statistics/:
+  /analysis/metadata-statistics/:
     get:
       tags:
         - analysis
@@ -5217,7 +4179,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/analysis/assistants/{assistant_id}/':
+  '/analysis/assistants/{assistant_id}/':
     get:
       tags:
         - analysis
@@ -5419,7 +4381,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/analysis/conversation-insights/:
+  /analysis/conversation-insights/:
     get:
       tags:
         - analysis
@@ -5626,7 +4588,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/analysis/conversation-insights/sessions/:
+  /analysis/conversation-insights/sessions/:
     get:
       tags:
         - analysis
@@ -5769,7 +4731,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/analysis/conversation-insights/sessions/{session_id}/':
+  '/analysis/conversation-insights/sessions/{session_id}/':
     get:
       tags:
         - analysis
@@ -5830,7 +4792,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/users/:
+  /admin/users/:
     get:
       tags:
         - admin
@@ -6156,7 +5118,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/users/{username}/':
+  '/admin/users/{username}/':
     get:
       tags:
         - admin
@@ -6265,7 +5227,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/users/{username}':
+  '/admin/users/{username}':
     delete:
       tags:
         - admin
@@ -6316,7 +5278,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/users/{username}/deactivate':
+  '/admin/users/{username}/deactivate':
     post:
       tags:
         - admin
@@ -6366,7 +5328,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/users/{username}/reactivate':
+  '/admin/users/{username}/reactivate':
     post:
       tags:
         - admin
@@ -6416,7 +5378,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/users/inactive:
+  /admin/users/inactive:
     get:
       tags:
         - admin
@@ -6450,7 +5412,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/users/deleted:
+  /admin/users/deleted:
     get:
       tags:
         - admin
@@ -6484,7 +5446,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/predefined-roles/:
+  /admin/predefined-roles/:
     get:
       tags:
         - admin
@@ -6539,7 +5501,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/privacy-policy/:
+  /admin/privacy-policy/:
     post:
       tags:
         - admin
@@ -6574,7 +5536,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/credentials/{provider}':
+  '/admin/credentials/{provider}':
     put:
       tags:
         - admin
@@ -6633,7 +5595,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/credentials/:
+  /admin/credentials/:
     get:
       tags:
         - admin
@@ -6660,7 +5622,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/templates/assistants/:
+  /admin/templates/assistants/:
     get:
       tags:
         - admin-templates
@@ -6800,7 +5762,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/assistants/{template_id}':
+  '/admin/templates/assistants/{template_id}':
     delete:
       tags:
         - admin-templates
@@ -6965,7 +5927,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/assistants/{template_id}/default':
+  '/admin/templates/assistants/{template_id}/default':
     patch:
       tags:
         - admin-templates
@@ -7057,7 +6019,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/assistants/{template_id}/rollback':
+  '/admin/templates/assistants/{template_id}/rollback':
     post:
       tags:
         - admin-templates
@@ -7123,7 +6085,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/assistants/{template_id}/restore':
+  '/admin/templates/assistants/{template_id}/restore':
     post:
       tags:
         - admin-templates
@@ -7189,7 +6151,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/assistants/{template_id}/permanent':
+  '/admin/templates/assistants/{template_id}/permanent':
     delete:
       tags:
         - admin-templates
@@ -7245,7 +6207,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/templates/assistants/deleted:
+  /admin/templates/assistants/deleted:
     get:
       tags:
         - admin-templates
@@ -7282,7 +6244,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/templates/apps/:
+  /admin/templates/apps/:
     get:
       tags:
         - admin-templates
@@ -7414,7 +6376,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/apps/{template_id}':
+  '/admin/templates/apps/{template_id}':
     delete:
       tags:
         - admin-templates
@@ -7557,7 +6519,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/apps/{template_id}/default':
+  '/admin/templates/apps/{template_id}/default':
     patch:
       tags:
         - admin-templates
@@ -7648,7 +6610,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/apps/{template_id}/rollback':
+  '/admin/templates/apps/{template_id}/rollback':
     post:
       tags:
         - admin-templates
@@ -7714,7 +6676,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/apps/{template_id}/restore':
+  '/admin/templates/apps/{template_id}/restore':
     post:
       tags:
         - admin-templates
@@ -7779,7 +6741,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/templates/apps/{template_id}/permanent':
+  '/admin/templates/apps/{template_id}/permanent':
     delete:
       tags:
         - admin-templates
@@ -7835,7 +6797,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/templates/apps/deleted:
+  /admin/templates/apps/deleted:
     get:
       tags:
         - admin-templates
@@ -7872,7 +6834,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/jobs/:
+  /jobs/:
     get:
       tags:
         - jobs
@@ -7895,7 +6857,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/jobs/{id}/':
+  '/jobs/{id}/':
     get:
       tags:
         - jobs
@@ -7934,7 +6896,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/user-groups/:
+  /user-groups/:
     get:
       tags:
         - user-groups
@@ -7991,7 +6953,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/user-groups/{id}/':
+  '/user-groups/{id}/':
     get:
       tags:
         - user-groups
@@ -8130,7 +7092,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/user-groups/{id}/users/{user_id}/':
+  '/user-groups/{id}/users/{user_id}/':
     post:
       tags:
         - user-groups
@@ -8238,7 +7200,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/allowed-origins/:
+  /allowed-origins/:
     get:
       tags:
         - allowed-origins
@@ -8261,7 +7223,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/completion-models/:
+  /completion-models/:
     get:
       tags:
         - completion-models
@@ -8284,7 +7246,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/{id}/':
+  '/completion-models/{id}/':
     post:
       tags:
         - completion-models
@@ -8335,7 +7297,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/{model_id}/usage':
+  '/completion-models/{model_id}/usage':
     get:
       tags:
         - completion-models
@@ -8383,7 +7345,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/{model_id}/usage/details':
+  '/completion-models/{model_id}/usage/details':
     get:
       tags:
         - completion-models
@@ -8466,7 +7428,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/{model_id}/migrate':
+  '/completion-models/{model_id}/migrate':
     post:
       tags:
         - completion-models
@@ -8530,7 +7492,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/completion-models/usage-summary:
+  /completion-models/usage-summary:
     get:
       tags:
         - completion-models
@@ -8559,7 +7521,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/{model_id}/migration-history':
+  '/completion-models/{model_id}/migration-history':
     get:
       tags:
         - completion-models
@@ -8635,7 +7597,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/completion-models/migration-history:
+  /completion-models/migration-history:
     get:
       tags:
         - completion-models
@@ -8695,7 +7657,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/completion-models/migration-history/{migration_id}':
+  '/completion-models/migration-history/{migration_id}':
     get:
       tags:
         - completion-models
@@ -8742,7 +7704,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/embedding-models/:
+  /embedding-models/:
     get:
       tags:
         - embedding-models
@@ -8765,7 +7727,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/embedding-models/{id}/':
+  '/embedding-models/{id}/':
     get:
       tags:
         - embedding-models
@@ -8860,7 +7822,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/transcription-models/:
+  /transcription-models/:
     get:
       tags:
         - transcription-models
@@ -8884,7 +7846,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/transcription-models/{id}/':
+  '/transcription-models/{id}/':
     post:
       tags:
         - transcription-models
@@ -8935,7 +7897,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/model-providers/:
+  /admin/model-providers/:
     get:
       tags:
         - admin
@@ -9003,7 +7965,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/model-providers/{provider_id}/':
+  '/admin/model-providers/{provider_id}/':
     get:
       tags:
         - admin
@@ -9153,7 +8115,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/tenant-models/completion/:
+  /admin/tenant-models/completion/:
     post:
       tags:
         - admin
@@ -9203,7 +8165,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/tenant-models/completion/{model_id}/':
+  '/admin/tenant-models/completion/{model_id}/':
     put:
       tags:
         - admin
@@ -9314,7 +8276,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/tenant-models/embedding/:
+  /admin/tenant-models/embedding/:
     post:
       tags:
         - admin
@@ -9362,7 +8324,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/tenant-models/embedding/{model_id}/':
+  '/admin/tenant-models/embedding/{model_id}/':
     put:
       tags:
         - admin
@@ -9472,7 +8434,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/tenant-models/transcription/:
+  /admin/tenant-models/transcription/:
     post:
       tags:
         - admin
@@ -9521,7 +8483,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/tenant-models/transcription/{model_id}/':
+  '/admin/tenant-models/transcription/{model_id}/':
     put:
       tags:
         - admin
@@ -9631,7 +8593,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/files/:
+  /files/:
     get:
       tags:
         - files
@@ -9700,7 +8662,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/files/{id}/':
+  '/files/{id}/':
     get:
       tags:
         - files
@@ -9773,7 +8735,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/files/{id}/signed-url/':
+  '/files/{id}/signed-url/':
     post:
       tags:
         - files
@@ -9824,7 +8786,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/files/{id}/download/':
+  '/files/{id}/download/':
     get:
       tags:
         - files
@@ -9886,13 +8848,13 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/icons/{id}/':
+  '/icons/{id}/':
     get:
       tags:
         - icons
@@ -9971,7 +8933,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/icons/:
+  /icons/:
     post:
       tags:
         - icons
@@ -10019,7 +8981,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/limits/:
+  /limits/:
     get:
       tags:
         - limits
@@ -10040,7 +9002,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/spaces/:
+  /spaces/:
     get:
       tags:
         - spaces
@@ -10126,7 +9088,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/':
+  '/spaces/{id}/':
     get:
       tags:
         - spaces
@@ -10279,7 +9241,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/security_classification/{security_classification_id}/impact-analysis/':
+  '/spaces/{id}/security_classification/{security_classification_id}/impact-analysis/':
     get:
       tags:
         - spaces
@@ -10331,7 +9293,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/applications/':
+  '/spaces/{id}/applications/':
     get:
       tags:
         - spaces
@@ -10376,7 +9338,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/applications/assistants/':
+  '/spaces/{id}/applications/assistants/':
     post:
       tags:
         - spaces
@@ -10439,7 +9401,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/applications/group-chats/':
+  '/spaces/{id}/applications/group-chats/':
     post:
       tags:
         - spaces
@@ -10503,7 +9465,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/applications/apps/':
+  '/spaces/{id}/applications/apps/':
     post:
       tags:
         - spaces
@@ -10566,7 +9528,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/applications/services/':
+  '/spaces/{id}/applications/services/':
     post:
       tags:
         - spaces
@@ -10629,7 +9591,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/':
+  '/spaces/{id}/knowledge/':
     get:
       tags:
         - spaces
@@ -10674,7 +9636,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/groups/':
+  '/spaces/{id}/knowledge/groups/':
     post:
       tags:
         - spaces
@@ -10737,7 +9699,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/websites/':
+  '/spaces/{id}/knowledge/websites/':
     post:
       tags:
         - spaces
@@ -10822,7 +9784,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/add/{user_integration_id}/':
+  '/spaces/{id}/knowledge/integrations/add/{user_integration_id}/':
     post:
       tags:
         - spaces
@@ -10877,7 +9839,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/add/{user_integration_id}/batch/':
+  '/spaces/{id}/knowledge/integrations/add/{user_integration_id}/batch/':
     post:
       tags:
         - spaces
@@ -10933,7 +9895,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/remove/{integration_knowledge_id}/':
+  '/spaces/{id}/knowledge/integrations/remove/{integration_knowledge_id}/':
     delete:
       tags:
         - spaces
@@ -10978,7 +9940,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/wrappers/{wrapper_id}/':
+  '/spaces/{id}/knowledge/integrations/wrappers/{wrapper_id}/':
     delete:
       tags:
         - spaces
@@ -11082,7 +10044,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/':
+  '/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/':
     patch:
       tags:
         - spaces
@@ -11137,7 +10099,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/sync/':
+  '/spaces/{id}/knowledge/integrations/{integration_knowledge_id}/sync/':
     post:
       tags:
         - spaces
@@ -11186,7 +10148,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/members/':
+  '/spaces/{id}/members/':
     post:
       tags:
         - spaces
@@ -11243,7 +10205,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/members/{user_id}/':
+  '/spaces/{id}/members/{user_id}/':
     delete:
       tags:
         - spaces
@@ -11376,7 +10338,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/group-members/':
+  '/spaces/{id}/group-members/':
     get:
       tags:
         - spaces
@@ -11498,7 +10460,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/spaces/{id}/group-members/{group_id}/':
+  '/spaces/{id}/group-members/{group_id}/':
     delete:
       tags:
         - spaces
@@ -11642,7 +10604,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/spaces/type/personal/:
+  /spaces/type/personal/:
     get:
       tags:
         - spaces
@@ -11665,7 +10627,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/spaces/type/organization/:
+  /spaces/type/organization/:
     get:
       tags:
         - spaces
@@ -11688,7 +10650,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/dashboard/:
+  /dashboard/:
     get:
       tags:
         - dashboard
@@ -11727,7 +10689,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/websites/:
+  /websites/:
     get:
       tags:
         - websites
@@ -11804,7 +10766,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/websites/check-url/:
+  /websites/check-url/:
     get:
       tags:
         - websites
@@ -11863,7 +10825,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/websites/bulk/run/:
+  /websites/bulk/run/:
     post:
       tags:
         - websites
@@ -11946,7 +10908,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/websites/{id}/':
+  '/websites/{id}/':
     get:
       tags:
         - websites
@@ -12090,7 +11052,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/websites/{id}/run/':
+  '/websites/{id}/run/':
     post:
       tags:
         - websites
@@ -12159,7 +11121,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/websites/{id}/runs/':
+  '/websites/{id}/runs/':
     get:
       tags:
         - websites
@@ -12200,7 +11162,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/websites/{id}/transfer/':
+  '/websites/{id}/transfer/':
     post:
       tags:
         - websites
@@ -12243,7 +11205,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/websites/{id}/info-blobs/':
+  '/websites/{id}/info-blobs/':
     get:
       tags:
         - websites
@@ -12296,7 +11258,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/prompts/{id}/':
+  '/prompts/{id}/':
     get:
       tags:
         - prompts
@@ -12461,7 +11423,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/templates/apps/:
+  /templates/apps/:
     get:
       tags:
         - apps-templates
@@ -12514,7 +11476,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/templates/assistants/:
+  /templates/assistants/:
     get:
       tags:
         - assistants-templates
@@ -12567,7 +11529,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/templates/:
+  /templates/:
     get:
       tags:
         - templates
@@ -12591,7 +11553,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/storage/:
+  /storage/:
     get:
       tags:
         - storage
@@ -12614,7 +11576,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/storage/spaces/:
+  /storage/spaces/:
     get:
       tags:
         - storage
@@ -12637,7 +11599,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/token-usage/:
+  /token-usage/:
     get:
       tags:
         - token-usage
@@ -12708,7 +11670,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/token-usage/users:
+  /token-usage/users:
     get:
       tags:
         - token-usage
@@ -12823,7 +11785,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/token-usage/users/{user_id}/summary':
+  '/token-usage/users/{user_id}/summary':
     get:
       tags:
         - token-usage
@@ -12903,7 +11865,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/token-usage/users/{user_id}':
+  '/token-usage/users/{user_id}':
     get:
       tags:
         - token-usage
@@ -12983,7 +11945,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/security-classifications/:
+  /security-classifications/:
     get:
       tags:
         - security-classifications
@@ -13131,7 +12093,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/security-classifications/{id}/':
+  '/security-classifications/{id}/':
     get:
       tags:
         - security-classifications
@@ -13329,7 +12291,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/security-classifications/enable/:
+  /security-classifications/enable/:
     post:
       tags:
         - security-classifications
@@ -13389,7 +12351,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/config:
+  /audit/config:
     get:
       tags:
         - audit
@@ -13450,7 +12412,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/config/actions:
+  /audit/config/actions:
     get:
       tags:
         - audit
@@ -13511,7 +12473,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/access-session/rate-limit:
+  /audit/access-session/rate-limit:
     delete:
       tags:
         - audit
@@ -13549,7 +12511,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/access-session:
+  /audit/access-session:
     post:
       tags:
         - audit
@@ -13615,7 +12577,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/logs:
+  /audit/logs:
     get:
       tags:
         - audit
@@ -13764,7 +12726,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/audit/logs/user/{user_id}':
+  '/audit/logs/user/{user_id}':
     get:
       tags:
         - audit
@@ -13865,7 +12827,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/logs/export:
+  /audit/logs/export:
     get:
       tags:
         - audit
@@ -14001,7 +12963,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/logs/export/async:
+  /audit/logs/export/async:
     post:
       tags:
         - audit
@@ -14068,7 +13030,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/audit/logs/export/{job_id}/status':
+  '/audit/logs/export/{job_id}/status':
     get:
       tags:
         - audit
@@ -14118,7 +13080,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/audit/logs/export/{job_id}/download':
+  '/audit/logs/export/{job_id}/download':
     get:
       tags:
         - audit
@@ -14167,7 +13129,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/audit/logs/export/{job_id}/cancel':
+  '/audit/logs/export/{job_id}/cancel':
     post:
       tags:
         - audit
@@ -14216,7 +13178,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/audit/retention-policy:
+  /audit/retention-policy:
     get:
       tags:
         - audit
@@ -14314,7 +13276,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/integrations/:
+  /integrations/:
     get:
       tags:
         - integrations
@@ -14337,7 +13299,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/integrations/tenant/:
+  /integrations/tenant/:
     get:
       tags:
         - integrations
@@ -14377,7 +13339,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/tenant/add/{integration_id}/':
+  '/integrations/tenant/add/{integration_id}/':
     post:
       tags:
         - integrations
@@ -14417,7 +13379,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/tenant/remove/{tenant_integration_id}/':
+  '/integrations/tenant/remove/{tenant_integration_id}/':
     delete:
       tags:
         - integrations
@@ -14453,7 +13415,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/integrations/me/:
+  /integrations/me/:
     get:
       tags:
         - integrations
@@ -14481,7 +13443,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/spaces/{space_id}/available/':
+  '/integrations/spaces/{space_id}/available/':
     get:
       tags:
         - integrations
@@ -14530,7 +13492,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/users/{user_integration_id}/':
+  '/integrations/users/{user_integration_id}/':
     delete:
       tags:
         - integrations
@@ -14566,7 +13528,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/sync-logs/{integration_knowledge_id}/':
+  '/integrations/sync-logs/{integration_knowledge_id}/':
     get:
       tags:
         - integrations
@@ -14632,7 +13594,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/{user_integration_id}/preview/':
+  '/integrations/{user_integration_id}/preview/':
     get:
       tags:
         - integrations
@@ -14672,7 +13634,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/{user_integration_id}/sharepoint/tree/':
+  '/integrations/{user_integration_id}/sharepoint/tree/':
     get:
       tags:
         - integrations
@@ -14785,7 +13747,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/{integration_id}/':
+  '/integrations/{integration_id}/':
     get:
       tags:
         - integrations
@@ -14824,7 +13786,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/integrations/sharepoint/webhook/:
+  /integrations/sharepoint/webhook/:
     get:
       tags:
         - integrations
@@ -14898,7 +13860,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/app:
+  /admin/sharepoint/app:
     get:
       tags:
         - admin
@@ -15032,7 +13994,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/app/test:
+  /admin/sharepoint/app/test:
     post:
       tags:
         - admin
@@ -15075,7 +14037,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/subscriptions:
+  /admin/sharepoint/subscriptions:
     get:
       tags:
         - admin
@@ -15111,7 +14073,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/subscriptions/renew-expired:
+  /admin/sharepoint/subscriptions/renew-expired:
     post:
       tags:
         - admin
@@ -15144,7 +14106,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/admin/sharepoint/subscriptions/{subscription_id}/recreate':
+  '/admin/sharepoint/subscriptions/{subscription_id}/recreate':
     post:
       tags:
         - admin
@@ -15194,7 +14156,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/service-account/auth/start:
+  /admin/sharepoint/service-account/auth/start:
     post:
       tags:
         - admin
@@ -15239,7 +14201,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/admin/sharepoint/service-account/auth/callback:
+  /admin/sharepoint/service-account/auth/callback:
     post:
       tags:
         - admin
@@ -15285,7 +14247,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/ai-models/:
+  /ai-models/:
     get:
       tags:
         - ai-models
@@ -15341,7 +14303,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/integrations/auth/{tenant_integration_id}/url/':
+  '/integrations/auth/{tenant_integration_id}/url/':
     get:
       tags:
         - integrations
@@ -15390,7 +14352,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/integrations/auth/callback/token/:
+  /integrations/auth/callback/token/:
     post:
       tags:
         - integrations
@@ -15425,7 +14387,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/auth/federation-status:
+  /auth/federation-status:
     get:
       tags:
         - authentication
@@ -15451,7 +14413,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/auth/tenants:
+  /auth/tenants:
     get:
       tags:
         - authentication
@@ -15477,7 +14439,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/auth/initiate:
+  /auth/initiate:
     get:
       tags:
         - authentication
@@ -15541,7 +14503,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/auth/callback:
+  /auth/callback:
     post:
       tags:
         - authentication
@@ -15583,7 +14545,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/api-docs:
+  /api-docs:
     get:
       tags:
         - Documentation
@@ -15600,13 +14562,13 @@ paths:
               schema: {}
       security:
         - default: []
-      x-auth-type: Application & Application User
+      x-auth-type: None
       x-throttling-tier: Unlimited
       x-wso2-application-security:
         security-types:
           - oauth2
         optional: false
-  /api/v1/roles/permissions/:
+  /roles/permissions/:
     get:
       tags:
         - roles
@@ -15638,7 +14600,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  /api/v1/roles/:
+  /roles/:
     get:
       tags:
         - roles
@@ -15695,7 +14657,7 @@ paths:
         security-types:
           - oauth2
         optional: false
-  '/api/v1/roles/{role_id}/':
+  '/roles/{role_id}/':
     get:
       tags:
         - roles
@@ -19112,18 +18074,43 @@ components:
           title: Response Timestamp Utc
         crawler_activity:
           $ref: '#/components/schemas/CrawlerActivity'
+          default:
+            db_query_ok: true
+            arq_ongoing: 0
         arq:
           $ref: '#/components/schemas/ARQHealth'
+          default:
+            j_complete: 0
+            j_failed: 0
+            j_retried: 0
+            j_ongoing: 0
+            queued: 0
         watchdog:
           $ref: '#/components/schemas/WatchdogMetrics'
+          default:
+            zombies_reconciled: 0
+            expired_killed: 0
+            rescued: 0
+            early_zombies_failed: 0
+            long_running_failed: 0
+            slots_released: 0
         feeder:
           $ref: '#/components/schemas/FeederLeader'
+          default:
+            status: UNKNOWN
         pending:
           $ref: '#/components/schemas/PendingQueueSummary'
+          default:
+            total: 0
+            tenant_count: 0
+            top_tenants: {}
         thresholds:
           $ref: '#/components/schemas/HealthThresholds'
         debug:
           $ref: '#/components/schemas/DebugInfo'
+          default:
+            arq_raw: ''
+            queue_name: 'arq:queue'
       required:
         - response_timestamp_utc
         - status
@@ -29585,6 +28572,8 @@ x-wso2-cors:
     - Internal-Key
     - testKey
     - api-key
+    - X-Authorization
+    - Authorization
   accessControlAllowMethods:
     - GET
     - PUT
