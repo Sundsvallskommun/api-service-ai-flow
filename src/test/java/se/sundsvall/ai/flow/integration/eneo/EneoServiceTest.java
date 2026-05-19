@@ -3,6 +3,7 @@ package se.sundsvall.ai.flow.integration.eneo;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
 import generated.eneo.ai.FilePublic;
+import generated.eneo.ai.ModelId;
 import generated.eneo.ai.RunService;
 import generated.eneo.ai.ServiceOutput;
 import java.util.List;
@@ -58,7 +59,7 @@ class EneoServiceTest {
 		var uploadedInputFilesInUseInfo = "someInfo";
 		var askAssistantRequest = new AskAssistant()
 			.question(uploadedInputFilesInUseInfo)
-			.files(uploadedInputFilesInUse);
+			.files(uploadedInputFilesInUse.stream().map(id -> new ModelId().id(id)).toList());
 		var intricSessionId = UUID.randomUUID();
 		var answer = "someAnswer";
 

@@ -139,7 +139,7 @@
 						</goals>
 						<configuration>
 							<inputSpec>src/main/resources/integrations/eneo.yml</inputSpec>
-							<modelsToGenerate>AskAssistant,AskResponse,FilePublic,RunService,ServiceOutput</modelsToGenerate>
+							<modelsToGenerate>AskAssistant,AskResponse,FilePublic,ModelId,RunService,ServiceOutput</modelsToGenerate>
 							<schemaMappings>UseTools=java.lang.Object,InfoBlobAskAssistantPublic=java.lang.Object,WebSearchResultPublic=java.lang.Object,CompletionModelPublic=java.lang.Object</schemaMappings>
 							<typeMappings>UseTools=Object,InfoBlobAskAssistantPublic=Object,WebSearchResultPublic=Object,CompletionModelPublic=Object</typeMappings>
 							<configOptions>

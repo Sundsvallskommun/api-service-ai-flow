@@ -23,8 +23,22 @@ class EneoMapperTest {
 
 		assertThat(runService).isNotNull().satisfies(service -> {
 			assertThat(service.getInput()).isEqualTo(input);
-			assertThat(service.getFiles()).containsExactly(uploadedInputFile);
+			assertThat(service.getFiles()).hasSize(1);
+			assertThat(service.getFiles().getFirst().getId()).isEqualTo(uploadedInputFile);
 		});
+	}
+
+	@Test
+	void toModelIdsTest() {
+		var id1 = UUID.randomUUID();
+		var id2 = UUID.randomUUID();
+		var ids = List.of(id1, id2);
+
+		var modelIds = EneoMapper.toModelIds(ids);
+
+		assertThat(modelIds).isNotNull().hasSize(2)
+			.extracting("id")
+			.containsExactlyInAnyOrder(id1, id2);
 	}
 
 	@Test
@@ -37,7 +51,8 @@ class EneoMapperTest {
 
 		assertThat(askAssistant).isNotNull().satisfies(assistant -> {
 			assertThat(assistant.getQuestion()).isEqualTo(question);
-			assertThat(assistant.getFiles()).containsExactly(uploadedInputFile);
+			assertThat(assistant.getFiles()).hasSize(1);
+			assertThat(assistant.getFiles().getFirst().getId()).isEqualTo(uploadedInputFile);
 		});
 	}
 
