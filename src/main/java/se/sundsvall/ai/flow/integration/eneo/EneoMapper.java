@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import generated.eneo.ai.AskAssistant;
 import generated.eneo.ai.AskResponse;
-import generated.eneo.ai.ModelId;
 import generated.eneo.ai.RunService;
 import generated.eneo.ai.ServiceOutput;
 import java.util.List;
@@ -28,19 +27,13 @@ public final class EneoMapper {
 	public static RunService toRunService(final String input, final List<UUID> uploadedInputFilesInUse) {
 		return new RunService()
 			.input(input)
-			.files(toModelIds(uploadedInputFilesInUse));
-	}
-
-	public static List<ModelId> toModelIds(final List<UUID> ids) {
-		return ids.stream()
-			.map(id -> new ModelId().id(id))
-			.toList();
+			.files(uploadedInputFilesInUse);
 	}
 
 	public static AskAssistant toAskAssistant(final String question, final List<UUID> uploadedInputFilesInUse) {
 		return new AskAssistant()
 			.question(question)
-			.files(toModelIds(uploadedInputFilesInUse));
+			.files(uploadedInputFilesInUse);
 	}
 
 	public static Response toResponse(final AskResponse askResponse) {
