@@ -1,6 +1,7 @@
 package se.sundsvall.ai.flow.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,7 +31,7 @@ class StaleSessionReaper {
 		}
 
 		sessions.forEach(session -> {
-			var now = LocalDateTime.now();
+			var now = LocalDateTime.now(ZoneId.systemDefault());
 			var lastUpdatedAt = session.getLastUpdatedAt();
 			var ttlInMinutes = session.getFlow().getTtlInMinutes();
 
