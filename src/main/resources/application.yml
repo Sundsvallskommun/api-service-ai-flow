@@ -26,6 +26,12 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: false
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 10
+      thread-name-prefix: Async-
   servlet:
     multipart:
       max-file-size: 25MB
