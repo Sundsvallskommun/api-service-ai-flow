@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.model.session;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import se.sundsvall.ai.flow.model.flowdefinition.Step;
@@ -80,12 +81,12 @@ public class StepExecution implements Comparable<StepExecution> {
 
 		// Set either the startedAt or the finishedAt timestamp depending on the state
 		if (state == State.RUNNING) {
-			startedAt = LocalDateTime.now();
+			startedAt = LocalDateTime.now(ZoneId.systemDefault());
 		} else if (state == State.DONE || state == State.ERROR) {
-			finishedAt = LocalDateTime.now();
+			finishedAt = LocalDateTime.now(ZoneId.systemDefault());
 		}
 		// Update the lastUpdatedAt timestamp
-		lastUpdatedAt = LocalDateTime.now();
+		lastUpdatedAt = LocalDateTime.now(ZoneId.systemDefault());
 	}
 
 	@JsonIgnore
