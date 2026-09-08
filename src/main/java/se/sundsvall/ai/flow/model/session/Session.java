@@ -81,7 +81,7 @@ public class Session {
 
 	public void addSimpleInput(final String inputId, final String value) {
 		final var flowInput = flow.getFlowInput(inputId);
-		final var inputMultipartFile = new StringMultipartFile(flowInput.getName(), value);
+		final var inputMultipartFile = new StringMultipartFile(flow.getInputPrefix(), flowInput.getName(), value);
 		addInputInternal(flowInput, inputMultipartFile);
 	}
 
@@ -117,7 +117,7 @@ public class Session {
 		final var flowInputName = flowInput.getName();
 
 		if (inputValue instanceof final TextInputValue textInputValue) {
-			addInputInternal(flowInput, new StringMultipartFile(flowInputName, textInputValue.value()));
+			addInputInternal(flowInput, new StringMultipartFile(flow.getInputPrefix(), flowInputName, textInputValue.value()));
 		} else if (inputValue instanceof final FileInputValue fileInputValue) {
 			addInputInternal(flowInput, new ByteArrayMultipartFile(flowInputName, fileInputValue.content(), fileInputValue.contentType()));
 		} else {
@@ -129,7 +129,7 @@ public class Session {
 		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
 
 		if (inputValue instanceof TextInputValue(final String name, final String value)) {
-			var textInput = new Input(new StringMultipartFile(name, value));
+			var textInput = new Input(new StringMultipartFile(flow.getInputPrefix(), name, value));
 			redirectedOutputInput.get(stepId).add(textInput);
 		} else if (inputValue instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
 			var fileInput = new Input(new ByteArrayMultipartFile(name, content, contentType));

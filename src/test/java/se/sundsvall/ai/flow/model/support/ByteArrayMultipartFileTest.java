@@ -1,10 +1,15 @@
 package se.sundsvall.ai.flow.model.support;
 
 import java.io.File;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JsonGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 class ByteArrayMultipartFileTest {
 
@@ -36,5 +41,25 @@ class ByteArrayMultipartFileTest {
 		assertThat(file.getSize()).isZero();
 		assertThat(file.getContentType()).isNull();
 		assertThat(file.getBytes()).isEmpty();
+	}
+
+	@Nested
+	class SerializerTest {
+
+		@Test
+		void serialize() {
+			final var file = new ByteArrayMultipartFile("file.txt", "hello".getBytes(), "text/plain");
+			final var serializer = new ByteArrayMultipartFile.Serializer();
+			final var mockJsonGenerator = mock(JsonGenerator.class);
+
+			serializer.serialize(file, mockJsonGenerator, null);
+
+			verify(mockJsonGenerator).writeStartObject();
+			verify(mockJsonGenerator).writeStringProperty("type", "file");
+			verify(mockJsonGenerator).writeStringProperty("contentType", "text/plain");
+			verify(mockJsonGenerator).writeNumberProperty("size", file.getSize());
+			verify(mockJsonGenerator).writeEndObject();
+			verifyNoMoreInteractions(mockJsonGenerator);
+		}
 	}
 }

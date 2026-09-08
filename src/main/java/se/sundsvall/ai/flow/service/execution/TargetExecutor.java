@@ -8,7 +8,7 @@ import se.sundsvall.ai.flow.model.flowdefinition.Step;
  * class. Keeps nested TargetResult contract.
  */
 public abstract class TargetExecutor {
-	public abstract boolean supports(final Step.Target.Type type);
+	public abstract boolean supports(final Step.IntricEndpoint.Type type);
 
 	public abstract TargetResult execute(final StepRunContext stepRunContext) throws InterruptedException;
 

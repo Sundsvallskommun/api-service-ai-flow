@@ -10,7 +10,7 @@ import se.sundsvall.dept44.problem.Problem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.SERVICE;
 
 @ExtendWith(MockitoExtension.class)
 class TargetExecutorResolverTest {

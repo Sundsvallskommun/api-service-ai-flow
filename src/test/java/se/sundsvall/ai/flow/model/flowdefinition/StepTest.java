@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static se.sundsvall.ai.flow.TestDataFactory.createFlowInputRef;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.APP;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.ASSISTANT;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.values;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.APP;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.ASSISTANT;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.SERVICE;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.values;
 
 class StepTest {
 
@@ -20,7 +20,7 @@ class StepTest {
 		final var order = 1;
 		final var name = "name";
 		final var description = "description";
-		final var target = new Step.Target(Step.Target.Type.ASSISTANT, UUID.randomUUID());
+		final var target = new Step.IntricEndpoint(Step.IntricEndpoint.Type.ASSISTANT, UUID.randomUUID());
 		final var inputs = List.of(createFlowInputRef("value"));
 		final var visible = false;
 
@@ -30,7 +30,7 @@ class StepTest {
 		step.setOrder(order);
 		step.setName(name);
 		step.setDescription(description);
-		step.setTarget(target);
+		step.setIntricEndpoint(target);
 		step.setInputs(inputs);
 		step.setVisible(visible);
 
@@ -38,7 +38,7 @@ class StepTest {
 		assertThat(step.getOrder()).isEqualTo(order);
 		assertThat(step.getName()).isEqualTo(name);
 		assertThat(step.getDescription()).isEqualTo(description);
-		assertThat(step.getTarget()).isEqualTo(target);
+		assertThat(step.getIntricEndpoint()).isEqualTo(target);
 		assertThat(step.getInputs()).isEqualTo(inputs);
 		assertThat(step.isVisible()).isEqualTo(visible);
 	}
@@ -49,7 +49,7 @@ class StepTest {
 		final var order = 1;
 		final var name = "name";
 		final var description = "description";
-		final var targetType = Step.Target.Type.ASSISTANT;
+		final var targetType = Step.IntricEndpoint.Type.ASSISTANT;
 		final var targetId = UUID.randomUUID();
 		final var inputs = List.of(createFlowInputRef("value"));
 		final var visible = true;
@@ -59,7 +59,7 @@ class StepTest {
 			.withOrder(order)
 			.withName(name)
 			.withDescription(description)
-			.withTarget(new Step.Target(targetType, targetId))
+			.withIntricEndpoint(new Step.IntricEndpoint(targetType, targetId))
 			.withInputs(inputs)
 			.withVisible(visible);
 
@@ -67,7 +67,7 @@ class StepTest {
 		assertThat(step.getOrder()).isEqualTo(order);
 		assertThat(step.getName()).isEqualTo(name);
 		assertThat(step.getDescription()).isEqualTo(description);
-		assertThat(step.getTarget()).satisfies(target -> {
+		assertThat(step.getIntricEndpoint()).satisfies(target -> {
 			assertThat(target.type()).isEqualTo(targetType);
 			assertThat(target.id()).isEqualTo(targetId);
 		});
@@ -90,10 +90,10 @@ class StepTest {
 
 		@Test
 		void constructorAndGetters() {
-			final var type = Step.Target.Type.ASSISTANT;
+			final var type = Step.IntricEndpoint.Type.ASSISTANT;
 			final var endpointId = UUID.randomUUID();
 
-			final var target = new Step.Target(type, endpointId);
+			final var target = new Step.IntricEndpoint(type, endpointId);
 
 			assertThat(target.type()).isEqualTo(type);
 			assertThat(target.id()).isEqualTo(endpointId);

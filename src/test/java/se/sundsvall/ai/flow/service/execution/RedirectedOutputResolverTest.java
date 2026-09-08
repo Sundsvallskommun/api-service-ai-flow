@@ -19,7 +19,7 @@ class RedirectedOutputResolverTest {
 		// Arrange: step2 depends on step1 via redirected output
 		final var step1 = new Step().withId("S1").withName("Step One").withOrder(1);
 		final var step2 = new Step().withId("S2").withName("Step Two").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("Use As Name")));
+			.withInputs(List.of(new RedirectedOutput().withStep("S1").withName("Use As Name")));
 		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 

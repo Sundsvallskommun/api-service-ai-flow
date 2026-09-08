@@ -20,15 +20,15 @@ class AssistantTargetExecutorTest {
 		final var eneoService = mock(EneoService.class);
 		final var executor = new AssistantTargetExecutor(eneoService);
 
-		assertThat(executor.supports(Step.Target.Type.ASSISTANT)).isTrue();
+		assertThat(executor.supports(Step.IntricEndpoint.Type.ASSISTANT)).isTrue();
 
-		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.ASSISTANT, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.ASSISTANT, UUID.randomUUID()));
 		final var flow = new se.sundsvall.ai.flow.model.flowdefinition.Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var stepExecution = session.getStepExecution("S1");
 
 		final var expectedSessionId = UUID.randomUUID();
-		when(eneoService.askAssistant("2281", step.getTarget().id(), List.of(), "")).thenReturn(new Response(expectedSessionId, "ans"));
+		when(eneoService.askAssistant("2281", step.getIntricEndpoint().id(), List.of(), "")).thenReturn(new Response(expectedSessionId, "ans"));
 
 		final var stepRunContext = new StepRunContext("2281", session, stepExecution, List.of(), List.of(), "", null, true);
 		final var result = executor.execute(stepRunContext);
@@ -45,13 +45,13 @@ class AssistantTargetExecutorTest {
 		final var eneoService = mock(EneoService.class);
 		final var executor = new AssistantTargetExecutor(eneoService);
 
-		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.ASSISTANT, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.ASSISTANT, UUID.randomUUID()));
 		final var flow = new se.sundsvall.ai.flow.model.flowdefinition.Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var stepExecution = session.getStepExecution("S1");
 		stepExecution.setEneoSessionId(UUID.randomUUID());
 
-		when(eneoService.askAssistantFollowup("2281", step.getTarget().id(), stepExecution.getEneoSessionId(), List.of(), "", "q")).thenReturn(new Response("follow"));
+		when(eneoService.askAssistantFollowup("2281", step.getIntricEndpoint().id(), stepExecution.getEneoSessionId(), List.of(), "", "q")).thenReturn(new Response("follow"));
 
 		final var stepRunContext = new StepRunContext("2281", session, stepExecution, List.of(), List.of(), "", "q", true);
 		final var result = executor.execute(stepRunContext);

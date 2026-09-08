@@ -25,13 +25,13 @@
 	  "name": "Test Step",
 	  "order": 1,
 	  "description": "A test step",
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "123e4567-e89b-12d3-a456-426614174000"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "test-input"
+		  "flow-input-ref": "test-input"
 		}
 	  ]
 	}

@@ -72,18 +72,18 @@ public final class TestDataFactory {
 	}
 
 	public static Step createStep1UsingService() {
-		return createStep1(Step.Target.Type.SERVICE);
+		return createStep1(Step.IntricEndpoint.Type.SERVICE);
 	}
 
 	public static Step createStep1UsingAssistant() {
-		return createStep1(Step.Target.Type.ASSISTANT);
+		return createStep1(Step.IntricEndpoint.Type.ASSISTANT);
 	}
 
-	private static Step createStep1(final Step.Target.Type targetType) {
+	private static Step createStep1(final Step.IntricEndpoint.Type targetType) {
 		return new Step()
 			.withId("step1")
 			.withName("Step 1")
-			.withTarget(new Step.Target(targetType, UUID.randomUUID()))
+			.withIntricEndpoint(new Step.IntricEndpoint(targetType, UUID.randomUUID()))
 			.withOrder(1)
 			.withInputs(List.of(
 				createFlowInputRef("input1"),
@@ -92,18 +92,18 @@ public final class TestDataFactory {
 	}
 
 	public static Step createStep2UsingService() {
-		return createStep2(Step.Target.Type.SERVICE);
+		return createStep2(Step.IntricEndpoint.Type.SERVICE);
 	}
 
 	public static Step createStep2UsingAssistant() {
-		return createStep2(Step.Target.Type.ASSISTANT);
+		return createStep2(Step.IntricEndpoint.Type.ASSISTANT);
 	}
 
-	private static Step createStep2(final Step.Target.Type targetType) {
+	private static Step createStep2(final Step.IntricEndpoint.Type targetType) {
 		return new Step()
 			.withId("step2")
 			.withName("Step 2")
-			.withTarget(new Step.Target(targetType, UUID.randomUUID()))
+			.withIntricEndpoint(new Step.IntricEndpoint(targetType, UUID.randomUUID()))
 			.withOrder(2)
 			.withInputs(List.of(
 				createFlowInputRef("input2"),
@@ -112,18 +112,18 @@ public final class TestDataFactory {
 	}
 
 	public static Step createStep3UsingService() {
-		return createStep3(Step.Target.Type.SERVICE);
+		return createStep3(Step.IntricEndpoint.Type.SERVICE);
 	}
 
 	public static Step createStep3UsingAssistant() {
-		return createStep3(Step.Target.Type.ASSISTANT);
+		return createStep3(Step.IntricEndpoint.Type.ASSISTANT);
 	}
 
-	private static Step createStep3(final Step.Target.Type targetType) {
+	private static Step createStep3(final Step.IntricEndpoint.Type targetType) {
 		return new Step()
 			.withId("step3")
 			.withName("Step 3")
-			.withTarget(new Step.Target(targetType, UUID.randomUUID()))
+			.withIntricEndpoint(new Step.IntricEndpoint(targetType, UUID.randomUUID()))
 			.withOrder(3)
 			.withInputs(List.of(
 				createFlowInputRef("input2"),
@@ -136,7 +136,7 @@ public final class TestDataFactory {
 	}
 
 	public static StepInput createRedirectedOutput(final String name, final String step) {
-		return new RedirectedOutput().withUseAs(name).withStep(step);
+		return new RedirectedOutput().withName(name).withStep(step);
 	}
 
 	public static FlowEntity createFlowEntity() {

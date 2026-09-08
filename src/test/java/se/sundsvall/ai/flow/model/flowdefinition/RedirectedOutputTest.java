@@ -13,10 +13,10 @@ class RedirectedOutputTest {
 
 		final var redirectedOutput = new RedirectedOutput();
 		redirectedOutput.setStep(step);
-		redirectedOutput.setUseAs(name);
+		redirectedOutput.setName(name);
 
 		assertThat(redirectedOutput.getStep()).isEqualTo(step);
-		assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
+		assertThat(redirectedOutput.getName()).isEqualTo(name);
 		assertThat(redirectedOutput.getType()).isEqualTo(StepInput.Type.STEP_OUTPUT);
 	}
 
@@ -27,10 +27,10 @@ class RedirectedOutputTest {
 
 		final var redirectedOutput = new RedirectedOutput()
 			.withStep(step)
-			.withUseAs(name);
+			.withName(name);
 
 		assertThat(redirectedOutput.getStep()).isEqualTo(step);
-		assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
+		assertThat(redirectedOutput.getName()).isEqualTo(name);
 		assertThat(redirectedOutput.getType()).isEqualTo(StepInput.Type.STEP_OUTPUT);
 	}
 }
