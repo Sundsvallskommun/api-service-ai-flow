@@ -80,11 +80,11 @@ class SessionOrchestratorTest {
 		final var step1 = new Step().withId("S1").withName("Step 1").withOrder(1);
 
 		// Create step2 that depends on step1's output
-		final var redirectedOutput = new RedirectedOutput().withStep("S1").withUseAs("input");
+		final var redirectedOutput = new RedirectedOutput().withStep("S1").withName("input");
 		final var step2 = new Step().withId("S2").withName("Step 2").withOrder(2).withInputs(List.of(redirectedOutput));
 
 		// Create step3 that depends on step2's output
-		final var redirectedOutput2 = new RedirectedOutput().withStep("S2").withUseAs("input");
+		final var redirectedOutput2 = new RedirectedOutput().withStep("S2").withName("input");
 		final var step3 = new Step().withId("S3").withName("Step 3").withOrder(3).withInputs(List.of(redirectedOutput2));
 
 		final var flow = new Flow().withSteps(List.of(step1, step2, step3));

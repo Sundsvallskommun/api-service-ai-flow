@@ -4,7 +4,12 @@
 	"input": {
 		"indata-bild": [
 			{
-				"uploadedToEneo": false
+				"file": {
+					"type": "file",
+					"contentType": "${json-unit.any-string}",
+					"size": "${json-unit.any-number}"
+				},
+				"uploadedToIntric": false
 			}
 		]
 	},

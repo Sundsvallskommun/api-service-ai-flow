@@ -17,14 +17,14 @@ public class ServiceTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public boolean supports(final Step.Target.Type type) {
-		return type == Step.Target.Type.SERVICE;
+	public boolean supports(final Step.IntricEndpoint.Type type) {
+		return type == Step.IntricEndpoint.Type.SERVICE;
 	}
 
 	@Override
 	public TargetResult execute(final StepRunContext stepRunContext) {
 		final var step = stepRunContext.stepExecution().getStep();
-		final var targetEndpointId = step.getTarget().id();
+		final var targetEndpointId = step.getIntricEndpoint().id();
 		LOG.info("Running step {} using SERVICE {}", step.getName(), targetEndpointId);
 
 		final var response = eneoService.runService(

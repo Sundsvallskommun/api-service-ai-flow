@@ -28,7 +28,7 @@ class InputCollectorTest {
 
 		final var step1 = new Step().withId("S1").withName("Step One").withOrder(1);
 		final var step2 = new Step().withId("S2").withName("Step Two").withOrder(2)
-			.withInputs(List.of(new FlowInputRef().withInput("A"), new RedirectedOutput().withStep("S1").withUseAs("S1 out")));
+			.withInputs(List.of(new FlowInputRef().withInput("A"), new RedirectedOutput().withStep("S1").withName("S1 out")));
 
 		final var flow = new Flow().withFlowInputs(List.of(flowInputA, flowInputB)).withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
@@ -37,13 +37,13 @@ class InputCollectorTest {
 		session.addSimpleInput("A", "text1");
 		session.addSimpleInput("A", "text2");
 		final var idsA = List.of(UUID.randomUUID(), UUID.randomUUID());
-		session.getInput().get("A").get(0).setEneoFileId(idsA.get(0));
-		session.getInput().get("A").get(1).setEneoFileId(idsA.get(1));
+		session.getInput().get("A").get(0).setIntricFileId(idsA.get(0));
+		session.getInput().get("A").get(1).setIntricFileId(idsA.get(1));
 
 		// Add redirected output from S1 and set id
 		session.addRedirectedOutputAsInput("S1", new TextInputValue("S1 out", "hello"));
 		final var redirectedId = UUID.randomUUID();
-		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(redirectedId);
+		session.getRedirectedOutputInput().get("S1").getFirst().setIntricFileId(redirectedId);
 
 		// Mock descriptor to return canned strings
 		final var descriptor = mock(InputDescriptor.class);

@@ -97,7 +97,7 @@ class SessionTest {
 
 		assertThat(session.getInput()).containsKey(inputId);
 		assertThat(session.getInput().get(inputId)).hasSize(2).allSatisfy(input -> {
-			assertThat(input.isUploadedToEneo()).isFalse();
+			assertThat(input.isUploadedToIntric()).isFalse();
 			assertThat(input.getFile()).asInstanceOf(type(StringMultipartFile.class)).satisfies(stringMultipartFile -> {
 				assertThat(stringMultipartFile.getName()).isEqualTo(inputName);
 				assertThat(stringMultipartFile.getValue()).isIn(inputValue1, inputValue2);
@@ -121,7 +121,7 @@ class SessionTest {
 
 		assertThat(session.getInput()).containsKey(inputId);
 		assertThat(session.getInput().get(inputId)).hasSize(2).allSatisfy(input -> {
-			assertThat(input.isUploadedToEneo()).isFalse();
+			assertThat(input.isUploadedToIntric()).isFalse();
 			assertThat(input.getFile()).asInstanceOf(type(ByteArrayMultipartFile.class)).satisfies(byteArrayMultipartFile -> {
 				assertThat(byteArrayMultipartFile.getName()).isEqualTo(inputName);
 			});

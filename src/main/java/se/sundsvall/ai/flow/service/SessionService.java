@@ -84,7 +84,7 @@ public class SessionService {
 		// Extract the id:s of the files uploaded in the session
 		final var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
 			.flatMap(Collection::stream)
-			.map(Input::getEneoFileId)
+			.map(Input::getIntricFileId)
 			.flatMap(Stream::ofNullable)
 			.toList();
 		// Delete the files
