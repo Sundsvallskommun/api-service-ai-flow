@@ -29,27 +29,27 @@ public class FileUploadManager {
 		// Upload any missing regular inputs
 		session.getInput().values().stream()
 			.flatMap(Collection::stream)
-			.filter(not(Input::isUploadedToEneo))
+			.filter(not(Input::isUploadedToIntric))
 			.forEach(input -> {
 				LOG.info("Uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
-				final var eneoFileId = eneoService.uploadFile(municipalityId, input.getFile());
+				final var intricFileId = eneoService.uploadFile(municipalityId, input.getFile());
 				LOG.info("Done uploading file for input {}", sanitizeForLogging(input.getFile().getName()));
-				input.setEneoFileId(eneoFileId);
+				input.setIntricFileId(intricFileId);
 			});
 
 		// Handle redirected output inputs by deleting old ones and uploading new ones
 		final var inputsToRemoveFromSession = new HashMap<String, Input>();
 		session.getRedirectedOutputInput().forEach((sourceStepId, inputs) -> {
 			for (final var input : inputs) {
-				if (input.isUploadedToEneo()) {
-					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getEneoFileId());
-					eneoService.deleteFile(municipalityId, input.getEneoFileId());
+				if (input.isUploadedToIntric()) {
+					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
+					eneoService.deleteFile(municipalityId, input.getIntricFileId());
 					inputsToRemoveFromSession.put(sourceStepId, input);
 				} else {
 					LOG.info("Uploading redirected output file from step {}", sourceStepId);
-					final var eneoFileId = eneoService.uploadFile(municipalityId, input.getFile());
-					input.setEneoFileId(eneoFileId);
-					LOG.info("Uploaded redirected output file for step {} with id {}", sourceStepId, eneoFileId);
+					final var intricFileId = eneoService.uploadFile(municipalityId, input.getFile());
+					input.setIntricFileId(intricFileId);
+					LOG.info("Uploaded redirected output file for step {} with id {}", sourceStepId, intricFileId);
 				}
 			}
 		});

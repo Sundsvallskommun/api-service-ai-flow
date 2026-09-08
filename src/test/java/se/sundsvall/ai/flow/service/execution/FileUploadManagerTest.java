@@ -36,7 +36,7 @@ class FileUploadManagerTest {
 		// uploaded
 		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "old"));
 		final var oldId = UUID.randomUUID();
-		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(oldId);
+		session.getRedirectedOutputInput().get("S1").getFirst().setIntricFileId(oldId);
 		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "new"));
 
 		// Stubs
