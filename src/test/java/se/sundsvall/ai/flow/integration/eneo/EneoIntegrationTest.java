@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import se.sundsvall.dept44.problem.Problem;
 import se.sundsvall.dept44.problem.ThrowableProblem;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +28,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.ai.flow.TestDataFactory.MUNICIPALITY_ID;
 
 @ExtendWith(MockitoExtension.class)
@@ -195,6 +198,103 @@ class EneoIntegrationTest {
 			.withMessageContaining("Error deleting file with ID: %s".formatted(fileId));
 
 		verify(mockEneoClient).deleteFile(fileId);
+	}
+
+	@Test
+	void deleteFile_conflict() {
+		final var fileId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteFile(fileId)).thenThrow(Problem.valueOf(CONFLICT, "file_in_use"));
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.deleteFile(MUNICIPALITY_ID, fileId))
+			.satisfies(problem -> assertThat(problem.getStatus()).isEqualTo(CONFLICT))
+			.withMessageContaining("File with ID: %s is still in use in Eneo".formatted(fileId));
+
+		verify(mockEneoClient).deleteFile(fileId);
+	}
+
+	@Test
+	void deleteFile_alreadyGone() {
+		final var fileId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteFile(fileId)).thenThrow(Problem.valueOf(NOT_FOUND, "not found"));
+
+		eneoIntegration.deleteFile(MUNICIPALITY_ID, fileId);
+
+		verify(mockEneoClient).deleteFile(fileId);
+	}
+
+	@Test
+	void deleteConversation() {
+		final var sessionId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteConversation(sessionId)).thenReturn(ResponseEntity.noContent().build());
+
+		eneoIntegration.deleteConversation(MUNICIPALITY_ID, sessionId);
+
+		verify(mockEneoClient).deleteConversation(sessionId);
+	}
+
+	@Test
+	void deleteConversation_exception() {
+		final var sessionId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteConversation(sessionId)).thenThrow(RuntimeException.class);
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.deleteConversation(MUNICIPALITY_ID, sessionId))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error deleting conversation with ID: %s".formatted(sessionId));
+
+		verify(mockEneoClient).deleteConversation(sessionId);
+	}
+
+	@Test
+	void deleteAppRun() {
+		final var runId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteAppRun(runId)).thenReturn(ResponseEntity.noContent().build());
+
+		eneoIntegration.deleteAppRun(MUNICIPALITY_ID, runId);
+
+		verify(mockEneoClient).deleteAppRun(runId);
+	}
+
+	@Test
+	void deleteAppRun_exception() {
+		final var runId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteAppRun(runId)).thenThrow(RuntimeException.class);
+
+		assertThatExceptionOfType(ThrowableProblem.class)
+			.isThrownBy(() -> eneoIntegration.deleteAppRun(MUNICIPALITY_ID, runId))
+			.withMessageContaining("Bad Gateway")
+			.withMessageContaining("Error deleting app run with ID: %s".formatted(runId));
+
+		verify(mockEneoClient).deleteAppRun(runId);
+	}
+
+	@Test
+	void deleteConversation_alreadyGone() {
+		final var sessionId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteConversation(sessionId)).thenThrow(Problem.valueOf(NOT_FOUND, "not found"));
+
+		eneoIntegration.deleteConversation(MUNICIPALITY_ID, sessionId);
+
+		verify(mockEneoClient).deleteConversation(sessionId);
+	}
+
+	@Test
+	void deleteAppRun_alreadyGone() {
+		final var runId = UUID.randomUUID();
+
+		when(mockEneoClient.deleteAppRun(runId)).thenThrow(Problem.valueOf(NOT_FOUND, "not found"));
+
+		eneoIntegration.deleteAppRun(MUNICIPALITY_ID, runId);
+
+		verify(mockEneoClient).deleteAppRun(runId);
 	}
 
 	@Test

@@ -37,13 +37,15 @@ public class FileUploadManager {
 				input.setIntricFileId(intricFileId);
 			});
 
-		// Handle redirected output inputs by deleting old ones and uploading new ones
+		// Handle redirected output inputs by retiring old ones and uploading new ones. The old file is not deleted here:
+		// it is usually still attached to the consuming step's Eneo conversation, which would reject the delete with 409.
+		// It is deleted together with the session instead.
 		final var inputsToRemoveFromSession = new HashMap<String, Input>();
 		session.getRedirectedOutputInput().forEach((sourceStepId, inputs) -> {
 			for (final var input : inputs) {
 				if (input.isUploadedToIntric()) {
-					LOG.info("Deleting previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
-					eneoService.deleteFile(municipalityId, input.getIntricFileId());
+					LOG.info("Retiring previous redirected output file from step {} with id {}", sourceStepId, input.getIntricFileId());
+					session.markFileForDeletion(input.getIntricFileId());
 					inputsToRemoveFromSession.put(sourceStepId, input);
 				} else {
 					LOG.info("Uploading redirected output file from step {}", sourceStepId);

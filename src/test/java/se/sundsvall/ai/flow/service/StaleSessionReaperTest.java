@@ -10,11 +10,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import se.sundsvall.ai.flow.model.session.Session;
+import se.sundsvall.dept44.problem.Problem;
 
 import static java.util.Collections.emptyList;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 
 @ExtendWith(MockitoExtension.class)
 class StaleSessionReaperTest {
@@ -62,6 +65,32 @@ class StaleSessionReaperTest {
 
 		verify(mockSessionService).getAllSessions();
 		verify(mockSessionService).deleteSession(MUNICIPALITY_ID, sessionId1);
+		verifyNoMoreInteractions(mockSessionService);
+	}
+
+	@Test
+	void runContinuesWhenDeletingOneSessionFails() {
+		var sessionId1 = UUID.randomUUID();
+		var sessionId2 = UUID.randomUUID();
+
+		when(mockSession1.getId()).thenReturn(sessionId1);
+		when(mockSession1.getMunicipalityId()).thenReturn(MUNICIPALITY_ID);
+		when(mockSession1.getFlow().getTtlInMinutes()).thenReturn(30);
+		when(mockSession1.getLastUpdatedAt()).thenReturn(LocalDateTime.now().minusMinutes(45));
+
+		when(mockSession2.getId()).thenReturn(sessionId2);
+		when(mockSession2.getMunicipalityId()).thenReturn(MUNICIPALITY_ID);
+		when(mockSession2.getFlow().getTtlInMinutes()).thenReturn(30);
+		when(mockSession2.getLastUpdatedAt()).thenReturn(LocalDateTime.now().minusMinutes(45));
+
+		when(mockSessionService.getAllSessions()).thenReturn(List.of(mockSession1, mockSession2));
+		doThrow(Problem.valueOf(BAD_GATEWAY, "Eneo is down")).when(mockSessionService).deleteSession(MUNICIPALITY_ID, sessionId1);
+
+		staleSessionReaper.run();
+
+		verify(mockSessionService).getAllSessions();
+		verify(mockSessionService).deleteSession(MUNICIPALITY_ID, sessionId1);
+		verify(mockSessionService).deleteSession(MUNICIPALITY_ID, sessionId2);
 		verifyNoMoreInteractions(mockSessionService);
 	}
 }
