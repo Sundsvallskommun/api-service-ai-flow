@@ -68,12 +68,16 @@ public class EneoService {
 			.orElseThrow(() -> Problem.valueOf(INTERNAL_SERVER_ERROR, "Unable to upload file to Eneo"));
 	}
 
-	public void deleteFiles(final String municipalityId, final List<UUID> fileIds) {
-		fileIds.forEach(uuid -> deleteFile(municipalityId, uuid));
-	}
-
 	public void deleteFile(final String municipalityId, final UUID fileId) {
 		eneoIntegration.deleteFile(municipalityId, fileId);
+	}
+
+	public void deleteConversation(final String municipalityId, final UUID sessionId) {
+		eneoIntegration.deleteConversation(municipalityId, sessionId);
+	}
+
+	public void deleteAppRun(final String municipalityId, final UUID runId) {
+		eneoIntegration.deleteAppRun(municipalityId, runId);
 	}
 
 	public Response runApp(final String municipalityId, final UUID appId, final List<UUID> uploadedInputFilesInUse) {
