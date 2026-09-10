@@ -7,7 +7,7 @@ info:
     url: https://opensource.org/licenses/MIT
   version: "3.1"
 servers:
-- url: http://localhost:59449
+- url: http://localhost:61490
   description: Generated server url
 tags:
 - name: Sessions
@@ -830,15 +830,13 @@ components:
         flowId:
           type: string
           description: Flow id
-          examples:
-          - tjansteskrivelse
+          example: tjansteskrivelse
           minLength: 1
         version:
           type: integer
           format: int32
           description: Flow version
-          examples:
-          - 1
+          example: 1
       required:
       - flowId
     Problem:
@@ -906,7 +904,10 @@ components:
     Input:
       type: object
       properties:
-        uploadedToEneo:
+        file:
+          type: string
+          format: binary
+        uploadedToIntric:
           type: boolean
     Session:
       type: object
@@ -1003,6 +1004,8 @@ components:
           type: string
         description:
           type: string
+        inputPrefix:
+          type: string
         helptext:
           type: string
         spaceId:
@@ -1041,6 +1044,18 @@ components:
           type: boolean
         passthrough:
           type: boolean
+    IntricEndpoint:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - SERVICE
+          - ASSISTANT
+          - APP
+        id:
+          type: string
+          format: uuid
     Step:
       type: object
       properties:
@@ -1053,8 +1068,8 @@ components:
           type: string
         description:
           type: string
-        target:
-          $ref: "#/components/schemas/Target"
+        intricEndpoint:
+          $ref: "#/components/schemas/IntricEndpoint"
         visible:
           type: boolean
         input:
@@ -1062,18 +1077,6 @@ components:
           items:
             $ref: "#/components/schemas/StepInput"
     StepInput: {}
-    Target:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - SERVICE
-          - ASSISTANT
-          - APP
-        id:
-          type: string
-          format: uuid
     FlowSummary:
       type: object
       properties:

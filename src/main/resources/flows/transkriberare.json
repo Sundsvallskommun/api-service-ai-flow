@@ -22,16 +22,16 @@
 	{
 	  "id": "transkribera-ljudfil",
 	  "order": 1,
-	  "use-as": "Transkribera ljudfil",
+	  "name": "Transkribera ljudfil",
 	  "description": "Ljudfil att transkribera",
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "APP",
 		"id": "2d859fc5-c313-4793-a8ef-3431536bae0e"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "indata-ljud"
+		  "flow-input-ref": "indata-ljud"
 		}
 	  ]
 	}

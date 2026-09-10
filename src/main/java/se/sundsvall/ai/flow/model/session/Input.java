@@ -12,12 +12,10 @@ import static java.util.Objects.nonNull;
  */
 public class Input {
 
-	// Tell Jackson to ignore this field during serialization/deserialization
-	@JsonIgnore
 	private final MultipartFile file;
 
 	@JsonIgnore
-	private UUID eneoFileId;
+	private UUID intricFileId;
 
 	public Input(final MultipartFile file) {
 		this.file = file;
@@ -27,21 +25,20 @@ public class Input {
 		return file;
 	}
 
-	public boolean isUploadedToEneo() {
-		return nonNull(eneoFileId);
+	public boolean isUploadedToIntric() {
+		return nonNull(intricFileId);
 	}
 
-	// Current public API (kept)
-	public UUID getEneoFileId() {
-		return eneoFileId;
+	public UUID getIntricFileId() {
+		return intricFileId;
 	}
 
-	public void setEneoFileId(final UUID eneoFileId) {
-		this.eneoFileId = eneoFileId;
+	public void setIntricFileId(final UUID intricFileId) {
+		this.intricFileId = intricFileId;
 	}
 
-	public Input withEneoFileId(final UUID eneoFileId) {
-		this.eneoFileId = eneoFileId;
+	public Input withIntricFileId(final UUID intricFileId) {
+		this.intricFileId = intricFileId;
 		return this;
 	}
 
@@ -50,11 +47,11 @@ public class Input {
 		if (!(o instanceof final Input other)) {
 			return false;
 		}
-		return Objects.equals(eneoFileId, other.eneoFileId);
+		return Objects.equals(intricFileId, other.intricFileId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(eneoFileId);
+		return Objects.hashCode(intricFileId);
 	}
 }

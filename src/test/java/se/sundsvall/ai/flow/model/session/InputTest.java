@@ -11,15 +11,15 @@ class InputTest {
 	@Test
 	void builder() {
 		// Arrange
-		final var eneoFileId = UUID.randomUUID();
+		final var intricFileId = UUID.randomUUID();
 		final var file = new MockMultipartFile("Some String", "some bytes".getBytes());
 		// Act
 		final var result = new Input(file)
-			.withEneoFileId(eneoFileId);
+			.withIntricFileId(intricFileId);
 
 		// Assert
 		assertThat(result).isNotNull().hasNoNullFieldsOrProperties();
-		assertThat(result.getEneoFileId()).isEqualTo(eneoFileId);
+		assertThat(result.getIntricFileId()).isEqualTo(intricFileId);
 		assertThat(result.getFile()).isSameAs(file);
 
 	}
@@ -32,8 +32,8 @@ class InputTest {
 
 		assertThat(input1.equals(input2)).isTrue();
 
-		input1.setEneoFileId(UUID.randomUUID());
-		input2.setEneoFileId(UUID.randomUUID());
+		input1.setIntricFileId(UUID.randomUUID());
+		input2.setIntricFileId(UUID.randomUUID());
 
 		assertThat(input1.equals(input2)).isFalse();
 	}
@@ -46,14 +46,14 @@ class InputTest {
 
 		assertThat(input1).hasSameHashCodeAs(input2);
 
-		final var eneoFileId = UUID.randomUUID();
-		input1.setEneoFileId(eneoFileId);
-		input2.setEneoFileId(eneoFileId);
+		final var intricFileId = UUID.randomUUID();
+		input1.setIntricFileId(intricFileId);
+		input2.setIntricFileId(intricFileId);
 
 		assertThat(input1).hasSameHashCodeAs(input2);
 
-		input1.setEneoFileId(UUID.randomUUID());
-		input2.setEneoFileId(UUID.randomUUID());
+		input1.setIntricFileId(UUID.randomUUID());
+		input2.setIntricFileId(UUID.randomUUID());
 
 		assertThat(input1.hashCode()).isNotEqualTo(input2.hashCode());
 	}

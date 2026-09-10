@@ -16,10 +16,12 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 @JsonSerialize(using = StringMultipartFile.Serializer.class)
 public class StringMultipartFile implements MultipartFile {
 
+	private final String prefix;
 	private final String name;
 	private final String value;
 
-	public StringMultipartFile(final String name, final String value) {
+	public StringMultipartFile(final String prefix, final String name, final String value) {
+		this.prefix = prefix;
 		this.name = name;
 		this.value = value;
 	}
@@ -55,7 +57,7 @@ public class StringMultipartFile implements MultipartFile {
 
 	@Override
 	public byte[] getBytes() {
-		return "%s:%s".formatted(name, value).getBytes(UTF_8);
+		return "%s%s:%s".formatted(prefix, name, value).getBytes(UTF_8);
 	}
 
 	@Override

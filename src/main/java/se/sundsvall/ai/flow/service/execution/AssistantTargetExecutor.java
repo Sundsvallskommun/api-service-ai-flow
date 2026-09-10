@@ -17,15 +17,15 @@ public class AssistantTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public boolean supports(final Step.Target.Type type) {
-		return type == Step.Target.Type.ASSISTANT;
+	public boolean supports(final Step.IntricEndpoint.Type type) {
+		return type == Step.IntricEndpoint.Type.ASSISTANT;
 	}
 
 	@Override
 	public TargetResult execute(final StepRunContext stepRunContext) {
 		final var stepExecution = stepRunContext.stepExecution();
 		final var step = stepExecution.getStep();
-		final var targetEndpointId = step.getTarget().id();
+		final var targetEndpointId = step.getIntricEndpoint().id();
 
 		if (stepExecution.getEneoSessionId() == null) {
 			LOG.info("Running step {} using ASSISTANT {}", step.getName(), targetEndpointId);

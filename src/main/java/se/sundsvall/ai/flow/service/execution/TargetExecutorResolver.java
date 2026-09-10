@@ -16,7 +16,7 @@ public class TargetExecutorResolver {
 		this.targetExecutors = targetExecutors;
 	}
 
-	public TargetExecutor resolve(final Step.Target.Type type) {
+	public TargetExecutor resolve(final Step.IntricEndpoint.Type type) {
 		return targetExecutors.stream()
 			.filter(targetExecutor -> targetExecutor.supports(type))
 			.findFirst()

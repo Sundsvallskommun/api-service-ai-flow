@@ -18,9 +18,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @JsonDeserialize(using = StepInput.Deserializer.class)
 public abstract class StepInput {
 
-	static final String FLOW_INPUT_REF = "use-flow-input";
-	static final String STEP_OUTPUT_REF = "use-output-from-step";
-	static final String NAME = "use-as";
+	static final String FLOW_INPUT_REF = "flow-input-ref";
+	static final String STEP_OUTPUT_REF = "step-output-ref";
+	static final String NAME = "name";
 
 	public enum Type {
 		FLOW_INPUT,
@@ -60,7 +60,7 @@ public abstract class StepInput {
 			final var children = root.properties().stream()
 				.collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-			// Attempt to extract the "use-flow-input" field
+			// Attempt to extract the "flow-input-ref" field
 			final var flowInputRef = ofNullable(children.get(FLOW_INPUT_REF))
 				.map(JsonNode::textValue)
 				.orElse(null);
@@ -75,7 +75,7 @@ public abstract class StepInput {
 			if (isNotBlank(flowInputRef) && isBlank(step) && isBlank(name)) {
 				return new FlowInputRef().withInput(flowInputRef);
 			} else if (isBlank(flowInputRef) && isNotBlank(step) && isNotBlank(name)) {
-				return new RedirectedOutput().withStep(step).withUseAs(name);
+				return new RedirectedOutput().withStep(step).withName(name);
 			}
 
 			throw MismatchedInputException.from(parser, StepInput.class,
