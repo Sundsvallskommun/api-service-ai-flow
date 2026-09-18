@@ -113,19 +113,6 @@ class EneoServiceTest {
 	}
 
 	@Test
-	void deleteFiles() {
-		final var fileIds = List.of(UUID.randomUUID(), UUID.randomUUID());
-
-		doNothing().when(eneoIntegrationMock).deleteFile(eq(MUNICIPALITY_ID), any(UUID.class));
-
-		eneoService.deleteFiles(MUNICIPALITY_ID, fileIds);
-
-		verify(eneoIntegrationMock).deleteFile(MUNICIPALITY_ID, fileIds.getFirst());
-		verify(eneoIntegrationMock).deleteFile(MUNICIPALITY_ID, fileIds.getLast());
-		verifyNoMoreInteractions(eneoIntegrationMock);
-	}
-
-	@Test
 	void deleteFile() {
 		final var fileId = UUID.randomUUID();
 
@@ -134,6 +121,30 @@ class EneoServiceTest {
 		eneoService.deleteFile(MUNICIPALITY_ID, fileId);
 
 		verify(eneoIntegrationMock).deleteFile(MUNICIPALITY_ID, fileId);
+		verifyNoMoreInteractions(eneoIntegrationMock);
+	}
+
+	@Test
+	void deleteConversation() {
+		final var sessionId = UUID.randomUUID();
+
+		doNothing().when(eneoIntegrationMock).deleteConversation(MUNICIPALITY_ID, sessionId);
+
+		eneoService.deleteConversation(MUNICIPALITY_ID, sessionId);
+
+		verify(eneoIntegrationMock).deleteConversation(MUNICIPALITY_ID, sessionId);
+		verifyNoMoreInteractions(eneoIntegrationMock);
+	}
+
+	@Test
+	void deleteAppRun() {
+		final var runId = UUID.randomUUID();
+
+		doNothing().when(eneoIntegrationMock).deleteAppRun(MUNICIPALITY_ID, runId);
+
+		eneoService.deleteAppRun(MUNICIPALITY_ID, runId);
+
+		verify(eneoIntegrationMock).deleteAppRun(MUNICIPALITY_ID, runId);
 		verifyNoMoreInteractions(eneoIntegrationMock);
 	}
 

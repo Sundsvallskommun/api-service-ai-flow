@@ -20,15 +20,15 @@ public class AppTargetExecutor extends TargetExecutor {
 	}
 
 	@Override
-	public boolean supports(final Step.Target.Type type) {
-		return type == Step.Target.Type.APP;
+	public boolean supports(final Step.IntricEndpoint.Type type) {
+		return type == Step.IntricEndpoint.Type.APP;
 	}
 
 	@Override
 	public TargetResult execute(final StepRunContext stepRunContext) throws InterruptedException {
 		final var stepExecution = stepRunContext.stepExecution();
 		final var step = stepExecution.getStep();
-		final var targetEndpointId = step.getTarget().id();
+		final var targetEndpointId = step.getIntricEndpoint().id();
 
 		if (stepExecution.getEneoRunId() == null) {
 			LOG.info("Running step {} using APP {}", step.getName(), targetEndpointId);

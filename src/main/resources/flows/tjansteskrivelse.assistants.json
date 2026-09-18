@@ -48,19 +48,19 @@
 	  "name": "Ärendet",
 	  "order": 1,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "d23e4141-4a30-4652-8fce-12cc5febf676"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	},
@@ -69,19 +69,19 @@
 	  "name": "Bakgrund",
 	  "order": 2,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "0c98433d-a600-4f96-bda4-350d7cd44cca"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	},
@@ -90,23 +90,23 @@
 	  "name": "Förvaltningens överväganden",
 	  "order": 3,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "00f9705c-e1f4-4115-946f-fbd5cca70701"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		},
 		{
-		  "use-output-from-step": "bakgrund",
-		  "use-as": "Bakgrund"
+		  "step-output-ref": "bakgrund",
+		  "name": "Bakgrund"
 		}
 	  ]
 	},
@@ -115,22 +115,22 @@
 	  "name": "Styrdokument och juridik",
 	  "order": 4,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "db1d10a8-79a0-4520-8a8f-4a8903247d56"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		},
 		{
-		  "use-flow-input": "relaterade-styrdokument"
+		  "flow-input-ref": "relaterade-styrdokument"
 		}
 	  ]
 	},
@@ -139,19 +139,19 @@
 	  "name": "Ekonomisk hållbarhet",
 	  "order": 5,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "4d44fc9c-dc21-4c77-afec-c7f72538978d"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	},
@@ -160,19 +160,19 @@
 	  "name": "Ekologisk hållbarhet",
 	  "order": 6,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "ecd38735-ca21-4849-86cf-65c1051253a8"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	},
@@ -181,19 +181,19 @@
 	  "name": "Social hållbarhet",
 	  "order": 7,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "d79e6cfb-9a47-4679-a1c2-5e7393005726"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	},
@@ -202,19 +202,19 @@
 	  "name": "Landsbygdssäkring",
 	  "order": 8,
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "ASSISTANT",
 		"id": "d5ac8806-1b72-41bd-9deb-f28f556e0e02"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "uppdraget-till-tjansten"
+		  "flow-input-ref": "uppdraget-till-tjansten"
 		},
 		{
-		  "use-flow-input": "forvaltningens-input"
+		  "flow-input-ref": "forvaltningens-input"
 		},
 		{
-		  "use-flow-input": "bakgrundsmaterial"
+		  "flow-input-ref": "bakgrundsmaterial"
 		}
 	  ]
 	}

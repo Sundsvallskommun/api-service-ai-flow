@@ -45,7 +45,7 @@ class StepRunnerTest {
 	private StepRunner runner;
 
 	private Session newSessionWithSingleStep() {
-		final var step = new Step().withId("S1").withName("S1").withOrder(1).withTarget(new Step.Target(Step.Target.Type.SERVICE, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withOrder(1).withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.SERVICE, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step));
 		return new Session("2281", flow, new StepExecutionFactory());
 	}
@@ -57,7 +57,7 @@ class StepRunnerTest {
 		final var stepExecution = session.getStepExecution("S1");
 
 		when(inputPreparation.prepare("2281", session, stepExecution.getStep())).thenReturn(new InputCollector.Inputs(List.of(), "", List.of()));
-		when(targetExecutorResolver.resolve(stepExecution.getStep().getTarget().type())).thenThrow(new RuntimeException("No TargetExecutor"));
+		when(targetExecutorResolver.resolve(stepExecution.getStep().getIntricEndpoint().type())).thenThrow(new RuntimeException("No TargetExecutor"));
 
 		final var stepRunContext = new StepRunContext("2281", session, stepExecution, List.of(), List.of(), "", null, true);
 		final var result = runner.runStep(stepRunContext);
@@ -77,7 +77,7 @@ class StepRunnerTest {
 
 		when(inputPreparation.prepare("2281", session, stepExecution.getStep())).thenReturn(new InputCollector.Inputs(List.of(), "", List.of()));
 
-		when(targetExecutorResolver.resolve(stepExecution.getStep().getTarget().type())).thenReturn(targetExecutor);
+		when(targetExecutorResolver.resolve(stepExecution.getStep().getIntricEndpoint().type())).thenReturn(targetExecutor);
 		when(targetExecutor.execute(any())).thenThrow(new RuntimeException("boom"));
 
 		final var stepRunContext = new StepRunContext("2281", session, stepExecution, List.of(), List.of(), "", null, true);
@@ -93,8 +93,8 @@ class StepRunnerTest {
 	@Test
 	void runStep_requiredStepsInvoked() throws Exception {
 		// Create a session with two steps where second requires first
-		final var step1 = new Step().withId("S1").withName("S1").withOrder(1).withTarget(new Step.Target(Step.Target.Type.SERVICE, UUID.randomUUID()));
-		final var step2 = new Step().withId("S2").withName("S2").withOrder(2).withTarget(new Step.Target(Step.Target.Type.SERVICE, UUID.randomUUID()));
+		final var step1 = new Step().withId("S1").withName("S1").withOrder(1).withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.SERVICE, UUID.randomUUID()));
+		final var step2 = new Step().withId("S2").withName("S2").withOrder(2).withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.SERVICE, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		session.setState(Session.State.RUNNING);
@@ -102,7 +102,7 @@ class StepRunnerTest {
 
 		// When resolving inputs, return empty inputs
 		when(inputPreparation.prepare("2281", session, stepExecution.getStep())).thenReturn(new InputCollector.Inputs(List.of(), "", List.of()));
-		when(targetExecutorResolver.resolve(any(Step.Target.Type.class))).thenReturn(targetExecutor);
+		when(targetExecutorResolver.resolve(any(Step.IntricEndpoint.Type.class))).thenReturn(targetExecutor);
 
 		// Mock the executor result and required method calls
 		when(targetExecutor.execute(any(StepRunContext.class))).thenReturn(targetResult);

@@ -24,7 +24,7 @@ class InputDescriptorTest {
 		// Steps: step1 (no inputs), step2 consumes redirected output from step1
 		final var step1 = new Step().withId("step1").withName("Step One").withOrder(1);
 		final var step2 = new Step().withId("step2").withName("Step Two").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("step1").withUseAs("step1 output")));
+			.withInputs(List.of(new RedirectedOutput().withStep("step1").withName("step1 output")));
 
 		final var flow = new Flow().withFlowInputs(List.of(inputA, inputB)).withSteps(List.of(step1, step2));
 
@@ -36,15 +36,15 @@ class InputDescriptorTest {
 		final var idsA = List.of(UUID.randomUUID(), UUID.randomUUID());
 		// Mutate underlying Input to set eneo ids
 		final var listA = session.getInput().get("A");
-		listA.get(0).setEneoFileId(idsA.get(0));
-		listA.get(1).setEneoFileId(idsA.get(1));
+		listA.get(0).setIntricFileId(idsA.get(0));
+		listA.get(1).setIntricFileId(idsA.get(1));
 
 		// Optional B remains empty -> should be omitted
 
 		// Add redirected output for step1 as input (as text), then set an id
 		session.addRedirectedOutputAsInput("step1", new se.sundsvall.ai.flow.model.session.TextInputValue("step1 output", "text"));
 		final var redirectedId = UUID.randomUUID();
-		session.getRedirectedOutputInput().get("step1").getFirst().setEneoFileId(redirectedId);
+		session.getRedirectedOutputInput().get("step1").getFirst().setIntricFileId(redirectedId);
 
 		final var descriptor = new InputDescriptor();
 		final Map<String, String> info = descriptor.describe(session);

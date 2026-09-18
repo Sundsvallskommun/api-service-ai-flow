@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,11 +33,11 @@ class FileUploadManagerTest {
 		// Regular input A not uploaded
 		session.addInput("A", new FileInputValue("doc.txt", "hello".getBytes(), "text/plain"));
 
-		// Redirected output: first an already uploaded one -> should be deleted and removed, then a not uploaded -> should be
-		// uploaded
+		// Redirected output: first an already uploaded one -> should be retired (not deleted yet) and removed, then a not
+		// uploaded -> should be uploaded
 		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "old"));
 		final var oldId = UUID.randomUUID();
-		session.getRedirectedOutputInput().get("S1").getFirst().setEneoFileId(oldId);
+		session.getRedirectedOutputInput().get("S1").getFirst().setIntricFileId(oldId);
 		session.addRedirectedOutputAsInput("S1", new TextInputValue("useAs", "new"));
 
 		// Stubs
@@ -47,8 +48,9 @@ class FileUploadManagerTest {
 
 		// Assert uploads: 2 uploads expected (regular A + new redirected)
 		verify(eneo, times(2)).uploadFile(eq("2281"), any());
-		// Assert deletion of old redirected
-		verify(eneo).deleteFile("2281", oldId);
+		// The old redirected file is still attached to a live conversation, so it is not deleted now but when the session goes
+		verify(eneo, never()).deleteFile(any(), any());
+		assertThat(session.getFilesPendingDeletion()).containsExactly(oldId);
 
 		// Ensure old redirected removed from the session list
 		assertThat(session.getRedirectedOutputInput().get("S1")).hasSize(1);

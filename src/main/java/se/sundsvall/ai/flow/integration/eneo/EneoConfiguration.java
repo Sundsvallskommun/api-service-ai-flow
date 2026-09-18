@@ -1,6 +1,7 @@
 package se.sundsvall.ai.flow.integration.eneo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,6 +19,9 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import se.sundsvall.dept44.configuration.feign.FeignConfiguration;
 import se.sundsvall.dept44.configuration.feign.FeignMultiCustomizer;
 import se.sundsvall.dept44.configuration.feign.decoder.ProblemErrorDecoder;
+
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Configuration
 @Import(FeignConfiguration.class)
@@ -67,7 +71,8 @@ class EneoConfiguration {
 
 	private FeignBuilderCustomizer feignBuilderCustomizer(final String clientId, final String apiKey) {
 		return FeignMultiCustomizer.create()
-			.withErrorDecoder(new ProblemErrorDecoder(clientId))
+			// Let 409 and 404 through so cleanup can tell "still in use" and "already gone" from a real gateway failure
+			.withErrorDecoder(new ProblemErrorDecoder(clientId, List.of(CONFLICT.value(), NOT_FOUND.value())))
 			// Add required api-key header
 			.withRequestInterceptor(request -> request.header("api-key", apiKey))
 			.withRetryableOAuth2InterceptorForClientRegistration(ClientRegistration

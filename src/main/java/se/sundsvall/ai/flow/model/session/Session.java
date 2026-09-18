@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.ai.flow.model.flowdefinition.Flow;
@@ -29,6 +30,9 @@ public class Session {
 	private final Map<String, List<Input>> input = new TreeMap<>();
 	@JsonIgnore
 	private final Map<String, List<Input>> redirectedOutputInput = new TreeMap<>();
+	// Written from parallel step threads via FileUploadManager, read when the session is deleted
+	@JsonIgnore
+	private final List<UUID> filesPendingDeletion = new CopyOnWriteArrayList<>();
 	private final Map<String, StepExecution> stepExecutions = new TreeMap<>();
 	private State state;
 
@@ -81,7 +85,7 @@ public class Session {
 
 	public void addSimpleInput(final String inputId, final String value) {
 		final var flowInput = flow.getFlowInput(inputId);
-		final var inputMultipartFile = new StringMultipartFile(flowInput.getName(), value);
+		final var inputMultipartFile = new StringMultipartFile(flow.getInputPrefix(), flowInput.getName(), value);
 		addInputInternal(flowInput, inputMultipartFile);
 	}
 
@@ -90,7 +94,8 @@ public class Session {
 
 		// Create an empty input value list, if required
 		input.computeIfAbsent(flowInput.getId(), ignored -> new LinkedList<>());
-		// Clear the input
+		// Clear the input, remembering any files already uploaded to Eneo so they can still be deleted
+		retireUploadedFiles(input.get(flowInput.getId()));
 		input.get(flowInput.getId()).clear();
 	}
 
@@ -99,6 +104,7 @@ public class Session {
 		input.computeIfAbsent(flowInput.getId(), ignored -> new LinkedList<>());
 		// If the flow input is single-valued - replace the previous value by clearing any previous value(s)
 		if (flowInput.isSingleValued()) {
+			retireUploadedFiles(input.get(flowInput.getId()));
 			input.get(flowInput.getId()).clear();
 		}
 		// Add the input
@@ -117,7 +123,7 @@ public class Session {
 		final var flowInputName = flowInput.getName();
 
 		if (inputValue instanceof final TextInputValue textInputValue) {
-			addInputInternal(flowInput, new StringMultipartFile(flowInputName, textInputValue.value()));
+			addInputInternal(flowInput, new StringMultipartFile(flow.getInputPrefix(), flowInputName, textInputValue.value()));
 		} else if (inputValue instanceof final FileInputValue fileInputValue) {
 			addInputInternal(flowInput, new ByteArrayMultipartFile(flowInputName, fileInputValue.content(), fileInputValue.contentType()));
 		} else {
@@ -129,7 +135,7 @@ public class Session {
 		redirectedOutputInput.computeIfAbsent(stepId, ignored -> new LinkedList<>());
 
 		if (inputValue instanceof TextInputValue(final String name, final String value)) {
-			var textInput = new Input(new StringMultipartFile(name, value));
+			var textInput = new Input(new StringMultipartFile(flow.getInputPrefix(), name, value));
 			redirectedOutputInput.get(stepId).add(textInput);
 		} else if (inputValue instanceof FileInputValue(final String name, final byte[] content, final String contentType)) {
 			var fileInput = new Input(new ByteArrayMultipartFile(name, content, contentType));
@@ -155,6 +161,31 @@ public class Session {
 		if (list != null) {
 			list.remove(inputToRemove);
 		}
+	}
+
+	/**
+	 * Remembers an Eneo file that is no longer an input but could not be deleted yet, typically because it is still
+	 * attached to a conversation that this session keeps using. It is deleted together with the session.
+	 */
+	public void markFileForDeletion(final UUID intricFileId) {
+		filesPendingDeletion.add(intricFileId);
+	}
+
+	/**
+	 * Remembers the Eneo files behind the given inputs before the inputs themselves are discarded, so that replacing or
+	 * clearing an input does not leave the uploaded file behind in Eneo.
+	 */
+	private void retireUploadedFiles(final List<Input> inputsToDiscard) {
+		inputsToDiscard.stream()
+			.map(Input::getIntricFileId)
+			.flatMap(Stream::ofNullable)
+			.forEach(this::markFileForDeletion);
+	}
+
+	@JsonIgnore
+	public List<UUID> getFilesPendingDeletion() {
+		// A copy, since the list is written concurrently while the session runs
+		return List.copyOf(filesPendingDeletion);
 	}
 
 	@JsonIgnore

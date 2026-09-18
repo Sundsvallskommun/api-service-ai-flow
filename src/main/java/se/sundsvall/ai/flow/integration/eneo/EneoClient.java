@@ -45,4 +45,10 @@ public interface EneoClient {
 
 	@DeleteMapping("/files/{fileId}/")
 	ResponseEntity<Void> deleteFile(@PathVariable UUID fileId);
+
+	@DeleteMapping("/conversations/{sessionId}/")
+	ResponseEntity<Void> deleteConversation(@PathVariable UUID sessionId);
+
+	@DeleteMapping("/app-runs/{runId}/")
+	ResponseEntity<Void> deleteAppRun(@PathVariable UUID runId);
 }

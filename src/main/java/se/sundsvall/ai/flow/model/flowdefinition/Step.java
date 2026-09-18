@@ -13,7 +13,7 @@ public class Step implements Comparable<Step> {
 	private int order;
 	private String name;
 	private String description;
-	private Target target;
+	private IntricEndpoint intricEndpoint;
 	@JsonProperty("input")
 	private List<StepInput> inputs = new LinkedList<>();
 	private boolean visible = true;
@@ -70,16 +70,16 @@ public class Step implements Comparable<Step> {
 		return this;
 	}
 
-	public Target getTarget() {
-		return target;
+	public IntricEndpoint getIntricEndpoint() {
+		return intricEndpoint;
 	}
 
-	public void setTarget(final Target target) {
-		this.target = target;
+	public void setIntricEndpoint(final IntricEndpoint intricEndpoint) {
+		this.intricEndpoint = intricEndpoint;
 	}
 
-	public Step withTarget(final Target target) {
-		this.target = target;
+	public Step withIntricEndpoint(final IntricEndpoint intricEndpoint) {
+		this.intricEndpoint = intricEndpoint;
 		return this;
 	}
 
@@ -119,15 +119,16 @@ public class Step implements Comparable<Step> {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		final Step step = (Step) o;
-		return order == step.order && visible == step.visible && Objects.equals(id, step.id) && Objects.equals(name, step.name) && Objects.equals(description, step.description) && Objects.equals(target, step.target) && Objects.equals(inputs, step.inputs);
+		return order == step.order && visible == step.visible && Objects.equals(id, step.id) && Objects.equals(name, step.name) && Objects.equals(description, step.description) && Objects.equals(intricEndpoint, step.intricEndpoint) && Objects.equals(
+			inputs, step.inputs);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, order, name, description, target, inputs, visible);
+		return Objects.hash(id, order, name, description, intricEndpoint, inputs, visible);
 	}
 
-	public record Target(Type type, UUID id) {
+	public record IntricEndpoint(Type type, UUID id) {
 
 		public enum Type {
 			SERVICE,

@@ -36,9 +36,13 @@ class StaleSessionReaper {
 			var ttlInMinutes = session.getFlow().getTtlInMinutes();
 
 			if (lastUpdatedAt.plusMinutes(ttlInMinutes).isBefore(now)) {
-				sessionService.deleteSession(session.getMunicipalityId(), session.getId());
+				try {
+					sessionService.deleteSession(session.getMunicipalityId(), session.getId());
 
-				LOG.info("Deleted stale session {}", session.getId());
+					LOG.info("Deleted stale session {}", session.getId());
+				} catch (final Exception e) {
+					LOG.error("Unable to delete stale session {}", session.getId(), e);
+				}
 			}
 		});
 	}

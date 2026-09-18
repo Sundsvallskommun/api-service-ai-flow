@@ -2,6 +2,7 @@ package se.sundsvall.ai.flow.model.session;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -97,7 +98,7 @@ class SessionTest {
 
 		assertThat(session.getInput()).containsKey(inputId);
 		assertThat(session.getInput().get(inputId)).hasSize(2).allSatisfy(input -> {
-			assertThat(input.isUploadedToEneo()).isFalse();
+			assertThat(input.isUploadedToIntric()).isFalse();
 			assertThat(input.getFile()).asInstanceOf(type(StringMultipartFile.class)).satisfies(stringMultipartFile -> {
 				assertThat(stringMultipartFile.getName()).isEqualTo(inputName);
 				assertThat(stringMultipartFile.getValue()).isIn(inputValue1, inputValue2);
@@ -121,10 +122,51 @@ class SessionTest {
 
 		assertThat(session.getInput()).containsKey(inputId);
 		assertThat(session.getInput().get(inputId)).hasSize(2).allSatisfy(input -> {
-			assertThat(input.isUploadedToEneo()).isFalse();
+			assertThat(input.isUploadedToIntric()).isFalse();
 			assertThat(input.getFile()).asInstanceOf(type(ByteArrayMultipartFile.class)).satisfies(byteArrayMultipartFile -> {
 				assertThat(byteArrayMultipartFile.getName()).isEqualTo(inputName);
 			});
 		});
+	}
+
+	@Test
+	void replacingASingleValuedInputRetiresTheUploadedFile() {
+		final var flow = new Flow().withFlowInputs(List.of(new FlowInput().withId("A").withName("Doc A")));
+		final var session = new Session(MUNICIPALITY_ID, flow);
+
+		session.addSimpleInput("A", "first");
+		final var uploadedFileId = UUID.randomUUID();
+		session.getInput().get("A").getFirst().setIntricFileId(uploadedFileId);
+
+		session.addSimpleInput("A", "second");
+
+		assertThat(session.getInput().get("A")).hasSize(1);
+		assertThat(session.getFilesPendingDeletion()).containsExactly(uploadedFileId);
+	}
+
+	@Test
+	void clearingAnInputRetiresTheUploadedFile() {
+		final var flow = new Flow().withFlowInputs(List.of(new FlowInput().withId("A").withName("Doc A")));
+		final var session = new Session(MUNICIPALITY_ID, flow);
+
+		session.addSimpleInput("A", "first");
+		final var uploadedFileId = UUID.randomUUID();
+		session.getInput().get("A").getFirst().setIntricFileId(uploadedFileId);
+
+		session.clearInput("A");
+
+		assertThat(session.getInput().get("A")).isEmpty();
+		assertThat(session.getFilesPendingDeletion()).containsExactly(uploadedFileId);
+	}
+
+	@Test
+	void replacingAnInputThatWasNeverUploadedRetiresNothing() {
+		final var flow = new Flow().withFlowInputs(List.of(new FlowInput().withId("A").withName("Doc A")));
+		final var session = new Session(MUNICIPALITY_ID, flow);
+
+		session.addSimpleInput("A", "first");
+		session.addSimpleInput("A", "second");
+
+		assertThat(session.getFilesPendingDeletion()).isEmpty();
 	}
 }
