@@ -18,7 +18,7 @@ import se.sundsvall.dept44.problem.Problem;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static se.sundsvall.ai.flow.model.flowdefinition.Step.Target.Type.SERVICE;
+import static se.sundsvall.ai.flow.model.flowdefinition.Step.IntricEndpoint.Type.SERVICE;
 
 @ExtendWith(MockitoExtension.class)
 class ExecutorTest {
@@ -30,7 +30,7 @@ class ExecutorTest {
 	private Executor executor;
 
 	private Session newSessionWithSingleStep() {
-		final var step = new Step().withId("S1").withName("S1").withOrder(1).withTarget(new Step.Target(SERVICE, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withOrder(1).withIntricEndpoint(new Step.IntricEndpoint(SERVICE, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step));
 		return new Session("2281", flow, new StepExecutionFactory());
 	}

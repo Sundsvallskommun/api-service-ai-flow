@@ -46,7 +46,7 @@ public class StepRunner {
 		final var runContext = new StepRunContext(municipalityId, session, stepExecution, inputs.inputsInUse(), inputs.fileIdsInUse(), inputs.inputsInUseInfo(), context.userInput(), context.runRequiredSteps());
 
 		try {
-			final var targetExecutor = targetExecutorResolver.resolve(step.getTarget().type());
+			final var targetExecutor = targetExecutorResolver.resolve(step.getIntricEndpoint().type());
 
 			final var result = targetExecutor.execute(runContext);
 

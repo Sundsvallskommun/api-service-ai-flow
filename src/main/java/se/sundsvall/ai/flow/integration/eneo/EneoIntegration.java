@@ -14,13 +14,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.BAD_GATEWAY;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static se.sundsvall.dept44.util.LogUtils.sanitizeForLogging;
 
 @Component
@@ -112,8 +115,50 @@ public class EneoIntegration {
 			getEneoClient(municipalityId).deleteFile(fileId);
 			LOG.debug("File with ID: {} deleted successfully", fileId);
 		} catch (final Exception e) {
+			// Eneo answers 409 while a conversation, app run or assistant still references the file
+			if (e instanceof final ThrowableProblem problem && problem.getStatus() == CONFLICT) {
+				LOG.warn("File with ID: {} is still in use in Eneo and was not deleted", fileId);
+				throw Problem.valueOf(CONFLICT, "File with ID: %s is still in use in Eneo".formatted(fileId));
+			}
+			// Already gone is the outcome we want during cleanup, not a failure
+			if (e instanceof final ThrowableProblem problem && problem.getStatus() == NOT_FOUND) {
+				LOG.debug("File with ID: {} no longer exists in Eneo", fileId);
+				return;
+			}
 			LOG.error("Error deleting file with ID: {}", fileId, e);
 			throw Problem.valueOf(BAD_GATEWAY, "Error deleting file with ID: %s".formatted(fileId));
+		}
+	}
+
+	public void deleteConversation(final String municipalityId, final UUID sessionId) {
+		try {
+			LOG.debug("Deleting conversation with ID: {}", sessionId);
+			getEneoClient(municipalityId).deleteConversation(sessionId);
+			LOG.debug("Conversation with ID: {} deleted successfully", sessionId);
+		} catch (final Exception e) {
+			// Already gone is the outcome we want during cleanup, not a failure
+			if (e instanceof final ThrowableProblem problem && problem.getStatus() == NOT_FOUND) {
+				LOG.debug("Conversation with ID: {} no longer exists in Eneo", sessionId);
+				return;
+			}
+			LOG.error("Error deleting conversation with ID: {}", sessionId, e);
+			throw Problem.valueOf(BAD_GATEWAY, "Error deleting conversation with ID: %s".formatted(sessionId));
+		}
+	}
+
+	public void deleteAppRun(final String municipalityId, final UUID runId) {
+		try {
+			LOG.debug("Deleting app run with ID: {}", runId);
+			getEneoClient(municipalityId).deleteAppRun(runId);
+			LOG.debug("App run with ID: {} deleted successfully", runId);
+		} catch (final Exception e) {
+			// Already gone is the outcome we want during cleanup, not a failure
+			if (e instanceof final ThrowableProblem problem && problem.getStatus() == NOT_FOUND) {
+				LOG.debug("App run with ID: {} no longer exists in Eneo", runId);
+				return;
+			}
+			LOG.error("Error deleting app run with ID: {}", runId, e);
+			throw Problem.valueOf(BAD_GATEWAY, "Error deleting app run with ID: %s".formatted(runId));
 		}
 	}
 

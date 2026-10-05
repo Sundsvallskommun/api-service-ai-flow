@@ -45,7 +45,7 @@ public class InputCollector {
 		final var fileIdsInUse = session.getAllInput().entrySet().stream()
 			.filter(entry -> inputsInUse.contains(entry.getKey()))
 			.flatMap(entry -> entry.getValue().stream())
-			.map(Input::getEneoFileId)
+			.map(Input::getIntricFileId)
 			.toList();
 
 		final var descriptorMap = inputDescriptor.describe(session);

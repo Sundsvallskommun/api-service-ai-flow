@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import se.sundsvall.ai.flow.integration.eneo.EneoService;
@@ -18,6 +20,7 @@ import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
 import se.sundsvall.ai.flow.util.DocumentUtil;
 import se.sundsvall.dept44.problem.Problem;
+import se.sundsvall.dept44.problem.ThrowableProblem;
 import se.sundsvall.dept44.requestid.RequestId;
 
 import static java.util.Optional.ofNullable;
@@ -26,6 +29,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class SessionService {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SessionService.class);
 
 	private final Map<UUID, Session> sessions = new ConcurrentHashMap<>();
 
@@ -81,16 +86,35 @@ public class SessionService {
 	public void deleteSession(final String municipalityId, final UUID sessionId) {
 		final var session = getSession(sessionId);
 
-		// Extract the id:s of the files uploaded in the session
-		final var uploadedFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
-			.flatMap(Collection::stream)
-			.map(Input::getEneoFileId)
-			.flatMap(Stream::ofNullable)
-			.toList();
-		// Delete the files
-		eneoService.deleteFiles(municipalityId, uploadedFileIds);
-		// Remove the session
-		sessions.remove(sessionId);
+		try {
+			// Conversations and app runs reference the uploaded files, so Eneo refuses to delete a file while they exist.
+			// Remove them first. Every delete is best-effort: one failure must not stop the rest, nor keep the session.
+			session.getStepExecutions().values().forEach(stepExecution -> {
+				ofNullable(stepExecution.getEneoSessionId())
+					.ifPresent(eneoSessionId -> deleteQuietly(() -> eneoService.deleteConversation(municipalityId, eneoSessionId), "conversation", eneoSessionId));
+				ofNullable(stepExecution.getEneoRunId())
+					.ifPresent(eneoRunId -> deleteQuietly(() -> eneoService.deleteAppRun(municipalityId, eneoRunId), "app run", eneoRunId));
+			});
+
+			// Then the files: current inputs, redirected outputs, and files retired during re-runs
+			final var inputFileIds = Stream.concat(session.getInput().values().stream(), session.getRedirectedOutputInput().values().stream())
+				.flatMap(Collection::stream)
+				.map(Input::getIntricFileId);
+			Stream.concat(inputFileIds, session.getFilesPendingDeletion().stream())
+				.flatMap(Stream::ofNullable)
+				.distinct()
+				.forEach(fileId -> deleteQuietly(() -> eneoService.deleteFile(municipalityId, fileId), "file", fileId));
+		} finally {
+			sessions.remove(sessionId);
+		}
+	}
+
+	private void deleteQuietly(final Runnable delete, final String what, final UUID id) {
+		try {
+			delete.run();
+		} catch (final ThrowableProblem e) {
+			LOG.warn("Unable to delete {} {} in Eneo: {} {}", what, id, e.getStatus(), e.getDetail());
+		}
 	}
 
 	public Session addInput(final UUID sessionId, final String inputId, final String value) {

@@ -24,8 +24,8 @@ public class RedirectedOutputResolver {
 			.map(RedirectedOutput.class::cast)
 			.forEach(redirected -> {
 				final var requiredStepExecution = session.getStepExecutions().get(redirected.getStep());
-				final var value = new TextInputValue(redirected.getUseAs(), requiredStepExecution.getOutput());
-				LOG.debug("Adding redirected output from step {} as input '{}'", redirected.getStep(), redirected.getUseAs());
+				final var value = new TextInputValue(redirected.getName(), requiredStepExecution.getOutput());
+				LOG.debug("Adding redirected output from step {} as input '{}'", redirected.getStep(), redirected.getName());
 				session.addRedirectedOutputAsInput(redirected.getStep(), value);
 			});
 	}

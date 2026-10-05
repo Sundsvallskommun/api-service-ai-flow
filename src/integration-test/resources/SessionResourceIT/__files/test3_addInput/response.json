@@ -4,7 +4,12 @@
 	"input": {
 		"arendenummer": [
 			{
-				"uploadedToEneo": false
+				"file": {
+					"type": "simple",
+					"contentType": "text/plain",
+					"size": "${json-unit.any-number}"
+				},
+				"uploadedToIntric": false
 			}
 		],
 		"uppdraget-till-tjansten": [],

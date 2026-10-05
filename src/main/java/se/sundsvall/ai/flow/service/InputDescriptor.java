@@ -47,7 +47,7 @@ public class InputDescriptor {
 
 	private Map.Entry<String, String> createInfoEntry(final String key, final String name, final List<Input> inputs) {
 		final var fileIds = inputs.stream()
-			.map(Input::getEneoFileId)
+			.map(Input::getIntricFileId)
 			.map(UUID::toString)
 			.toList();
 		final var info = String.format(FILE_INFO_TEMPLATE, name.toLowerCase(), String.join(",", fileIds));

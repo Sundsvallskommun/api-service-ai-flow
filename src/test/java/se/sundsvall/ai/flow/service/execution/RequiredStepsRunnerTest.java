@@ -18,7 +18,7 @@ class RequiredStepsRunnerTest {
 	void triggersRequiredStepsWhenEnabledAndNotDone() {
 		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
 		final var step2 = new Step().withId("S2").withName("S2").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("use")));
+			.withInputs(List.of(new RedirectedOutput().withStep("S1").withName("use")));
 		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 
@@ -39,7 +39,7 @@ class RequiredStepsRunnerTest {
 	void doesNotTriggerWhenDisabled() {
 		final var step1 = new Step().withId("S1").withName("S1").withOrder(1);
 		final var step2 = new Step().withId("S2").withName("S2").withOrder(2)
-			.withInputs(List.of(new RedirectedOutput().withStep("S1").withUseAs("use")));
+			.withInputs(List.of(new RedirectedOutput().withStep("S1").withName("use")));
 		final var flow = new Flow().withSteps(List.of(step1, step2));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var stepExecution = session.getStepExecution("S2");

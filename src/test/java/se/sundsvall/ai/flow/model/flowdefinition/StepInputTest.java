@@ -89,7 +89,7 @@ class StepInputTest {
 
 			assertThat(result).isInstanceOf(RedirectedOutput.class).asInstanceOf(InstanceOfAssertFactories.type(RedirectedOutput.class)).satisfies(redirectedOutput -> {
 				assertThat(redirectedOutput.getStep()).isEqualTo(step);
-				assertThat(redirectedOutput.getUseAs()).isEqualTo(name);
+				assertThat(redirectedOutput.getName()).isEqualTo(name);
 			});
 		}
 

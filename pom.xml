@@ -181,7 +181,6 @@
 						<exclude>**/se/sundsvall/ai/flow/api/FlowResource**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/api/SessionResource**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/model/session/Session**</exclude>
-						<exclude>**/se/sundsvall/ai/flow/service/SessionService**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/FlowService**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/Executor**</exclude>
 						<exclude>**/se/sundsvall/ai/flow/service/FlowLoader$Configuration**</exclude>

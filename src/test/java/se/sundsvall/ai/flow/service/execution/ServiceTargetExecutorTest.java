@@ -21,15 +21,15 @@ class ServiceTargetExecutorTest {
 		final var eneoService = mock(EneoService.class);
 		final var executor = new ServiceTargetExecutor(eneoService);
 
-		assertThat(executor.supports(Step.Target.Type.SERVICE)).isTrue();
-		assertThat(executor.supports(Step.Target.Type.APP)).isFalse();
+		assertThat(executor.supports(Step.IntricEndpoint.Type.SERVICE)).isTrue();
+		assertThat(executor.supports(Step.IntricEndpoint.Type.APP)).isFalse();
 
-		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.SERVICE, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.SERVICE, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var stepExecution = session.getStepExecution("S1");
 
-		when(eneoService.runService("2281", step.getTarget().id(), List.of(), "", "question")).thenReturn(new Response("answer"));
+		when(eneoService.runService("2281", step.getIntricEndpoint().id(), List.of(), "", "question")).thenReturn(new Response("answer"));
 
 		final var stepRunContext = new StepRunContext("2281", session, stepExecution, List.of(), List.of(), "", "question", true);
 		final var result = executor.execute(stepRunContext);

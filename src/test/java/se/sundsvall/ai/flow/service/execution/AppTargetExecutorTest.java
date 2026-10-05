@@ -22,15 +22,15 @@ class AppTargetExecutorTest {
 		final var poller = mock(AppRunPoller.class);
 		final var executor = new AppTargetExecutor(eneoService, poller);
 
-		assertThat(executor.supports(Step.Target.Type.APP)).isTrue();
+		assertThat(executor.supports(Step.IntricEndpoint.Type.APP)).isTrue();
 
-		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.APP, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.APP, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var exec = session.getStepExecution("S1");
 
 		final var runId = UUID.randomUUID();
-		when(eneoService.runApp("2281", step.getTarget().id(), List.of())).thenReturn(new Response(runId, "ignored", null));
+		when(eneoService.runApp("2281", step.getIntricEndpoint().id(), List.of())).thenReturn(new Response(runId, "ignored", null));
 		when(poller.pollUntilComplete("2281", runId, step.getName())).thenReturn("done");
 
 		final var stepRunContext = new StepRunContext("2281", session, exec, List.of(), List.of(), "", null, true);
@@ -47,7 +47,7 @@ class AppTargetExecutorTest {
 		final var poller = mock(AppRunPoller.class);
 		final var executor = new AppTargetExecutor(eneoService, poller);
 
-		final var step = new Step().withId("S1").withName("S1").withTarget(new Step.Target(Step.Target.Type.APP, UUID.randomUUID()));
+		final var step = new Step().withId("S1").withName("S1").withIntricEndpoint(new Step.IntricEndpoint(Step.IntricEndpoint.Type.APP, UUID.randomUUID()));
 		final var flow = new Flow().withSteps(List.of(step));
 		final var session = new Session("2281", flow, new StepExecutionFactory());
 		final var exec = session.getStepExecution("S1");

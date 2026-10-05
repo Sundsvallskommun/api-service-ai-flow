@@ -22,16 +22,16 @@
 	{
 	  "id": "tolka-bild",
 	  "order": 1,
-	  "use-as": "Bilden",
+	  "name": "Bilden",
 	  "description": "Bilden att tolka",
 	  "visible": true,
-	  "target": {
+	  "intricEndpoint": {
 		"type": "APP",
 		"id": "b5415f0f-06bf-42c3-b781-c803ed347e77"
 	  },
 	  "input": [
 		{
-		  "use-flow-input": "indata-bild"
+		  "flow-input-ref": "indata-bild"
 		}
 	  ]
 	}

@@ -16,6 +16,7 @@ public class Flow {
 	private Integer version;
 	private String name;
 	private String description;
+	private String inputPrefix = "#####";
 	private String helptext;
 	private String spaceId;
 	private String defaultTemplateId;
@@ -75,6 +76,19 @@ public class Flow {
 
 	public Flow withDescription(final String description) {
 		this.description = description;
+		return this;
+	}
+
+	public String getInputPrefix() {
+		return inputPrefix;
+	}
+
+	public void setInputPrefix(final String inputPrefix) {
+		this.inputPrefix = inputPrefix;
+	}
+
+	public Flow withInputPrefix(final String inputPrefix) {
+		this.inputPrefix = inputPrefix;
 		return this;
 	}
 
