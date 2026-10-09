@@ -1,20 +1,10 @@
 package apptest;
 
-import static org.awaitility.Awaitility.await;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-
 import java.time.Duration;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.model.session.StepExecution;
@@ -23,6 +13,14 @@ import se.sundsvall.ai.flow.service.FlowService;
 import se.sundsvall.ai.flow.service.SessionService;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
+
+import static org.awaitility.Awaitility.await;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @WireMockAppTestSuite(files = "classpath:/SessionResourceIT/", classes = Application.class)
 class SessionResourceIT extends AbstractAppTest {
@@ -113,8 +111,7 @@ class SessionResourceIT extends AbstractAppTest {
 			.sendRequest();
 
 		// Wait for the session to complete
-		await().atMost(Duration.ofSeconds(30)).until(() ->
-			session.getState() == Session.State.FINISHED);
+		await().atMost(Duration.ofSeconds(30)).until(() -> session.getState() == Session.State.FINISHED);
 
 		// Runs the step.
 		setupCall()
@@ -146,8 +143,7 @@ class SessionResourceIT extends AbstractAppTest {
 			.sendRequest();
 
 		// Wait for the session to complete
-		await().atMost(Duration.ofSeconds(30)).until(() ->
-			session.getState() == Session.State.FINISHED);
+		await().atMost(Duration.ofSeconds(30)).until(() -> session.getState() == Session.State.FINISHED);
 
 		// Runs the step.
 		setupCall()
@@ -198,8 +194,7 @@ class SessionResourceIT extends AbstractAppTest {
 			.sendRequest();
 
 		// Wait for the session to complete
-		await().atMost(Duration.ofSeconds(30)).until(() ->
-			session.getState() == Session.State.FINISHED);
+		await().atMost(Duration.ofSeconds(30)).until(() -> session.getState() == Session.State.FINISHED);
 		verifyAllStubs();
 	}
 
