@@ -1,26 +1,24 @@
 package apptest;
 
-import static org.awaitility.Awaitility.await;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.HttpStatus.OK;
-
 import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import se.sundsvall.ai.flow.Application;
 import se.sundsvall.ai.flow.model.session.Session;
 import se.sundsvall.ai.flow.service.SessionService;
 import se.sundsvall.dept44.test.AbstractAppTest;
 import se.sundsvall.dept44.test.annotation.wiremock.WireMockAppTestSuite;
+
+import static org.awaitility.Awaitility.await;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @WireMockAppTestSuite(files = "classpath:/AppSessionResourceIT/", classes = Application.class)
 class AppSessionResourceIT extends AbstractAppTest {
@@ -60,7 +58,7 @@ class AppSessionResourceIT extends AbstractAppTest {
 			.withExpectedResponse("add-file-response.json")
 			.sendRequest();
 
-		// Trigger 
+		// Trigger
 		setupCall()
 			.withServicePath(UriComponentsBuilder.newInstance().replacePath(BASE_PATH)
 				.pathSegment(sessionId)
@@ -71,8 +69,7 @@ class AppSessionResourceIT extends AbstractAppTest {
 
 		// Wait for the async execution to complete
 		final var session = sessionService.getSession(UUID.fromString(sessionId));
-		await().atMost(Duration.ofSeconds(30)).until(() ->
-			(session.getState() == Session.State.FINISHED || session.getState() == Session.State.ERROR));
+		await().atMost(Duration.ofSeconds(30)).until(() -> (session.getState() == Session.State.FINISHED || session.getState() == Session.State.ERROR));
 
 		// Get step execution results and verify
 		setupCall()
